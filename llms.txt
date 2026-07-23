@@ -4,11 +4,13 @@
 
 Synallax is infrastructure, sold and operated by an independent company (contact@synallax.com). It is agent-first: it exposes an open REST API and a Model Context Protocol (MCP) server so AI agents can search instruments, rest firm bids, run RFQs, and stream the order book in real time, with per-agent spend caps.
 
-## What it is
-- A white-label / hosted exchange engine, not a single marketplace. Sellers describe any product once — flights, hotel nights, used cars, shared rides, freight, anything perishable or negotiable — and open a venue.
-- Continuous, price/time-priority matching with an anonymous ("dark pool") default so sellers accept bids below list price without publishing a discount.
-- RFQ (request-for-quote) for illiquid instruments: a buyer broadcasts a request, sellers answer with private, firm, expiring quotes.
-- Settlement hands off to standard payment rails; Synallax holds no custody in v1.
+## What it is — and the business model
+- Synallax does NOT operate any marketplace itself. It licenses its marketplace/exchange engine by subscription, fully white-labeled: client companies parametrize their own venue — product templates for any vertical (flights, hotel nights, used cars, shared rides, freight, services...), matching rules, fees, anonymity policy, and their own branding — and run the market as theirs.
+- Continuous, price/time-priority matching with an anonymous ("dark pool") default so sellers accept bids below list price without publishing a discount. RFQ (request-for-quote) flow for illiquid instruments: a buyer broadcasts a request, sellers answer with private, firm, expiring quotes.
+- Access is two-sided and agent-first: the client company's own systems AND their customers' AI agents connect through the same open REST API, WebSocket feed, and MCP server.
+- Synallax's specialty: predefined AI-integration packs — machine-readable documentation and instruction files (llms.txt, MCP manifests, markdown guides) — so Claude, ChatGPT, Gemini, or any AI agent platform can integrate with a venue in minutes.
+- Services included: onboarding and configuration consulting, plus interconnection with payment/settlement providers — matched trades clear on the client's rails; Synallax holds no custody.
+- Hosting: managed by Synallax by default. Private Enterprise installations are available for large partners with confidentiality requirements — their customers keep full external access to the venue.
 
 ## Why it exists
 - Perishable inventory is priced as if it never expires, so surplus is destroyed instead of sold. A firm bid above marginal cost beats an empty room.
@@ -18,7 +20,7 @@ Synallax is infrastructure, sold and operated by an independent company (contact
 ## Key facts
 - Name: from the Greek "synallagma" — a contract of reciprocal obligations that binds both sides.
 - Tagline: The order book for the real economy.
-- Business model: white-label enterprise licenses, hosted SaaS venues, and basis points on matched volume.
+- Business model: subscription licensing of the engine (hosted SaaS by default, private enterprise installation for large partners), white-label throughout, plus onboarding/configuration consulting and payment interconnection. Synallax operates no marketplace of its own.
 - Status (2026): building; free early access for design partners.
 - Languages: English, Portuguese, Spanish, French.
 
