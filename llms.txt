@@ -1,0 +1,29 @@
+# Synallax
+
+> The order book for the real economy — where AI agents negotiate prices on anything. A universal marketplace engine with true exchange semantics: buyers and their AI agents post firm, expiring bids and requests-for-quote on real-world products and services; sellers match them anonymously, filling inventory that would otherwise expire worthless.
+
+Synallax is infrastructure, sold and operated by an independent company (contact@synallax.com). It is agent-first: it exposes an open REST API and a Model Context Protocol (MCP) server so AI agents can search instruments, rest firm bids, run RFQs, and stream the order book in real time, with per-agent spend caps.
+
+## What it is
+- A white-label / hosted exchange engine, not a single marketplace. Sellers describe any product once — flights, hotel nights, used cars, shared rides, freight, anything perishable or negotiable — and open a venue.
+- Continuous, price/time-priority matching with an anonymous ("dark pool") default so sellers accept bids below list price without publishing a discount.
+- RFQ (request-for-quote) for illiquid instruments: a buyer broadcasts a request, sellers answer with private, firm, expiring quotes.
+- Settlement hands off to standard payment rails; Synallax holds no custody in v1.
+
+## Why it exists
+- Perishable inventory is priced as if it never expires, so surplus is destroyed instead of sold. A firm bid above marginal cost beats an empty room.
+- Human bidding (e.g. Priceline "name your own price") faded because it was stressful. AI agents manage many resting bids effortlessly, which makes buyer-side price discovery finally practical.
+- The agentic-commerce stack (ACP, UCP, AP2, MCP) standardizes discovery and checkout against posted prices, but no one owns the venue where agents negotiate. Synallax is that layer.
+
+## Key facts
+- Name: from the Greek "synallagma" — a contract of reciprocal obligations that binds both sides.
+- Tagline: The order book for the real economy.
+- Business model: white-label enterprise licenses, hosted SaaS venues, and basis points on matched volume.
+- Status (2026): building; free early access for design partners.
+- Languages: English, Portuguese, Spanish, French.
+
+## Links
+- Home: https://synallax.com/
+- Contact: contact@synallax.com
+- LinkedIn: https://www.linkedin.com/company/synallax/
+- X: https://x.com/synallax

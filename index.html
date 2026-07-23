@@ -1,0 +1,600 @@
+<title>Synallax — The order book for the real economy</title>
+<meta name="description" content="Synallax is a universal marketplace engine with exchange semantics. Buyers and their AI agents post firm bids and RFQs on flights, hotels, cars, anything; sellers match them anonymously. Give the buyer a voice. Restore the balance.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#0A111C">
+<meta name="keywords" content="order book, marketplace engine, agentic commerce, AI agents, firm bids, RFQ, price negotiation, dark pool, anonymous matching, dynamic pricing, white-label marketplace, reverse auction, price discovery">
+<link rel="canonical" href="https://synallax.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Synallax">
+<meta property="og:title" content="Synallax — The order book for the real economy">
+<meta property="og:description" content="Buyers and their AI agents post firm bids on flights, hotels, cars — anything. Sellers match them anonymously and fill inventory that would otherwise expire empty.">
+<meta property="og:url" content="https://synallax.com/">
+<meta property="og:image" content="https://synallax.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Synallax — The order book for the real economy">
+<meta name="twitter:description" content="Where AI agents negotiate prices on anything. Firm bids · RFQ · anonymous matching.">
+<meta name="twitter:image" content="https://synallax.com/og.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"Organization","@id":"https://synallax.com/#org","name":"Synallax","url":"https://synallax.com/","email":"contact@synallax.com","description":"A universal marketplace engine with exchange semantics: buyers and their AI agents post firm bids and RFQs on real-world products and services; sellers match them anonymously.","sameAs":["https://www.linkedin.com/company/synallax/","https://x.com/synallax"],"slogan":"The order book for the real economy."},
+{"@type":"WebSite","@id":"https://synallax.com/#site","url":"https://synallax.com/","name":"Synallax","publisher":{"@id":"https://synallax.com/#org"},"inLanguage":["en","pt","es","fr"]},
+{"@type":"SoftwareApplication","name":"Synallax","applicationCategory":"BusinessApplication","operatingSystem":"Web, API, MCP","offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"Free early access for design partners"},"description":"A white-label exchange engine with firm bids, RFQ, anonymous matching and an agent-first API."},
+{"@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"What is Synallax?","acceptedAnswer":{"@type":"Answer","text":"Synallax is a universal marketplace engine with true exchange semantics. Buyers — increasingly AI agents — post firm, expiring bids or requests-for-quote on real-world products and services, and sellers match them anonymously, filling inventory that would otherwise expire worthless."}},
+{"@type":"Question","name":"How is it different from an auction site or Priceline?","acceptedAnswer":{"@type":"Answer","text":"Priceline's name-your-price was a one-shot, human, stressful bid. Synallax is a continuous, anonymous order book where buyers rest firm bids and sellers hit them — designed for AI agents that manage many resting bids effortlessly, and for sellers who need to accept discounts without publishing them."}},
+{"@type":"Question","name":"Is Synallax only for travel?","acceptedAnswer":{"@type":"Answer","text":"No. It is a generic engine. Sellers describe any product once — flights, hotel nights, used cars, shared rides, freight, anything perishable or negotiable — and open a venue. The same order book and RFQ mechanics work for every vertical."}},
+{"@type":"Question","name":"Can AI agents trade on Synallax?","acceptedAnswer":{"@type":"Answer","text":"Yes. Synallax is agent-first: it exposes an open API and an MCP server so AI agents can search instruments, rest firm bids, run RFQs, and stream the book in real time, with per-agent spend caps."}},
+{"@type":"Question","name":"How do sellers protect their pricing?","acceptedAnswer":{"@type":"Answer","text":"Matching is anonymous by default — a dark pool for the real economy. Sellers accept firm bids below list price without ever publishing a discount, protecting brand price integrity while still filling empty inventory."}}
+]}]}
+</script>
+<style>
+  :root{
+    --bg:#0A111C; --panel:#0F1A28; --panel2:#13212F; --line:#1E2C3E; --line2:#2A3B50;
+    --txt:#EAEEF4; --dim:#93A0B2; --faint:#5E6C7E;
+    --bid:#27B36B; --ask:#DB5A47; --neutral:#7C8798;
+    --bid-wash:rgba(39,179,107,.14); --ask-wash:rgba(219,90,71,.14);
+    --sans:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;
+    --mono:ui-monospace,'Cascadia Mono','SF Mono',Consolas,'Liberation Mono',monospace;
+    --wrap:1140px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} }
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--bid);font-weight:600}
+  h1,h2,h3{letter-spacing:-.02em;text-wrap:balance;font-weight:680;margin:0}
+  section{padding:66px 0;border-top:1px solid var(--line);position:relative}
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){ .reveal{opacity:1;transform:none;transition:none} }
+
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(10,17,28,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;gap:20px;height:76px;max-width:var(--wrap);margin:0 auto;padding:0 24px}
+  .brand{display:flex;align-items:center;color:var(--txt);flex:0 0 auto}
+  .brand svg{height:42px;width:auto;display:block}
+  .navlinks{display:flex;gap:24px;margin-left:14px;flex:1}
+  .navlinks a{font-size:14px;color:var(--dim);transition:color .2s}
+  .navlinks a:hover{color:var(--txt)}
+  .navright{display:flex;align-items:center;gap:12px;flex:0 0 auto}
+  .lang{display:flex;border:1px solid var(--line2);border-radius:6px;overflow:hidden}
+  .lang button{font-family:var(--mono);font-size:11px;letter-spacing:.05em;padding:6px 8px;background:transparent;color:var(--dim);border:0;cursor:pointer;transition:background .15s,color .15s}
+  .lang button+button{border-left:1px solid var(--line2)}
+  .lang button.on{background:var(--bid);color:#04140C;font-weight:700}
+  .lang button:hover:not(.on){color:var(--txt)}
+  .btn{font-family:var(--sans);font-size:14px;font-weight:600;padding:9px 16px;border-radius:7px;border:1px solid transparent;cursor:pointer;transition:transform .12s,filter .15s;display:inline-block;text-align:center}
+  .btn:active{transform:translateY(1px)}
+  .btn-primary{background:var(--bid);color:#04140C}
+  .btn-primary:hover{filter:brightness(1.08)}
+  .btn-ghost{background:transparent;border-color:var(--line2);color:var(--txt)}
+  .btn-ghost:hover{border-color:var(--bid);color:var(--bid)}
+  :focus-visible{outline:2px solid var(--bid);outline-offset:2px;border-radius:4px}
+  @media (max-width:860px){ .navlinks{display:none} }
+
+  /* hero */
+  .hero{padding:52px 0 60px;overflow:hidden}
+  .hero::before{content:"";position:absolute;top:-160px;right:-120px;width:620px;height:620px;background:radial-gradient(circle,rgba(39,179,107,.10),transparent 62%);pointer-events:none}
+  .hero::after{content:"";position:absolute;bottom:-200px;left:-160px;width:560px;height:560px;background:radial-gradient(circle,rgba(219,90,71,.08),transparent 62%);pointer-events:none}
+  .hero-grid{display:grid;grid-template-columns:1.02fr 1fr;gap:48px;align-items:center;position:relative}
+  .hero-copy h1{font-size:clamp(36px,5.4vw,62px);line-height:1.02;margin:16px 0 18px}
+  .hero-copy .sub{font-size:clamp(16px,1.9vw,19px);color:var(--dim);max-width:36ch;margin:0 0 26px}
+  .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+  .badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);border:1px solid var(--line2);border-radius:100px;padding:5px 12px}
+  .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--bid);animation:pulse 2.4s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(39,179,107,.45)}70%{box-shadow:0 0 0 7px rgba(39,179,107,0)}100%{box-shadow:0 0 0 0 rgba(39,179,107,0)}}
+  @media (prefers-reduced-motion:reduce){ .badge .dot{animation:none} }
+  @media (max-width:900px){ .hero-grid{grid-template-columns:1fr;gap:34px} .hero-copy .sub{max-width:48ch} }
+
+  /* market chooser */
+  .mkt-wrap{position:relative}
+  .mkt-try{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:0 0 9px;display:flex;align-items:center;gap:8px}
+  .mkt-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+  .mkt-tabs button{display:flex;flex-direction:column;align-items:center;gap:5px;padding:9px 4px;background:var(--panel);border:1px solid var(--line2);border-radius:9px;color:var(--dim);cursor:pointer;font-family:var(--sans);font-size:12px;font-weight:600;transition:border-color .15s,color .15s,background .15s}
+  .mkt-tabs button svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.7}
+  .mkt-tabs button.on{border-color:var(--bid);color:var(--txt);background:var(--bid-wash)}
+  .mkt-tabs button:hover:not(.on){color:var(--txt);border-color:var(--line2)}
+
+  .book{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line2);border-radius:14px;padding:15px 15px 13px;box-shadow:0 30px 70px -34px rgba(0,0,0,.85);transition:opacity .25s}
+  .book.swap{opacity:.35}
+  .book-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:11px}
+  .book-inst{font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;color:var(--txt)}
+  .book-inst b{color:var(--dim);font-weight:400}
+  .book-live{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);display:flex;align-items:center;gap:6px}
+  .book-live .d{width:6px;height:6px;border-radius:50%;background:var(--bid);animation:pulse 2.4s infinite}
+  @media (prefers-reduced-motion:reduce){ .book-live .d{animation:none} }
+  .listline{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;color:var(--dim);margin:0 0 9px;padding:6px 10px;border:1px dashed var(--line2);border-radius:7px}
+  .listline b{color:var(--txt);margin-left:auto;font-weight:600}
+  .ladder{display:grid;grid-template-columns:1fr 1fr;gap:2px 12px}
+  .col-h{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);padding:0 2px 5px;display:flex;justify-content:space-between}
+  .lvl{position:relative;height:22px;display:flex;align-items:center;font-family:var(--mono);font-size:12px;font-variant-numeric:tabular-nums;border-radius:4px;overflow:hidden;margin-bottom:2px}
+  .lvl .bar{position:absolute;top:0;bottom:0;transition:width .35s ease}
+  .lvl .px{position:relative;z-index:2;padding:0 8px}
+  .lvl .qty{position:relative;z-index:2;margin-left:auto;padding:0 8px;color:var(--dim)}
+  .bidcol .bar{right:0;background:var(--bid-wash)} .bidcol .px{color:var(--bid)}
+  .askcol .bar{left:0;background:var(--ask-wash)} .askcol .px{color:var(--ask)}
+  .lvl.flash-bid{animation:fb .5s ease} .lvl.flash-ask{animation:fa .5s ease}
+  @keyframes fb{0%{background:rgba(39,179,107,.4)}100%{background:transparent}}
+  @keyframes fa{0%{background:rgba(219,90,71,.4)}100%{background:transparent}}
+  @media (prefers-reduced-motion:reduce){ .lvl.flash-bid,.lvl.flash-ask{animation:none} }
+  .spread{grid-column:1 / -1;display:flex;justify-content:center;align-items:center;gap:9px;font-family:var(--mono);font-size:11px;color:var(--faint);padding:6px 0;margin:2px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .spread b{color:var(--txt)}
+  .tape{margin-top:2px;padding-top:11px}
+  #tape{min-height:98px}
+  .tape-h{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:5px}
+  .tape-row{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11.5px;font-variant-numeric:tabular-nums;padding:1px 0;color:var(--dim)}
+  .tape-row .side{width:56px;font-weight:700}
+  .tape-row.buy .side{color:var(--bid)} .tape-row.sell .side{color:var(--ask)}
+  .book-cap{font-size:12px;color:var(--faint);margin:11px 2px 2px;line-height:1.5}
+
+  /* generic lead */
+  .lead h2{font-size:clamp(25px,3.3vw,38px);line-height:1.08;max-width:22ch}
+  .lead p{font-size:clamp(15px,1.6vw,17.5px);color:var(--dim);max-width:62ch;margin:16px 0 0}
+
+  /* problem strip — inline stats to kill empty space */
+  .prob-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+  .stats{display:grid;gap:12px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:16px 18px;display:flex;align-items:baseline;gap:16px}
+  .stat .v{font-family:var(--mono);font-size:clamp(24px,3vw,32px);font-weight:600;letter-spacing:-.02em;color:var(--txt);flex:0 0 auto;min-width:76px}
+  .stat .l{color:var(--dim);font-size:13.5px}
+  @media (max-width:820px){ .prob-grid{grid-template-columns:1fr;gap:26px} }
+
+  /* mission / balance */
+  .mission-grid{display:grid;grid-template-columns:1fr .85fr;gap:48px;align-items:center}
+  .mission h2{font-size:clamp(25px,3.4vw,40px);line-height:1.08;max-width:16ch}
+  .mission p{color:var(--dim);font-size:clamp(15px,1.7vw,18px);max-width:52ch;margin:18px 0 0}
+  .scale{width:100%;max-width:440px;margin:0 auto;color:var(--dim);filter:drop-shadow(0 10px 24px rgba(0,0,0,.4))}
+  .scale .beam{transform-origin:220px 90px;transform:rotate(-13deg);transition:transform 2.6s cubic-bezier(.28,1.12,.44,1)}
+  .in .scale .beam{transform:rotate(0deg)}
+  @media (prefers-reduced-motion:reduce){ .scale .beam{transition:none;transform:none} }
+  .scale .pan-l{fill:var(--bid)} .scale .pan-r{fill:var(--ask)}
+  .scale .stroke{stroke:currentColor;fill:none}
+  .scale .fill{fill:currentColor}
+  .scale text{font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;fill:var(--faint)}
+  @media (max-width:820px){ .mission-grid{grid-template-columns:1fr;gap:30px} }
+
+  /* how */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:36px}
+  .step{padding-top:18px;border-top:2px solid var(--line2)}
+  .step .n{font-family:var(--mono);font-size:12px;color:var(--bid);letter-spacing:.1em}
+  .step h3{font-size:18px;margin:8px 0 6px}
+  .step p{color:var(--dim);font-size:14px;margin:0}
+  @media (max-width:820px){ .steps{grid-template-columns:1fr 1fr} }
+  @media (max-width:480px){ .steps{grid-template-columns:1fr} }
+
+  /* why + manifesto side by side to fill width */
+  .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+  .why-grid .why h2{font-size:clamp(24px,3.1vw,36px);line-height:1.1;max-width:18ch}
+  .why-grid .why p{color:var(--dim);font-size:clamp(15px,1.7vw,17.5px);max-width:46ch;margin:18px 0 0}
+  .pull blockquote{margin:0;font-size:clamp(26px,3.9vw,42px);line-height:1.14;font-weight:680;letter-spacing:-.02em;max-width:14ch}
+  .pull blockquote em{color:var(--bid);font-style:normal}
+  .pull .lnk{display:inline-block;margin-top:20px;font-family:var(--mono);font-size:13px;color:var(--txt);border-bottom:1px solid var(--bid);padding-bottom:3px}
+  .pull .lnk:hover{color:var(--bid)}
+  @media (max-width:820px){ .why-grid{grid-template-columns:1fr;gap:30px} }
+
+  /* doors */
+  .doors{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .door{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px;display:flex;flex-direction:column;border-top-width:3px}
+  .door.sellers{border-color:var(--ask)} .door.builders{border-color:var(--bid)}
+  .door h3{font-size:22px;margin:10px 0 10px}
+  .door>p{color:var(--dim);font-size:14.5px;margin:0 0 18px}
+  .door .btn{align-self:flex-start;margin-top:auto}
+  .door.builders .eyebrow{color:var(--bid)} .door.sellers .eyebrow{color:var(--ask)}
+  pre.code{background:#07101B;border:1px solid var(--line2);border-radius:9px;padding:13px;overflow-x:auto;font-family:var(--mono);font-size:11.5px;line-height:1.7;color:var(--dim);margin:0 0 18px}
+  pre.code .c{color:var(--faint)} pre.code .g{color:var(--bid)} pre.code .p{color:var(--txt)}
+  @media (max-width:780px){ .doors{grid-template-columns:1fr} }
+
+  /* faq */
+  .faq-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 40px;margin-top:32px}
+  .faq h3{font-size:16px;margin:0 0 6px;color:var(--txt)}
+  .faq p{color:var(--dim);font-size:14px;margin:0}
+  @media (max-width:720px){ .faq-grid{grid-template-columns:1fr} }
+
+  /* waitlist */
+  .waitlist{text-align:center}
+  .waitlist h2{font-size:clamp(25px,3.4vw,38px);line-height:1.08;max-width:20ch;margin:12px auto 0}
+  .waitlist>.wrap>p{color:var(--dim);max-width:48ch;margin:14px auto 0;font-size:15.5px}
+  form.wl{max-width:440px;margin:28px auto 0;display:flex;flex-direction:column;gap:11px;text-align:left}
+  .seg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .seg label{position:relative;cursor:pointer}
+  .seg input{position:absolute;opacity:0;inset:0;cursor:pointer}
+  .seg .box{border:1px solid var(--line2);border-radius:9px;padding:12px 14px;font-size:14px;color:var(--dim);transition:border-color .15s,color .15s,background .15s;height:100%}
+  .seg label:nth-child(1) input:checked~.box{border-color:var(--bid);color:var(--txt);background:var(--bid-wash)}
+  .seg label:nth-child(2) input:checked~.box{border-color:var(--ask);color:var(--txt);background:var(--ask-wash)}
+  .wl input[type=email]{background:var(--panel);border:1px solid var(--line2);border-radius:9px;padding:13px;color:var(--txt);font-size:15px;font-family:var(--sans);margin-top:10px}
+  .wl input[type=email]::placeholder{color:var(--faint)}
+  .wl .btn-primary{padding:13px;font-size:15px}
+  .wl .note{font-family:var(--mono);font-size:11px;color:var(--faint);text-align:center;margin-top:2px}
+  .wl-success{max-width:440px;margin:28px auto 0;background:var(--bid-wash);border:1px solid var(--bid);border-radius:12px;padding:20px;text-align:center;display:none}
+  .wl-success.show{display:block}
+  .wl-success .ck{font-size:24px;color:var(--bid)}
+  .wl-success p{margin:6px 0 0;color:var(--txt);font-size:15px}
+
+  footer{border-top:1px solid var(--line);padding:44px 0 52px}
+  .foot-grid{display:flex;justify-content:space-between;align-items:flex-start;gap:30px;flex-wrap:wrap}
+  .foot-brand svg{height:38px;color:var(--txt);display:block;margin-bottom:14px}
+  .foot-brand p{color:var(--dim);font-size:13.5px;max-width:32ch;margin:0}
+  .foot-links{display:flex;gap:26px;flex-wrap:wrap}
+  .foot-links a{color:var(--dim);font-size:14px} .foot-links a:hover{color:var(--txt)}
+  .foot-ety{margin-top:28px;padding-top:20px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .foot-ety em{font-style:italic;color:var(--dim)}
+</style>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="#top" aria-label="Synallax home"><span class="lockup"></span></a>
+    <nav class="navlinks">
+      <a href="#mission" data-i18n="n_mission">Mission</a>
+      <a href="#builders" data-i18n="n_builders">For builders</a>
+      <a href="#sellers" data-i18n="n_sellers">For sellers</a>
+      <a href="#faq" data-i18n="n_faq">FAQ</a>
+    </nav>
+    <div class="navright">
+      <div class="lang" role="group" aria-label="Language">
+        <button data-lang="en" class="on">EN</button><button data-lang="pt">PT</button><button data-lang="es">ES</button><button data-lang="fr">FR</button>
+      </div>
+      <a href="#waitlist" class="btn btn-primary" data-i18n="n_cta">Join the waitlist</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <span class="badge"><span class="dot"></span><span data-i18n="h_eyebrow">Building now · Agent-first</span></span>
+        <h1 data-i18n="h_title">The order book for the real economy.</h1>
+        <p class="sub" data-i18n="h_sub">Buyers — increasingly AI agents — post firm bids on anything the world sells. Sellers fill what would otherwise expire empty. Anonymously.</p>
+        <div class="cta-row">
+          <a href="#waitlist" class="btn btn-primary" data-i18n="h_cta1">Join the waitlist</a>
+          <a href="#mission" class="btn btn-ghost" data-i18n="h_cta2">Our mission</a>
+        </div>
+      </div>
+      <div class="mkt-wrap">
+        <div class="mkt-try"><span data-i18n="mk_try">One engine · any market — try it</span></div>
+        <div class="mkt-tabs" id="mktTabs" role="group" aria-label="Choose a market"></div>
+        <div class="book" id="book" aria-label="Simulated live order book">
+          <div class="book-top">
+            <div class="book-inst" id="bookInst">GRU&nbsp;⇄&nbsp;CDG&nbsp;<b>· 14 OCT</b></div>
+            <div class="book-live"><span class="d"></span><span data-i18n="bk_live">Live preview · simulated</span></div>
+          </div>
+          <div class="listline"><span data-i18n="bk_list">Seller list price</span><b id="listPx">R$ 4,600</b></div>
+          <div class="ladder">
+            <div class="col-h"><span data-i18n="bk_bids">Bids</span><span data-i18n="bk_size">Size</span></div>
+            <div class="col-h"><span data-i18n="bk_asks">Asks</span><span data-i18n="bk_size">Size</span></div>
+            <div class="bidcol" id="bidCol"></div>
+            <div class="askcol" id="askCol"></div>
+            <div class="spread"><span data-i18n="bk_spread">Spread</span><b id="spreadV">40</b><span data-i18n="bk_mid">· mid</span><b id="midV">R$ 4,300</b></div>
+          </div>
+          <div class="tape"><div class="tape-h" data-i18n="bk_tape">Recent matches</div><div id="tape"></div></div>
+        </div>
+        <p class="book-cap" data-i18n="h_demo_cap">Firm bids resting below list price. Switch the market — one engine prices them all. Illustrative preview, not a live market.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="problem reveal">
+    <div class="wrap prob-grid">
+      <div class="lead">
+        <span class="eyebrow" data-i18n="p_eyebrow">The waste</span>
+        <h2 data-i18n="p_title" style="margin-top:12px">An empty room earns nothing. A firm bid earns something.</h2>
+        <p data-i18n="p_body">The world prices perishable things as if they never expire, so the surplus is destroyed instead of sold. A firm bid at minus thirteen percent beats an empty room at minus one hundred.</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><span class="v" data-i18n="p_s1v">≈ 30%</span><span class="l" data-i18n="p_s1l">of hotel rooms sit empty on a typical night</span></div>
+        <div class="stat"><span class="v" data-i18n="p_s2v">0</span><span class="l" data-i18n="p_s2l">what an unsold seat is worth at departure</span></div>
+        <div class="stat"><span class="v" data-i18n="p_s3v">50+</span><span class="l" data-i18n="p_s3l">firm bids an agent rests without blinking</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mission reveal" id="mission">
+    <div class="wrap mission-grid">
+      <div>
+        <span class="eyebrow" data-i18n="ms_eyebrow">The mission</span>
+        <h2 data-i18n="ms_title" style="margin-top:12px">Give the buyer a voice. Restore the balance.</h2>
+        <p data-i18n="ms_body">For a century the seller named the price and the buyer could only take it or leave it. Synallax hands the buyer a firm, dignified way to say what a thing is worth — and lets the seller say yes without losing face. A market where both sides finally weigh the same.</p>
+      </div>
+      <div>
+        <svg class="scale" viewBox="0 0 440 240" role="img" aria-label="A balance scale leveling between buyer and seller">
+          <!-- stand -->
+          <rect class="fill" x="178" y="206" width="84" height="7" rx="3.5" opacity=".55"/>
+          <rect class="fill" x="216" y="100" width="8" height="108" rx="3" opacity=".55"/>
+          <polygon class="fill" points="209,102 231,102 220,86" opacity=".55"/>
+          <!-- beam + pans -->
+          <g class="beam">
+            <rect class="fill" x="40" y="86" width="360" height="7" rx="3.5"/>
+            <circle class="fill" cx="220" cy="89.5" r="7"/>
+            <!-- left hanger + pan -->
+            <path class="stroke" stroke-width="1.4" d="M58 91 L70 150 M82 91 L70 150"/>
+            <ellipse class="stroke" stroke-width="1.7" cx="70" cy="151" rx="34" ry="8"/>
+            <path class="stroke" stroke-width="1.7" d="M36 151 Q70 176 104 151"/>
+            <circle class="pan-l" cx="70" cy="147" r="9"/>
+            <!-- right hanger + pan -->
+            <path class="stroke" stroke-width="1.4" d="M358 91 L370 150 M382 91 L370 150"/>
+            <ellipse class="stroke" stroke-width="1.7" cx="370" cy="151" rx="34" ry="8"/>
+            <path class="stroke" stroke-width="1.7" d="M336 151 Q370 176 404 151"/>
+            <circle class="pan-r" cx="370" cy="147" r="9"/>
+          </g>
+          <text x="70" y="204" text-anchor="middle" data-i18n="ms_buyer">Buyer</text>
+          <text x="370" y="204" text-anchor="middle" data-i18n="ms_seller">Seller</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="how reveal">
+    <div class="wrap">
+      <span class="eyebrow" data-i18n="hw_eyebrow">How it works</span>
+      <h2 data-i18n="hw_title" style="margin-top:12px;font-size:clamp(24px,3.1vw,36px)">Four steps. Any product.</h2>
+      <div class="steps">
+        <div class="step"><div class="n">01</div><h3 data-i18n="hw_1t">Describe</h3><p data-i18n="hw_1d">Sellers define a product once — any vertical, any attributes — and open a venue.</p></div>
+        <div class="step"><div class="n">02</div><h3 data-i18n="hw_2t">Bid or request</h3><p data-i18n="hw_2d">Buyers and their agents post firm, expiring bids — or request a private quote.</p></div>
+        <div class="step"><div class="n">03</div><h3 data-i18n="hw_3t">Match, anonymously</h3><p data-i18n="hw_3d">Matching is continuous and blind by default. The tape shows prices, never names.</p></div>
+        <div class="step"><div class="n">04</div><h3 data-i18n="hw_4t">Settle</h3><p data-i18n="hw_4d">Cleared trades hand off to your existing payment rails.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal" id="why">
+    <div class="wrap why-grid">
+      <div class="why">
+        <span class="eyebrow" data-i18n="wy_eyebrow">Why now</span>
+        <h2 data-i18n="wy_title" style="margin-top:12px">Bidding died for humans. Agents bring it back.</h2>
+        <p data-i18n="wy_body">Naming your own price was stressful, so it faded. An AI agent manages fifty resting bids without blinking. The new commerce rails standardize checkout — but nobody owns the venue where agents actually negotiate. Synallax is that layer.</p>
+      </div>
+      <div class="pull">
+        <blockquote data-i18n-html="mf_quote">Fixed prices are a <em>UI limitation</em>, not an economic law.</blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section class="reveal" id="doors">
+    <div class="wrap doors">
+      <div class="door builders" id="builders">
+        <span class="eyebrow" data-i18n="d_b_eyebrow">For builders</span>
+        <h3 data-i18n="d_b_title">The order book your agent can trade.</h3>
+        <p data-i18n="d_b_body">Free sandbox, open API, and an MCP server. Rest firm bids, run RFQs, stream the book in real time.</p>
+        <pre class="code"><span class="c" data-i18n="d_b_code"># rest a firm bid via the Synallax MCP server (preview)</span>
+<span class="p">$ npx @synallax/mcp connect --venue hotels-sp</span>
+<span class="p">&gt; place_bid price=820 qty=1 ttl=48h visibility=anon</span>
+<span class="g">✓ bid resting · syn_9f2a · expires 48h</span></pre>
+        <a href="#waitlist" class="btn btn-primary" data-i18n="d_b_cta">Get early access</a>
+      </div>
+      <div class="door sellers" id="sellers">
+        <span class="eyebrow" data-i18n="d_s_eyebrow">For sellers &amp; operators</span>
+        <h3 data-i18n="d_s_title">See the demand you're turning away.</h3>
+        <p data-i18n="d_s_body">A live curve of firm bids under your list price — demand you can accept anonymously, or ignore. White-label the whole exchange under your brand.</p>
+        <a href="#waitlist" class="btn btn-ghost" data-i18n="d_s_cta">Become a design partner</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq reveal" id="faq">
+    <div class="wrap">
+      <span class="eyebrow" data-i18n="fq_eyebrow">Questions</span>
+      <h2 data-i18n="fq_title" style="margin-top:12px;font-size:clamp(24px,3.1vw,36px)">Straight answers.</h2>
+      <div class="faq-grid">
+        <div><h3 data-i18n="fq_1q">Is this just another auction site?</h3><p data-i18n="fq_1a">No. It's a continuous, anonymous order book — buyers rest firm bids, sellers hit them — built for AI agents that manage many bids effortlessly, and for sellers who need to discount without publishing it.</p></div>
+        <div><h3 data-i18n="fq_2q">Is Synallax only for travel?</h3><p data-i18n="fq_2a">No. It's a generic engine. Flights, hotels, used cars, shared rides, freight — describe any product once and open a venue. Switch the market in the demo above to see it.</p></div>
+        <div><h3 data-i18n="fq_3q">Can AI agents trade on it?</h3><p data-i18n="fq_3a">Yes — agent-first by design. An open API and an MCP server let agents search, rest firm bids, run RFQs, and stream the book, with per-agent spend caps.</p></div>
+        <div><h3 data-i18n="fq_4q">How do sellers protect their prices?</h3><p data-i18n="fq_4a">Matching is anonymous by default — a dark pool for the real economy. Sellers accept bids below list without ever publishing a discount.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="waitlist reveal" id="waitlist">
+    <div class="wrap">
+      <span class="eyebrow" data-i18n="w_eyebrow">Early access</span>
+      <h2 data-i18n="w_title">Early access is free for design partners.</h2>
+      <p data-i18n="w_body">Tell us which side you're on. We're onboarding a small group first.</p>
+      <form class="wl" id="wlForm" novalidate>
+        <div class="seg">
+          <label><input type="radio" name="side" value="builder" required><span class="box" data-i18n="w_seg_b">I'm building with agents</span></label>
+          <label><input type="radio" name="side" value="seller"><span class="box" data-i18n="w_seg_s">I have inventory to sell</span></label>
+        </div>
+        <input type="email" name="email" required data-i18n-ph="w_ph" placeholder="you@company.com" autocomplete="email">
+        <button type="submit" class="btn btn-primary" data-i18n="w_submit">Request access</button>
+        <div class="note" data-i18n="w_note">No spam. One email when your access is ready.</div>
+      </form>
+      <div class="wl-success" id="wlSuccess"><div class="ck">✓</div><p id="wlSuccessMsg"></p></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand"><span class="lockup"></span><p data-i18n="f_tagline">The order book for the real economy.</p></div>
+      <div class="foot-links">
+        <a href="#builders" data-i18n="n_builders">For builders</a>
+        <a href="#sellers" data-i18n="n_sellers">For sellers</a>
+        <a href="#mission" data-i18n="n_mission">Mission</a>
+        <a href="#faq" data-i18n="n_faq">FAQ</a>
+        <a href="mailto:contact@synallax.com">contact@synallax.com</a>
+        <a href="https://www.linkedin.com/company/synallax/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://x.com/synallax" target="_blank" rel="noopener">X</a>
+      </div>
+    </div>
+    <div class="foot-ety">
+      <span data-i18n-html="f_ety">From the Greek <em>synállagma</em> — a contract that binds both sides. Exchange, together.</span>
+      <span data-i18n="f_rights">© 2026 Synallax. Building in the open.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const LOCKUP=`<svg viewBox="0 0 182 52" role="img" aria-label="synallax"><text x="0" y="41" font-family="'Segoe UI',system-ui,sans-serif" font-size="40" font-weight="650" textLength="142" lengthAdjust="spacingAndGlyphs" fill="currentColor">synalla</text><polyline points="150,22 158.5,30.5 150,39" fill="none" stroke="#27B36B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="171,22 162.5,30.5 171,39" fill="none" stroke="#DB5A47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+document.querySelectorAll('.lockup').forEach(e=>e.innerHTML=LOCKUP);
+
+const ICONS={
+ flights:'<svg viewBox="0 0 24 24"><path d="M2 13l9-2 4-9 2 1-2 8 6-1 1 2-6 2 2 6-2 1-4-6-8 3z"/></svg>',
+ hotels:'<svg viewBox="0 0 24 24"><path d="M3 20V8m0 4h18M21 20V8M7 8V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3"/></svg>',
+ cars:'<svg viewBox="0 0 24 24"><path d="M5 16h14M4 16l1.5-6.5A2 2 0 0 1 7.4 8h9.2a2 2 0 0 1 1.9 1.5L20 16M4 16v3M20 16v3M7.5 13h1M15.5 13h1"/></svg>',
+ rides:'<svg viewBox="0 0 24 24"><path d="M6 6h9l3 5M4 16h16M6 16v2M18 16v2M4 16l1-4h11M8 6l-2 6"/><circle cx="7.5" cy="18.5" r="1.3"/><circle cx="16.5" cy="18.5" r="1.3"/></svg>'
+};
+const MARKETS=[
+ {id:'flights', inst:'GRU&nbsp;⇄&nbsp;CDG', cur:'R$', base:4300, list:4600, tick:20, qmax:9},
+ {id:'hotels',  inst:'Copacabana',        cur:'R$', base:820,  list:980,  tick:10, qmax:9},
+ {id:'cars',    inst:'Civic EXL ’19',     cur:'R$', base:82000,list:92000,tick:500,qmax:6},
+ {id:'rides',   inst:'SP&nbsp;→&nbsp;Rio',cur:'R$', base:95,   list:130,  tick:1,  qmax:7}
+];
+
+const I18N={
+ en:{n_mission:"Mission",n_builders:"For builders",n_sellers:"For sellers",n_faq:"FAQ",n_cta:"Join the waitlist",
+  h_eyebrow:"Building now · Agent-first",h_title:"The order book for the real economy.",h_sub:"Buyers — increasingly AI agents — post firm bids on anything the world sells. Sellers fill what would otherwise expire empty. Anonymously.",h_cta1:"Join the waitlist",h_cta2:"Our mission",
+  h_demo_cap:"Firm bids resting below list price. Switch the market — one engine prices them all. Illustrative preview, not a live market.",
+  mk_try:"One engine · any market — try it",mk_flights:"Flights",mk_hotels:"Hotels",mk_cars:"Used cars",mk_rides:"Rideshare",
+  mk_det_flights:"· 14 OCT",mk_det_hotels:"· 2 nights",mk_det_cars:"· 48,000 km",mk_det_rides:"· Fri 18:00",
+  bk_live:"Live preview · simulated",bk_list:"Seller list price",bk_bids:"Bids",bk_asks:"Asks",bk_size:"Size",bk_spread:"Spread",bk_mid:"· mid",bk_tape:"Recent matches",
+  p_eyebrow:"The waste",p_title:"An empty room earns nothing. A firm bid earns something.",p_body:"The world prices perishable things as if they never expire, so the surplus is destroyed instead of sold. A firm bid at minus thirteen percent beats an empty room at minus one hundred.",
+  p_s1v:"≈ 30%",p_s1l:"of hotel rooms sit empty on a typical night",p_s2v:"0",p_s2l:"what an unsold seat is worth at departure",p_s3v:"50+",p_s3l:"firm bids an agent rests without blinking",
+  ms_eyebrow:"The mission",ms_title:"Give the buyer a voice. Restore the balance.",ms_body:"For a century the seller named the price and the buyer could only take it or leave it. Synallax hands the buyer a firm, dignified way to say what a thing is worth — and lets the seller say yes without losing face. A market where both sides finally weigh the same.",ms_buyer:"Buyer",ms_seller:"Seller",
+  hw_eyebrow:"How it works",hw_title:"Four steps. Any product.",hw_1t:"Describe",hw_1d:"Sellers define a product once — any vertical, any attributes — and open a venue.",hw_2t:"Bid or request",hw_2d:"Buyers and their agents post firm, expiring bids — or request a private quote.",hw_3t:"Match, anonymously",hw_3d:"Matching is continuous and blind by default. The tape shows prices, never names.",hw_4t:"Settle",hw_4d:"Cleared trades hand off to your existing payment rails.",
+  wy_eyebrow:"Why now",wy_title:"Bidding died for humans. Agents bring it back.",wy_body:"Naming your own price was stressful, so it faded. An AI agent manages fifty resting bids without blinking. The new commerce rails standardize checkout — but nobody owns the venue where agents actually negotiate. Synallax is that layer.",
+  mf_quote:"Fixed prices are a <em>UI limitation</em>, not an economic law.",
+  d_b_eyebrow:"For builders",d_b_title:"The order book your agent can trade.",d_b_body:"Free sandbox, open API, and an MCP server. Rest firm bids, run RFQs, stream the book in real time.",d_b_code:"# rest a firm bid via the Synallax MCP server (preview)",d_b_cta:"Get early access",
+  d_s_eyebrow:"For sellers & operators",d_s_title:"See the demand you're turning away.",d_s_body:"A live curve of firm bids under your list price — demand you can accept anonymously, or ignore. White-label the whole exchange under your brand.",d_s_cta:"Become a design partner",
+  fq_eyebrow:"Questions",fq_title:"Straight answers.",fq_1q:"Is this just another auction site?",fq_1a:"No. It's a continuous, anonymous order book — buyers rest firm bids, sellers hit them — built for AI agents that manage many bids effortlessly, and for sellers who need to discount without publishing it.",fq_2q:"Is Synallax only for travel?",fq_2a:"No. It's a generic engine. Flights, hotels, used cars, shared rides, freight — describe any product once and open a venue. Switch the market in the demo above to see it.",fq_3q:"Can AI agents trade on it?",fq_3a:"Yes — agent-first by design. An open API and an MCP server let agents search, rest firm bids, run RFQs, and stream the book, with per-agent spend caps.",fq_4q:"How do sellers protect their prices?",fq_4a:"Matching is anonymous by default — a dark pool for the real economy. Sellers accept bids below list without ever publishing a discount.",
+  w_eyebrow:"Early access",w_title:"Early access is free for design partners.",w_body:"Tell us which side you're on. We're onboarding a small group first.",w_seg_b:"I'm building with agents",w_seg_s:"I have inventory to sell",w_ph:"you@company.com",w_submit:"Request access",w_note:"No spam. One email when your access is ready.",w_success:"You're on the list. We'll be in touch at {email}.",
+  f_tagline:"The order book for the real economy.",f_ety:"From the Greek <em>synállagma</em> — a contract that binds both sides. Exchange, together.",f_rights:"© 2026 Synallax. Building in the open."},
+
+ pt:{n_mission:"Missão",n_builders:"Para quem constrói",n_sellers:"Para vendedores",n_faq:"Dúvidas",n_cta:"Entrar na lista",
+  h_eyebrow:"Em construção · Feito para agentes",h_title:"O livro de ofertas da economia real.",h_sub:"Compradores — cada vez mais agentes de IA — registram ofertas firmes por tudo o que o mundo vende. Vendedores preenchem o que expiraria vazio. De forma anônima.",h_cta1:"Entrar na lista de espera",h_cta2:"Nossa missão",
+  h_demo_cap:"Ofertas firmes aguardando abaixo do preço de tabela. Troque o mercado — um só motor precifica todos. Prévia ilustrativa, não é um mercado real.",
+  mk_try:"Um motor · qualquer mercado — experimente",mk_flights:"Voos",mk_hotels:"Hotéis",mk_cars:"Usados",mk_rides:"Caronas",
+  mk_det_flights:"· 14 OUT",mk_det_hotels:"· 2 noites",mk_det_cars:"· 48.000 km",mk_det_rides:"· Sex 18:00",
+  bk_live:"Prévia ao vivo · simulado",bk_list:"Preço de tabela",bk_bids:"Compra",bk_asks:"Venda",bk_size:"Qtd.",bk_spread:"Spread",bk_mid:"· meio",bk_tape:"Negócios recentes",
+  p_eyebrow:"O desperdício",p_title:"Um quarto vazio não rende nada. Uma oferta firme rende algo.",p_body:"O mundo precifica o que é perecível como se nunca expirasse, então o excedente é destruído em vez de vendido. Uma oferta firme a menos treze por cento vale mais que um quarto vazio a menos cem.",
+  p_s1v:"≈ 30%",p_s1l:"dos quartos de hotel ficam vazios numa noite típica",p_s2v:"0",p_s2l:"o valor de um assento não vendido na decolagem",p_s3v:"50+",p_s3l:"ofertas firmes que um agente mantém sem pestanejar",
+  ms_eyebrow:"A missão",ms_title:"Dê voz ao comprador. Restaure o equilíbrio.",ms_body:"Por um século o vendedor ditou o preço e ao comprador só restava aceitar ou desistir. A Synallax dá ao comprador uma forma firme e digna de dizer quanto algo vale — e permite ao vendedor dizer sim sem perder prestígio. Um mercado onde os dois lados enfim pesam igual.",ms_buyer:"Comprador",ms_seller:"Vendedor",
+  hw_eyebrow:"Como funciona",hw_title:"Quatro passos. Qualquer produto.",hw_1t:"Descreva",hw_1d:"O vendedor define um produto uma vez — qualquer setor, quaisquer atributos — e abre um mercado.",hw_2t:"Oferte ou solicite",hw_2d:"Compradores e seus agentes registram ofertas firmes com validade — ou solicitam uma cotação privada.",hw_3t:"Combine, no anonimato",hw_3d:"O casamento é contínuo e cego por padrão. A fita mostra preços, nunca nomes.",hw_4t:"Liquide",hw_4d:"As negociações fechadas seguem para os seus meios de pagamento atuais.",
+  wy_eyebrow:"Por que agora",wy_title:"A pechincha morreu para humanos. Os agentes a trazem de volta.",wy_body:"Dizer o próprio preço era estressante e caiu em desuso. Um agente de IA gerencia cinquenta ofertas em aberto sem pestanejar. Os novos trilhos do comércio padronizam o checkout — mas ninguém é dono do lugar onde os agentes de fato negociam. A Synallax é essa camada.",
+  mf_quote:"Preços fixos são uma <em>limitação de interface</em>, não uma lei econômica.",
+  d_b_eyebrow:"Para quem constrói",d_b_title:"O livro de ofertas que o seu agente pode negociar.",d_b_body:"Ambiente de testes gratuito, API aberta e um servidor MCP. Registre ofertas firmes, faça RFQs, receba o livro em tempo real.",d_b_code:"# registrar uma oferta firme via servidor MCP da Synallax (prévia)",d_b_cta:"Obter acesso antecipado",
+  d_s_eyebrow:"Para vendedores e operadores",d_s_title:"Veja a demanda que você está recusando.",d_s_body:"Uma curva ao vivo de ofertas firmes abaixo do seu preço de tabela — demanda que você aceita no anonimato, ou ignora. Ofereça a bolsa inteira sob a sua marca (white-label).",d_s_cta:"Tornar-se parceiro piloto",
+  fq_eyebrow:"Dúvidas",fq_title:"Respostas diretas.",fq_1q:"Isso é só mais um site de leilão?",fq_1a:"Não. É um livro de ofertas contínuo e anônimo — compradores deixam ofertas firmes, vendedores as aceitam — feito para agentes de IA que gerenciam muitas ofertas sem esforço, e para vendedores que precisam dar desconto sem publicá-lo.",fq_2q:"A Synallax é só para viagens?",fq_2a:"Não. É um motor genérico. Voos, hotéis, carros usados, caronas, frete — descreva qualquer produto uma vez e abra um mercado. Troque o mercado na demo acima para ver.",fq_3q:"Agentes de IA podem negociar?",fq_3a:"Sim — feito para agentes. Uma API aberta e um servidor MCP deixam agentes buscar, registrar ofertas firmes, fazer RFQs e receber o livro, com limites de gasto por agente.",fq_4q:"Como os vendedores protegem os preços?",fq_4a:"O casamento é anônimo por padrão — um dark pool para a economia real. Vendedores aceitam ofertas abaixo da tabela sem nunca publicar um desconto.",
+  w_eyebrow:"Acesso antecipado",w_title:"O acesso antecipado é gratuito para parceiros piloto.",w_body:"Diga de que lado você está. Estamos integrando um grupo pequeno primeiro.",w_seg_b:"Construo com agentes",w_seg_s:"Tenho estoque para vender",w_ph:"voce@empresa.com",w_submit:"Solicitar acesso",w_note:"Sem spam. Um e-mail quando o seu acesso estiver pronto.",w_success:"Você está na lista. Entraremos em contato em {email}.",
+  f_tagline:"O livro de ofertas da economia real.",f_ety:"Do grego <em>synállagma</em> — um contrato que obriga os dois lados. Trocar, juntos.",f_rights:"© 2026 Synallax. Construindo abertamente."},
+
+ es:{n_mission:"Misión",n_builders:"Para quien construye",n_sellers:"Para vendedores",n_faq:"Preguntas",n_cta:"Unirme a la lista",
+  h_eyebrow:"En construcción · Pensado para agentes",h_title:"El libro de órdenes de la economía real.",h_sub:"Los compradores — cada vez más agentes de IA — colocan ofertas firmes por todo lo que el mundo vende. Los vendedores llenan lo que expiraría vacío. De forma anónima.",h_cta1:"Unirme a la lista de espera",h_cta2:"Nuestra misión",
+  h_demo_cap:"Ofertas firmes esperando por debajo del precio de lista. Cambia el mercado — un solo motor los cotiza todos. Vista ilustrativa, no es un mercado real.",
+  mk_try:"Un motor · cualquier mercado — pruébalo",mk_flights:"Vuelos",mk_hotels:"Hoteles",mk_cars:"Usados",mk_rides:"Viajes",
+  mk_det_flights:"· 14 OCT",mk_det_hotels:"· 2 noches",mk_det_cars:"· 48.000 km",mk_det_rides:"· Vie 18:00",
+  bk_live:"Vista en vivo · simulado",bk_list:"Precio de lista",bk_bids:"Compra",bk_asks:"Venta",bk_size:"Cant.",bk_spread:"Spread",bk_mid:"· medio",bk_tape:"Operaciones recientes",
+  p_eyebrow:"El desperdicio",p_title:"Una habitación vacía no rinde nada. Una oferta firme rinde algo.",p_body:"El mundo pone precio a lo perecedero como si nunca caducara, y el excedente se destruye en lugar de venderse. Una oferta firme a menos trece por ciento vale más que una habitación vacía a menos cien.",
+  p_s1v:"≈ 30%",p_s1l:"de las habitaciones de hotel quedan vacías una noche típica",p_s2v:"0",p_s2l:"lo que vale un asiento sin vender al despegar",p_s3v:"50+",p_s3l:"ofertas firmes que un agente mantiene sin inmutarse",
+  ms_eyebrow:"La misión",ms_title:"Dale voz al comprador. Restaura el equilibrio.",ms_body:"Durante un siglo el vendedor puso el precio y al comprador solo le quedaba aceptar o marcharse. Synallax le da al comprador una forma firme y digna de decir cuánto vale algo — y deja que el vendedor diga sí sin perder prestigio. Un mercado donde ambos lados por fin pesan igual.",ms_buyer:"Comprador",ms_seller:"Vendedor",
+  hw_eyebrow:"Cómo funciona",hw_title:"Cuatro pasos. Cualquier producto.",hw_1t:"Describe",hw_1d:"El vendedor define un producto una vez — cualquier sector, cualquier atributo — y abre un mercado.",hw_2t:"Oferta o solicita",hw_2d:"Los compradores y sus agentes colocan ofertas firmes con vencimiento — o solicitan una cotización privada.",hw_3t:"Empareja, en el anonimato",hw_3d:"El cruce es continuo y ciego por defecto. La cinta muestra precios, nunca nombres.",hw_4t:"Liquida",hw_4d:"Las operaciones cerradas pasan a tus medios de pago actuales.",
+  wy_eyebrow:"Por qué ahora",wy_title:"El regateo murió para los humanos. Los agentes lo devuelven.",wy_body:"Poner tu propio precio era estresante y se apagó. Un agente de IA gestiona cincuenta ofertas abiertas sin inmutarse. Los nuevos raíles del comercio estandarizan el pago — pero nadie es dueño del lugar donde los agentes de verdad negocian. Synallax es esa capa.",
+  mf_quote:"Los precios fijos son una <em>limitación de interfaz</em>, no una ley económica.",
+  d_b_eyebrow:"Para quien construye",d_b_title:"El libro de órdenes que tu agente puede negociar.",d_b_body:"Entorno de pruebas gratuito, API abierta y un servidor MCP. Coloca ofertas firmes, lanza RFQs, recibe el libro en tiempo real.",d_b_code:"# colocar una oferta firme vía el servidor MCP de Synallax (vista previa)",d_b_cta:"Obtener acceso anticipado",
+  d_s_eyebrow:"Para vendedores y operadores",d_s_title:"Ve la demanda que estás rechazando.",d_s_body:"Una curva en vivo de ofertas firmes por debajo de tu precio de lista — demanda que aceptas en el anonimato, o ignoras. Ofrece la bolsa entera bajo tu marca (white-label).",d_s_cta:"Ser socio piloto",
+  fq_eyebrow:"Preguntas",fq_title:"Respuestas directas.",fq_1q:"¿Es solo otro sitio de subastas?",fq_1a:"No. Es un libro de órdenes continuo y anónimo — los compradores dejan ofertas firmes, los vendedores las aceptan — hecho para agentes de IA que gestionan muchas ofertas sin esfuerzo, y para vendedores que necesitan descontar sin publicarlo.",fq_2q:"¿Synallax es solo para viajes?",fq_2a:"No. Es un motor genérico. Vuelos, hoteles, autos usados, viajes compartidos, carga — describe cualquier producto una vez y abre un mercado. Cambia el mercado en la demo de arriba para verlo.",fq_3q:"¿Pueden operar los agentes de IA?",fq_3a:"Sí — pensado para agentes. Una API abierta y un servidor MCP permiten a los agentes buscar, dejar ofertas firmes, lanzar RFQs y recibir el libro, con límites de gasto por agente.",fq_4q:"¿Cómo protegen sus precios los vendedores?",fq_4a:"El cruce es anónimo por defecto — un dark pool para la economía real. Los vendedores aceptan ofertas por debajo de lista sin publicar nunca un descuento.",
+  w_eyebrow:"Acceso anticipado",w_title:"El acceso anticipado es gratis para socios piloto.",w_body:"Dinos de qué lado estás. Estamos incorporando a un grupo pequeño primero.",w_seg_b:"Construyo con agentes",w_seg_s:"Tengo inventario para vender",w_ph:"tu@empresa.com",w_submit:"Solicitar acceso",w_note:"Sin spam. Un correo cuando tu acceso esté listo.",w_success:"Estás en la lista. Te contactaremos en {email}.",
+  f_tagline:"El libro de órdenes de la economía real.",f_ety:"Del griego <em>synállagma</em> — un contrato que obliga a ambas partes. Intercambio, juntos.",f_rights:"© 2026 Synallax. Construyendo en abierto."},
+
+ fr:{n_mission:"Mission",n_builders:"Pour les développeurs",n_sellers:"Pour les vendeurs",n_faq:"FAQ",n_cta:"Rejoindre la liste",
+  h_eyebrow:"En construction · Conçu pour les agents",h_title:"Le carnet d'ordres de l'économie réelle.",h_sub:"Les acheteurs — de plus en plus des agents IA — placent des offres fermes sur tout ce que le monde vend. Les vendeurs remplissent ce qui expirerait à vide. De façon anonyme.",h_cta1:"Rejoindre la liste d'attente",h_cta2:"Notre mission",
+  h_demo_cap:"Des offres fermes en attente sous le prix affiché. Changez de marché — un seul moteur les cote tous. Aperçu illustratif, pas un marché réel.",
+  mk_try:"Un moteur · tout marché — essayez",mk_flights:"Vols",mk_hotels:"Hôtels",mk_cars:"Occasions",mk_rides:"Covoiturage",
+  mk_det_flights:"· 14 OCT",mk_det_hotels:"· 2 nuits",mk_det_cars:"· 48 000 km",mk_det_rides:"· Ven 18:00",
+  bk_live:"Aperçu en direct · simulé",bk_list:"Prix affiché",bk_bids:"Achat",bk_asks:"Vente",bk_size:"Qté",bk_spread:"Écart",bk_mid:"· milieu",bk_tape:"Transactions récentes",
+  p_eyebrow:"Le gaspillage",p_title:"Une chambre vide ne rapporte rien. Une offre ferme rapporte quelque chose.",p_body:"Le monde tarifie le périssable comme s'il n'expirait jamais, alors le surplus est détruit au lieu d'être vendu. Une offre ferme à moins treize pour cent vaut mieux qu'une chambre vide à moins cent.",
+  p_s1v:"≈ 30%",p_s1l:"des chambres d'hôtel restent vides une nuit ordinaire",p_s2v:"0",p_s2l:"la valeur d'un siège invendu au décollage",p_s3v:"50+",p_s3l:"offres fermes qu'un agent gère sans broncher",
+  ms_eyebrow:"La mission",ms_title:"Donnez une voix à l'acheteur. Rétablissez l'équilibre.",ms_body:"Pendant un siècle, le vendeur fixait le prix et l'acheteur pouvait seulement accepter ou renoncer. Synallax donne à l'acheteur une manière ferme et digne de dire ce qu'une chose vaut — et permet au vendeur de dire oui sans perdre la face. Un marché où les deux côtés pèsent enfin le même poids.",ms_buyer:"Acheteur",ms_seller:"Vendeur",
+  hw_eyebrow:"Comment ça marche",hw_title:"Quatre étapes. N'importe quel produit.",hw_1t:"Décrire",hw_1d:"Le vendeur définit un produit une fois — tout secteur, tout attribut — et ouvre un marché.",hw_2t:"Offrir ou demander",hw_2d:"Les acheteurs et leurs agents placent des offres fermes avec échéance — ou demandent une cotation privée.",hw_3t:"Apparier, dans l'anonymat",hw_3d:"L'appariement est continu et aveugle par défaut. Le ruban affiche les prix, jamais les noms.",hw_4t:"Régler",hw_4d:"Les transactions conclues passent à vos moyens de paiement actuels.",
+  wy_eyebrow:"Pourquoi maintenant",wy_title:"La négociation est morte pour les humains. Les agents la ramènent.",wy_body:"Fixer son propre prix était stressant, et cela s'est éteint. Un agent IA gère cinquante offres en attente sans broncher. Les nouveaux rails du commerce standardisent le paiement — mais personne ne possède le lieu où les agents négocient vraiment. Synallax est cette couche.",
+  mf_quote:"Les prix fixes sont une <em>limite d'interface</em>, pas une loi économique.",
+  d_b_eyebrow:"Pour les développeurs",d_b_title:"Le carnet d'ordres que votre agent peut négocier.",d_b_body:"Bac à sable gratuit, API ouverte et un serveur MCP. Placez des offres fermes, lancez des RFQ, recevez le carnet en temps réel.",d_b_code:"# placer une offre ferme via le serveur MCP de Synallax (aperçu)",d_b_cta:"Obtenir un accès anticipé",
+  d_s_eyebrow:"Pour les vendeurs et opérateurs",d_s_title:"Voyez la demande que vous refusez.",d_s_body:"Une courbe en direct d'offres fermes sous votre prix affiché — une demande que vous acceptez dans l'anonymat, ou que vous ignorez. Proposez la bourse entière sous votre marque (marque blanche).",d_s_cta:"Devenir partenaire pilote",
+  fq_eyebrow:"Questions",fq_title:"Réponses directes.",fq_1q:"Est-ce juste un autre site d'enchères ?",fq_1a:"Non. C'est un carnet d'ordres continu et anonyme — les acheteurs déposent des offres fermes, les vendeurs les acceptent — conçu pour les agents IA qui gèrent de nombreuses offres sans effort, et pour les vendeurs qui doivent remiser sans le publier.",fq_2q:"Synallax, c'est seulement pour le voyage ?",fq_2a:"Non. C'est un moteur générique. Vols, hôtels, voitures d'occasion, covoiturage, fret — décrivez n'importe quel produit une fois et ouvrez un marché. Changez de marché dans la démo ci-dessus pour voir.",fq_3q:"Les agents IA peuvent-ils y négocier ?",fq_3a:"Oui — conçu pour les agents. Une API ouverte et un serveur MCP permettent aux agents de chercher, déposer des offres fermes, lancer des RFQ et recevoir le carnet, avec des plafonds de dépense par agent.",fq_4q:"Comment les vendeurs protègent-ils leurs prix ?",fq_4a:"L'appariement est anonyme par défaut — un dark pool pour l'économie réelle. Les vendeurs acceptent des offres sous le prix affiché sans jamais publier de remise.",
+  w_eyebrow:"Accès anticipé",w_title:"L'accès anticipé est gratuit pour les partenaires pilotes.",w_body:"Dites-nous de quel côté vous êtes. Nous intégrons d'abord un petit groupe.",w_seg_b:"Je construis avec des agents",w_seg_s:"J'ai de l'inventaire à vendre",w_ph:"vous@entreprise.com",w_submit:"Demander l'accès",w_note:"Pas de spam. Un e-mail quand votre accès sera prêt.",w_success:"Vous êtes sur la liste. Nous vous contacterons à {email}.",
+  f_tagline:"Le carnet d'ordres de l'économie réelle.",f_ety:"Du grec <em>synállagma</em> — un contrat qui lie les deux parties. Échanger, ensemble.",f_rights:"© 2026 Synallax. Construit à ciel ouvert."}
+};
+const LOCALES={en:'en-US',pt:'pt-BR',es:'es-ES',fr:'fr-FR'};
+let lang='en', mkt=0;
+
+/* market tabs */
+const tabsEl=document.getElementById('mktTabs');
+tabsEl.innerHTML=MARKETS.map((m,i)=>`<button data-mkt="${i}" class="${i===0?'on':''}">${ICONS[m.id]}<span data-i18n="mk_${m.id}">${m.id}</span></button>`).join('');
+tabsEl.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>selectMarket(+b.dataset.mkt)));
+
+function applyLang(l){
+  lang=I18N[l]?l:'en'; const d=I18N[lang];
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i18n]').forEach(e=>{const k=e.getAttribute('data-i18n'); if(d[k]!=null) e.textContent=d[k];});
+  document.querySelectorAll('[data-i18n-html]').forEach(e=>{const k=e.getAttribute('data-i18n-html'); if(d[k]!=null) e.innerHTML=d[k];});
+  document.querySelectorAll('[data-i18n-ph]').forEach(e=>{const k=e.getAttribute('data-i18n-ph'); if(d[k]!=null) e.placeholder=d[k];});
+  document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang));
+  try{localStorage.setItem('synallax_lang',lang)}catch(e){}
+  renderBook();
+}
+document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>applyLang(b.dataset.lang)));
+
+/* order book */
+const LEVELS=6; let mid=0,bids=[],asks=[];let tape=[];
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const fmt=n=>Math.round(n).toLocaleString(LOCALES[lang]);
+function m(){return MARKETS[mkt];}
+function seed(){ mid=m().base; bids=[];asks=[];tape=[]; for(let i=0;i<LEVELS;i++){bids.push({qty:Math.round(rnd(1,m().qmax))});asks.push({qty:Math.round(rnd(1,m().qmax))});} price(); }
+function price(){const t=m().tick; for(let i=0;i<LEVELS;i++){bids[i].px=mid-t-i*t; asks[i].px=mid+t+i*t;}}
+function step(){
+  const M=m(), tgt=M.base*1.006, lo=M.base*0.955, hi=M.base*1.045;
+  mid += (tgt-mid)*0.05 + rnd(-1,1)*M.tick*1.3;
+  mid=Math.max(lo,Math.min(hi,mid)); price();
+  for(let i=0;i<LEVELS;i++){ if(Math.random()<.5)bids[i].qty=Math.max(1,Math.min(M.qmax,bids[i].qty+Math.round(rnd(-2,2)))); if(Math.random()<.5)asks[i].qty=Math.max(1,Math.min(M.qmax,asks[i].qty+Math.round(rnd(-2,2)))); }
+  let hit=null;
+  if(Math.random()<.42){const buy=Math.random()<.55;const lv=buy?bids[0]:asks[0];tape.unshift({buy,px:lv.px,qty:Math.round(rnd(1,Math.max(1,lv.qty)))});tape=tape.slice(0,5);hit=buy?'bid':'ask';}
+  renderBook(hit);
+}
+function renderBook(hit){
+  const bc=document.getElementById('bidCol'),ac=document.getElementById('askCol'); if(!bc)return;
+  const M=m(),d=I18N[lang];
+  bc.innerHTML=bids.map((l,i)=>`<div class="lvl${hit==='bid'&&i===0?' flash-bid':''}"><span class="bar" style="width:${16+l.qty/M.qmax*84}%"></span><span class="px">${fmt(l.px)}</span><span class="qty">${l.qty}</span></div>`).join('');
+  ac.innerHTML=asks.map((l,i)=>`<div class="lvl${hit==='ask'&&i===0?' flash-ask':''}"><span class="bar" style="width:${16+l.qty/M.qmax*84}%"></span><span class="px">${fmt(l.px)}</span><span class="qty">${l.qty}</span></div>`).join('');
+  document.getElementById('midV').textContent=M.cur+' '+fmt(mid);
+  document.getElementById('spreadV').textContent=fmt(asks[0].px-bids[0].px);
+  document.getElementById('listPx').textContent=M.cur+' '+fmt(M.list);
+  document.getElementById('bookInst').innerHTML=M.inst+'&nbsp;<b>'+(d['mk_det_'+M.id]||'')+'</b>';
+  const tp=document.getElementById('tape');
+  tp.innerHTML=tape.map(t=>`<div class="tape-row ${t.buy?'buy':'sell'}"><span class="side">${t.buy?'▲ '+d.bk_bids:'▼ '+d.bk_asks}</span><span>${t.qty} @ ${fmt(t.px)}</span></div>`).join('');
+}
+function selectMarket(i){
+  mkt=i; tabsEl.querySelectorAll('button').forEach((b,j)=>b.classList.toggle('on',j===i));
+  const bk=document.getElementById('book'); bk.classList.add('swap');
+  setTimeout(()=>{seed();renderBook();bk.classList.remove('swap');},180);
+}
+
+const reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+seed();
+if(reduce){tape=[{buy:true,px:bids[0].px,qty:2},{buy:false,px:asks[0].px,qty:1},{buy:true,px:bids[1].px,qty:3}];renderBook();}
+else{renderBook();setInterval(step,1050);}
+
+if(!reduce&&'IntersectionObserver'in window){
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(e=>io.observe(e));
+}else{document.querySelectorAll('.reveal').forEach(e=>e.classList.add('in'));}
+
+/* waitlist — paste a Formspree/Tally endpoint below to collect signups; empty = mailto fallback */
+const WAITLIST_ENDPOINT="";
+const form=document.getElementById('wlForm');
+form.addEventListener('submit',e=>{
+  e.preventDefault();
+  const email=form.email.value.trim(), sideEl=form.querySelector('input[name=side]:checked');
+  if(!email||!/.+@.+\..+/.test(email)||!sideEl){form.email.focus();return;}
+  const side=sideEl.value;
+  if(WAITLIST_ENDPOINT){fetch(WAITLIST_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,side,lang})}).catch(()=>{});}
+  else{const subj=encodeURIComponent('Synallax — early access ('+side+')'),body=encodeURIComponent('Email: '+email+'\nSide: '+side+'\nLanguage: '+lang);window.location.href='mailto:contact@synallax.com?subject='+subj+'&body='+body;}
+  document.getElementById('wlSuccessMsg').textContent=I18N[lang].w_success.replace('{email}',email);
+  form.style.display='none'; document.getElementById('wlSuccess').classList.add('show');
+});
+
+(function(){let l=null;try{l=localStorage.getItem('synallax_lang')}catch(e){}
+ if(!l){const n=(navigator.language||'en').slice(0,2).toLowerCase();l=['en','pt','es','fr'].includes(n)?n:'en';}
+ applyLang(l);})();
+</script>
