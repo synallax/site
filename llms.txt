@@ -12,6 +12,12 @@ Synallax is infrastructure, sold and operated by an independent company (contact
 - Services included: onboarding and configuration consulting, plus interconnection with payment/settlement providers — matched trades clear on the client's rails; Synallax holds no custody.
 - Hosting: managed by Synallax by default. Private Enterprise installations are available for large partners with confidentiality requirements — their customers keep full external access to the venue.
 
+## Who it's for
+- Brand operators selling their OWN perishable inventory through a private white-label venue: airlines (seats, load factor), hotel groups and resorts (rooms, occupancy), cinemas / events / entertainment venues (tickets, showtimes), car rental and mobility fleets (vehicles, utilization), freight and logistics operators (capacity, empty legs), retail and consumer brands (excess stock — anonymous bids allow discounting without violating MAP / minimum-advertised-price rules).
+- In this model the brand is the only seller; the venue is embedded in its own channels, public prices stay untouched, and the book only fires when the brand accepts a bid.
+- Marketplace operators building a multi-seller exchange for an entire industry vertical run on the same engine.
+- Agent builders whose AI agents search, bid, and trade on any Synallax venue through the open API and MCP server.
+
 ## Why it exists
 - Perishable inventory is priced as if it never expires, so surplus is destroyed instead of sold. A firm bid above marginal cost beats an empty room.
 - Human bidding (e.g. Priceline "name your own price") faded because it was stressful. AI agents manage many resting bids effortlessly, which makes buyer-side price discovery finally practical.
