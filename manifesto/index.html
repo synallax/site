@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Silent Half of the Market — Synallax Manifesto</title>
+<meta name="description" content="How the buyer lost their voice — and how they get it back. Why every market runs on one voice, why bidding died for humans, and why AI agents finally let demand speak. The Synallax manifesto.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#0A111C">
+<link rel="canonical" href="https://synallax.com/manifesto/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Synallax">
+<meta property="og:title" content="The Silent Half of the Market">
+<meta property="og:description" content="How the buyer lost their voice — and how they get it back. The Synallax manifesto.">
+<meta property="og:url" content="https://synallax.com/manifesto/">
+<meta property="og:image" content="https://synallax.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Silent Half of the Market — Synallax Manifesto">
+<meta name="twitter:description" content="How the buyer lost their voice — and how they get it back.">
+<meta name="twitter:image" content="https://synallax.com/og.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"The Silent Half of the Market","alternativeHeadline":"How the buyer lost their voice — and how they get it back","datePublished":"2026-07-23","author":{"@type":"Organization","name":"Synallax","url":"https://synallax.com/"},"publisher":{"@type":"Organization","name":"Synallax","url":"https://synallax.com/"},"image":"https://synallax.com/og.png","mainEntityOfPage":"https://synallax.com/manifesto/","description":"Why every consumer market runs on one voice, why bidding died for humans, and why AI agents finally let the demand curve speak. The founding manifesto of Synallax, the order book for the real economy."}
+</script>
+<style>
+  :root{
+    --bg:#0A111C; --panel:#0F1A28; --line:#1E2C3E; --line2:#2A3B50;
+    --txt:#E6EAF1; --dim:#93A0B2; --faint:#5E6C7E;
+    --bid:#27B36B; --ask:#DB5A47;
+    --sans:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;
+    --mono:ui-monospace,'Cascadia Mono','SF Mono',Consolas,'Liberation Mono',monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+
+  header{max-width:720px;margin:0 auto;padding:34px 24px 0;display:flex;justify-content:space-between;align-items:center}
+  .lockup svg{height:30px;width:auto;display:block;color:var(--txt)}
+  header a.back{font-family:var(--mono);font-size:12px;color:var(--dim);text-decoration:none;border-bottom:1px solid var(--line2);padding-bottom:2px}
+  header a.back:hover{color:var(--bid);border-color:var(--bid)}
+
+  article{max-width:720px;margin:0 auto;padding:56px 24px 40px}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--bid);font-weight:600}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.05;letter-spacing:-.02em;font-weight:680;margin:18px 0 14px;text-wrap:balance}
+  .deck{font-size:clamp(17px,2.2vw,21px);color:var(--dim);line-height:1.5;margin:0 0 20px;max-width:44ch}
+  .meta{font-family:var(--mono);font-size:12px;color:var(--faint);letter-spacing:.06em}
+
+  .sec{margin-top:52px}
+  .num{font-family:var(--mono);font-size:13px;color:var(--bid);letter-spacing:.28em;display:block;margin-bottom:18px}
+  .num::after{content:"";display:block;width:44px;height:2px;background:var(--line2);margin-top:10px}
+  article p{font-size:18.5px;line-height:1.72;margin:0 0 22px;color:var(--txt)}
+  article p b{font-weight:650}
+  article p em{font-style:italic;color:var(--dim)}
+  article p .hl{color:var(--bid);font-style:normal}
+  .aside{border-left:2px solid var(--line2);padding:2px 0 2px 20px;color:var(--dim);font-size:16.5px;line-height:1.65;margin:0 0 22px}
+
+  .close{margin:72px auto 0;max-width:720px;padding:0 24px;text-align:center}
+  .close blockquote{margin:0 auto;font-size:clamp(26px,4.4vw,40px);line-height:1.2;font-weight:680;letter-spacing:-.02em;max-width:19ch;text-wrap:balance}
+  .close blockquote .hl{color:var(--bid)}
+  .ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:34px 0 0}
+  .btn{font-size:15px;font-weight:600;padding:12px 22px;border-radius:8px;text-decoration:none;border:1px solid transparent}
+  .btn-primary{background:var(--bid);color:#04140C}
+  .btn-primary:hover{filter:brightness(1.08)}
+  .btn-ghost{border-color:var(--line2);color:var(--txt)}
+  .btn-ghost:hover{border-color:var(--bid);color:var(--bid)}
+
+  footer{max-width:720px;margin:70px auto 0;padding:26px 24px 56px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--faint);font-size:13px}
+  footer em{color:var(--dim)}
+  :focus-visible{outline:2px solid var(--bid);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="lockup" href="/" aria-label="Synallax home"><svg viewBox="0 0 182 52" role="img" aria-label="synallax"><text x="0" y="41" font-family="'Segoe UI',system-ui,sans-serif" font-size="40" font-weight="650" textLength="142" lengthAdjust="spacingAndGlyphs" fill="currentColor">synalla</text><polyline points="150,22 158.5,30.5 150,39" fill="none" stroke="#27B36B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="171,22 162.5,30.5 171,39" fill="none" stroke="#DB5A47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+  <a class="back" href="/">← synallax.com</a>
+</header>
+
+<article>
+  <span class="eyebrow">Synallax · Manifesto</span>
+  <h1>The Silent Half of the Market</h1>
+  <p class="deck">How the buyer lost their voice — and how they get it back.</p>
+  <p class="meta">July 2026 · 5 min read</p>
+
+  <div class="sec">
+    <span class="num">I</span>
+    <p>There's a film playing tonight at the theater around the corner. You'd go for five dollars. Your friend would come along for seven. The ticket says ten — take it or leave it. So you both stay home, and the theater plays to a half-empty room.</p>
+    <p>Run the arithmetic of that evening. You lost a film you wanted to see. Your friend lost the same. The theater lost twelve dollars it will never recover, because at showtime an empty seat becomes worth exactly nothing. Everyone lost, and nobody did anything wrong.</p>
+    <p>And here is the strangest part: <b>the theater never knew you existed.</b> It didn't refuse your five dollars. Your five dollars had nowhere to go. There is no place in the world where it could have been said.</p>
+  </div>
+
+  <div class="sec">
+    <span class="num">II</span>
+    <p>Every economics textbook opens with the same drawing: two curves crossing — supply falling into demand, the fair price discovered where they meet. It is the founding diagram of the market economy. And almost nowhere in your daily life does it actually run.</p>
+    <p>Walk through your day as a buyer. The flight, the hotel, the groceries, the car. In every one of these markets, one side speaks in full sentences — catalogs, price lists, promotions — and the other side is limited to a single binary vote: buy, or walk away. The demand curve is real. It exists in millions of heads, precise to the dollar. But it is invisible, because no venue exists where it can be written down.</p>
+    <p>We call this capitalism. It is half of one.</p>
+  </div>
+
+  <div class="sec">
+    <span class="num">III</span>
+    <p>We know exactly what a whole market looks like, because we build them for the things we consider important. Oil trades in an order book. So do wheat, currencies, electricity, and the capital of every public company on earth. Buyers post bids. Sellers post offers. Everyone sees the depth, and the price is discovered — continuously, in the open, supply meeting demand in daylight.</p>
+    <p>Notice the hierarchy we've quietly accepted: a barrel of crude oil enjoys better price discovery than the room you will sleep in tonight. When something really matters, we give it a two-sided market. Everything else gets a price tag.</p>
+  </div>
+
+  <div class="sec">
+    <span class="num">IV</span>
+    <p>The price tag was not a conspiracy. It was a compression algorithm. Negotiating with every customer was operationally impossible, so commerce collapsed the entire demand curve into a single number and called it <em>the</em> price. A century of retail was built on that shortcut — a monologue, because conversation didn't scale.</p>
+    <p class="aside">People tried to fix it. Priceline let travelers name their own price in the nineties. It worked — then faded, because bidding is stressful for humans: one shot, opaque, emotionally expensive. The experiment was right. The species was wrong.</p>
+  </div>
+
+  <div class="sec">
+    <span class="num">V</span>
+    <p>Then the buyer got an agent.</p>
+    <p>An AI agent will hold your five-dollar bid for the Tuesday screening without a flicker of anxiety. It will hold fifty other bids at the same time — the flight to Paris, capped; the hotel near the conference, capped; each one firm, expiring, revisable, disciplined. What killed buyer-side bidding was never the economics. It was the human cost of speaking. <b>That cost just went to zero.</b></p>
+    <p>For the first time since the invention of the price tag, the silent half of the market can afford to talk.</p>
+  </div>
+
+  <div class="sec">
+    <span class="num">VI</span>
+    <p>Synallax is the venue where it talks: <span class="hl">an order book for the real economy</span>.</p>
+    <p>A bid on Synallax is firm — a commitment, not a wish. Sellers see, for the first time, the demand curve resting under their list price — and can accept it anonymously: no published discount, no wounded brand. A dark pool for the real economy. Any product a seller can describe becomes a market — a hotel night, a used car, an empty cargo leg, a shared ride between two cities.</p>
+    <p>The theater fills. The buyer gets in at what the evening was honestly worth to them. Nothing expires worthless.</p>
+    <p>This is not an attack on sellers, and it is not a discount machine. It is the completion of the market — the second curve, finally drawn. If you believe in markets at all, you believe the best price is <b>discovered, not declared</b>.</p>
+  </div>
+
+  <div class="sec">
+    <span class="num">VII</span>
+    <p>We are building it now, in the open — agent-first, with an open API and an MCP server, so the machines that will do most of tomorrow's buying can rest their bids on the book.</p>
+    <p>If you build with agents: come make your agent one of the first voices in the room. If you sell what expires — rooms, seats, capacity, time: come see the demand you've been turning away.</p>
+  </div>
+</article>
+
+<div class="close">
+  <blockquote>A price should be a <span class="hl">conversation</span>.<br>Let's have it.</blockquote>
+  <div class="ctas">
+    <a class="btn btn-primary" href="/#waitlist">Join the waitlist</a>
+    <a class="btn btn-ghost" href="mailto:contact@synallax.com">Become a design partner</a>
+  </div>
+</div>
+
+<footer>
+  <span>From the Greek <em>synállagma</em> — a contract that binds both sides. Exchange, together.</span>
+  <span>© 2026 Synallax</span>
+</footer>
+
+</body>
+</html>
