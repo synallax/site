@@ -34,16 +34,32 @@
   a{color:inherit}
   :focus-visible{outline:2px solid var(--bid);outline-offset:2px}
 
-  header{max-width:720px;margin:0 auto;padding:34px 24px 0;display:flex;justify-content:space-between;align-items:center;gap:14px}
-  .lockup svg{height:30px;width:auto;display:block;color:var(--txt)}
-  .headright{display:flex;align-items:center;gap:14px}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(10,17,28,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;gap:20px;height:76px;max-width:1140px;margin:0 auto;padding:0 24px}
+  .brand{display:flex;align-items:center;color:var(--txt);flex:0 0 auto}
+  .brand svg{height:42px;width:auto;display:block}
+  .navlinks{display:flex;gap:24px;margin-left:14px;flex:1}
+  .navlinks a{font-size:14px;color:var(--dim);transition:color .2s;text-decoration:none}
+  .navlinks a:hover{color:var(--txt)}
+  .navright{display:flex;align-items:center;gap:12px;flex:0 0 auto}
   .lang{display:flex;border:1px solid var(--line2);border-radius:6px;overflow:hidden}
-  .lang button{font-family:var(--mono);font-size:11px;padding:6px 8px;background:transparent;color:var(--dim);border:0;cursor:pointer}
+  .lang button{font-family:var(--mono);font-size:11px;letter-spacing:.05em;padding:6px 8px;background:transparent;color:var(--dim);border:0;cursor:pointer}
   .lang button+button{border-left:1px solid var(--line2)}
   .lang button.on{background:var(--bid);color:#04140C;font-weight:700}
   .lang button:hover:not(.on){color:var(--txt)}
-  header a.back{font-family:var(--mono);font-size:12px;color:var(--dim);text-decoration:none;border-bottom:1px solid var(--line2);padding-bottom:2px}
-  header a.back:hover{color:var(--bid);border-color:var(--bid)}
+  .btn{font-family:var(--sans);font-size:14px;font-weight:600;padding:9px 16px;border-radius:7px;border:1px solid transparent;display:inline-block;text-align:center;text-decoration:none}
+  .btn-primary{background:var(--bid);color:#04140C}
+  .btn-primary:hover{filter:brightness(1.08)}
+  @media (max-width:860px){ .navlinks{display:none} }
+  .foot-grid{display:flex;justify-content:space-between;align-items:flex-start;gap:30px;flex-wrap:wrap}
+  .foot-brand svg{height:38px;color:var(--txt);display:block;margin-bottom:14px}
+  .foot-brand p{color:var(--dim);font-size:13.5px;max-width:32ch;margin:0}
+  .foot-links{display:flex;gap:26px;flex-wrap:wrap}
+  .foot-links a{color:var(--dim);font-size:14px;text-decoration:none}
+  .foot-links a:hover{color:var(--txt)}
+  .foot-ety{margin-top:28px;padding-top:20px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .foot-ety em{font-style:italic;color:var(--dim)}
 
   article{max-width:720px;margin:0 auto;padding:56px 24px 40px}
   .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--bid);font-weight:600}
@@ -70,17 +86,25 @@
   .btn-ghost{border-color:var(--line2);color:var(--txt)}
   .btn-ghost:hover{border-color:var(--bid);color:var(--bid)}
 
-  footer{max-width:720px;margin:70px auto 0;padding:26px 24px 56px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--faint);font-size:13px}
-  footer em{color:var(--dim)}
+  footer{border-top:1px solid var(--line);padding:44px 0 52px;margin-top:70px}
 </style>
 </head>
 <body>
 
-<header>
-  <a class="lockup" href="/" aria-label="Synallax home"><svg viewBox="0 0 182 52" role="img" aria-label="synallax"><text x="0" y="41" font-family="'Segoe UI',system-ui,sans-serif" font-size="40" font-weight="650" textLength="142" lengthAdjust="spacingAndGlyphs" fill="currentColor">synalla</text><polyline points="150,22 158.5,30.5 150,39" fill="none" stroke="#27B36B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="171,22 162.5,30.5 171,39" fill="none" stroke="#DB5A47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-  <div class="headright">
-    <div class="lang" role="group" aria-label="Language"><button data-lang="en" class="on">EN</button><button data-lang="pt">PT</button><button data-lang="es">ES</button><button data-lang="fr">FR</button></div>
-    <a class="back" href="/">← synallax.com</a>
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="/" aria-label="Synallax home"><span class="lockup"></span></a>
+    <nav class="navlinks">
+      <a href="/#mission" data-i18n="n_mission">Mission</a>
+      <a href="/#builders" data-i18n="n_builders">For builders</a>
+      <a href="/#sellers" data-i18n="n_sellers">For sellers</a>
+      <a href="/platform/" data-i18n="n_platform">Platform</a>
+      <a href="/#faq" data-i18n="n_faq">FAQ</a>
+    </nav>
+    <div class="navright">
+      <div class="lang" role="group" aria-label="Language"><button data-lang="en" class="on">EN</button><button data-lang="pt">PT</button><button data-lang="es">ES</button><button data-lang="fr">FR</button></div>
+      <a href="/#waitlist" class="btn btn-primary" data-i18n="n_cta">Join the waitlist</a>
+    </div>
   </div>
 </header>
 
@@ -149,11 +173,36 @@
 </div>
 
 <footer>
-  <span data-i18n-html="m_ety">From the Greek <em>synállagma</em> — a contract that binds both sides. Exchange, together.</span>
-  <span>© 2026 Synallax</span>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand"><span class="lockup"></span><p data-i18n="f_tagline">The order book for the real economy.</p></div>
+      <div class="foot-links">
+        <a href="/#builders" data-i18n="n_builders">For builders</a>
+        <a href="/#sellers" data-i18n="n_sellers">For sellers</a>
+        <a href="/#mission" data-i18n="n_mission">Mission</a>
+        <a href="/platform/" data-i18n="n_platform">Platform</a>
+        <a href="/#faq" data-i18n="n_faq">FAQ</a>
+        <a href="mailto:contact@synallax.com">contact@synallax.com</a>
+        <a href="https://www.linkedin.com/company/synallax/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://x.com/synallax" target="_blank" rel="noopener">X</a>
+      </div>
+    </div>
+    <div class="foot-ety">
+      <span data-i18n-html="f_ety">From the Greek <em>synállagma</em> — a contract that binds both sides. Exchange, together.</span>
+      <span data-i18n="f_rights">© 2026 Synallax. Building in the open.</span>
+    </div>
+  </div>
 </footer>
 
 <script>
+const LOCKUP=`<svg viewBox="0 0 182 52" role="img" aria-label="synallax"><text x="0" y="41" font-family="'Segoe UI',system-ui,sans-serif" font-size="40" font-weight="650" textLength="142" lengthAdjust="spacingAndGlyphs" fill="currentColor">synalla</text><polyline points="150,22 158.5,30.5 150,39" fill="none" stroke="#27B36B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="171,22 162.5,30.5 171,39" fill="none" stroke="#DB5A47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+document.querySelectorAll('.lockup').forEach(e=>e.innerHTML=LOCKUP);
+const CHROME={
+en:{n_mission:"Mission",n_builders:"For builders",n_sellers:"For sellers",n_platform:"Platform",n_faq:"FAQ",n_cta:"Join the waitlist",f_tagline:"The order book for the real economy.",f_ety:"From the Greek <em>synállagma</em> — a contract that binds both sides. Exchange, together.",f_rights:"© 2026 Synallax. Building in the open."},
+pt:{n_mission:"Missão",n_builders:"Para quem constrói",n_sellers:"Para vendedores",n_platform:"Plataforma",n_faq:"Dúvidas",n_cta:"Entrar na lista",f_tagline:"O livro de ofertas da economia real.",f_ety:"Do grego <em>synállagma</em> — um contrato que obriga os dois lados. Trocar, juntos.",f_rights:"© 2026 Synallax. Construindo abertamente."},
+es:{n_mission:"Misión",n_builders:"Para quien construye",n_sellers:"Para vendedores",n_platform:"Plataforma",n_faq:"Preguntas",n_cta:"Unirme a la lista",f_tagline:"El libro de órdenes de la economía real.",f_ety:"Del griego <em>synállagma</em> — un contrato que obliga a ambas partes. Intercambio, juntos.",f_rights:"© 2026 Synallax. Construyendo en abierto."},
+fr:{n_mission:"Mission",n_builders:"Pour les développeurs",n_sellers:"Pour les vendeurs",n_platform:"Plateforme",n_faq:"FAQ",n_cta:"Rejoindre la liste",f_tagline:"Le carnet d'ordres de l'économie réelle.",f_ety:"Du grec <em>synállagma</em> — un contrat qui lie les deux parties. Échanger, ensemble.",f_rights:"© 2026 Synallax. Construit à ciel ouvert."}
+};
 const I18N={
 en:{m_eyebrow:"Synallax · Manifesto",m_title:"The Silent Half of the Market",m_deck:"How the buyer lost their voice — and how they get it back.",m_meta:"July 2026 · 5 min read",
 m1a:"There's a film playing tonight at the theater around the corner. You'd go for five dollars. Your friend would come along for seven. The ticket says ten — take it or leave it. So you both stay home, and the theater plays to a half-empty room.",
@@ -260,7 +309,7 @@ m_cta1:"Rejoindre la liste d'attente",m_cta2:"Devenir partenaire pilote",
 m_ety:"Du grec <em>synállagma</em> — un contrat qui lie les deux parties. Échanger, ensemble."}
 };
 function applyLang(l){
-  const lang=I18N[l]?l:'en', d=I18N[lang];
+  const lang=I18N[l]?l:'en', d=Object.assign({},CHROME[lang],I18N[lang]);
   document.documentElement.lang=lang;
   document.querySelectorAll('[data-i18n]').forEach(e=>{const k=e.getAttribute('data-i18n'); if(d[k]!=null) e.textContent=d[k];});
   document.querySelectorAll('[data-i18n-html]').forEach(e=>{const k=e.getAttribute('data-i18n-html'); if(d[k]!=null) e.innerHTML=d[k];});

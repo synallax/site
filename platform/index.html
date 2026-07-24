@@ -3,23 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Platform — Synallax · Exchange-grade. Not exchange-regulated.</title>
-<meta name="description" content="Everything a Synallax subscription buys into: real-time APIs, white-label UI with transparent SSO, catalog pipelines, pre-trade risk, yield autopilot, immutable audit trails, Tier-1 SLAs, AI concierge and Agent-Ready packs — exchange-grade infrastructure for your own marketplace.">
+<title>Platform — Synallax · Marketplace infrastructure, complete.</title>
+<meta name="description" content="Everything a Synallax subscription buys into: real-time APIs, white-label UI with transparent SSO, catalog pipelines, pre-trade risk, yield autopilot, immutable audit trails, Tier-1 SLAs, AI concierge and Agent-Ready packs — the complete infrastructure for your own marketplace.">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="theme-color" content="#0A111C">
 <link rel="canonical" href="https://synallax.com/platform/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Synallax">
-<meta property="og:title" content="The Synallax Platform — Exchange-grade. Not exchange-regulated.">
+<meta property="og:title" content="The Synallax Platform — Marketplace infrastructure, complete.">
 <meta property="og:description" content="Real-time APIs, white-label components, risk controls, audit trails, Tier-1 SLAs, AI concierge — the full scope of the engine you license.">
 <meta property="og:url" content="https://synallax.com/platform/">
 <meta property="og:image" content="https://synallax.com/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The Synallax Platform">
-<meta name="twitter:description" content="Exchange-grade infrastructure for your own marketplace — white-label, agent-first, compliance-ready.">
+<meta name="twitter:description" content="Complete infrastructure for your own marketplace — white-label, agent-first, compliance-ready.">
 <meta name="twitter:image" content="https://synallax.com/og.png">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Service","name":"Synallax Platform","serviceType":"White-label marketplace and exchange engine licensing (SaaS and enterprise installation)","provider":{"@type":"Organization","name":"Synallax","url":"https://synallax.com/"},"description":"Subscription licensing of a white-label exchange engine: firm bids, RFQ, anonymous matching, agent-first APIs, risk controls, audit trails and enterprise-grade operations for a company's own branded marketplace.","hasOfferCatalog":{"@type":"OfferCatalog","name":"Platform capabilities","itemListElement":[
+{"@context":"https://schema.org","@type":"Service","name":"Synallax Platform","serviceType":"White-label marketplace engine licensing (SaaS and enterprise installation)","provider":{"@type":"Organization","name":"Synallax","url":"https://synallax.com/"},"description":"Subscription licensing of a white-label marketplace engine: firm bids, RFQ, anonymous operator-controlled acceptance, agent-first APIs, risk controls, audit trails and enterprise-grade operations for a company's own branded marketplace.","hasOfferCatalog":{"@type":"OfferCatalog","name":"Platform capabilities","itemListElement":[
 {"@type":"Offer","itemOffered":{"@type":"Service","name":"Real-time APIs (REST, WebSocket, MCP)"}},
 {"@type":"Offer","itemOffered":{"@type":"Service","name":"White-label UI SDK with transparent SSO"}},
 {"@type":"Offer","itemOffered":{"@type":"Service","name":"Automatic catalog import and referential pipelines"}},
@@ -46,42 +46,64 @@
 </script>
 <style>
   :root{
-    --bg:#0A111C; --panel:#0F1A28; --line:#1E2C3E; --line2:#2A3B50;
-    --txt:#E6EAF1; --dim:#93A0B2; --faint:#5E6C7E;
+    --bg:#0A111C; --panel:#0F1A28; --panel2:#13212F; --line:#1E2C3E; --line2:#2A3B50;
+    --txt:#EAEEF4; --dim:#93A0B2; --faint:#5E6C7E;
     --bid:#27B36B; --ask:#DB5A47;
     --sans:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;
     --mono:ui-monospace,'Cascadia Mono','SF Mono',Consolas,'Liberation Mono',monospace;
-    --wrap:1080px;
+    --wrap:1140px;
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
   a{color:inherit;text-decoration:none}
   .wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
   :focus-visible{outline:2px solid var(--bid);outline-offset:2px;border-radius:4px}
 
-  header{border-bottom:1px solid var(--line)}
-  .head-in{display:flex;justify-content:space-between;align-items:center;gap:16px;max-width:var(--wrap);margin:0 auto;padding:18px 24px}
-  .lockup svg{height:30px;width:auto;display:block;color:var(--txt)}
-  .headright{display:flex;align-items:center;gap:14px}
+  /* unified chrome (same as landing) */
+  header.nav{position:sticky;top:0;z-index:50;background:rgba(10,17,28,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;gap:20px;height:76px;max-width:var(--wrap);margin:0 auto;padding:0 24px}
+  .brand{display:flex;align-items:center;color:var(--txt);flex:0 0 auto}
+  .brand svg{height:42px;width:auto;display:block}
+  .navlinks{display:flex;gap:24px;margin-left:14px;flex:1}
+  .navlinks a{font-size:14px;color:var(--dim);transition:color .2s}
+  .navlinks a:hover{color:var(--txt)}
+  .navlinks a.here{color:var(--txt);border-bottom:2px solid var(--bid);padding-bottom:2px}
+  .navright{display:flex;align-items:center;gap:12px;flex:0 0 auto}
   .lang{display:flex;border:1px solid var(--line2);border-radius:6px;overflow:hidden}
-  .lang button{font-family:var(--mono);font-size:11px;padding:6px 8px;background:transparent;color:var(--dim);border:0;cursor:pointer}
+  .lang button{font-family:var(--mono);font-size:11px;letter-spacing:.05em;padding:6px 8px;background:transparent;color:var(--dim);border:0;cursor:pointer;transition:background .15s,color .15s}
   .lang button+button{border-left:1px solid var(--line2)}
   .lang button.on{background:var(--bid);color:#04140C;font-weight:700}
   .lang button:hover:not(.on){color:var(--txt)}
-  a.back{font-family:var(--mono);font-size:12px;color:var(--dim);border-bottom:1px solid var(--line2);padding-bottom:2px}
-  a.back:hover{color:var(--bid);border-color:var(--bid)}
+  .btn{font-family:var(--sans);font-size:14px;font-weight:600;padding:9px 16px;border-radius:7px;border:1px solid transparent;cursor:pointer;transition:transform .12s,filter .15s;display:inline-block;text-align:center}
+  .btn:active{transform:translateY(1px)}
+  .btn-primary{background:var(--bid);color:#04140C}
+  .btn-primary:hover{filter:brightness(1.08)}
+  .btn-ghost{background:transparent;border-color:var(--line2);color:var(--txt)}
+  .btn-ghost:hover{border-color:var(--bid);color:var(--bid)}
+  @media (max-width:860px){ .navlinks{display:none} }
 
-  .hero{padding:64px 0 30px}
+  footer{border-top:1px solid var(--line);padding:44px 0 52px;margin-top:64px}
+  .foot-grid{display:flex;justify-content:space-between;align-items:flex-start;gap:30px;flex-wrap:wrap}
+  .foot-brand svg{height:38px;color:var(--txt);display:block;margin-bottom:14px}
+  .foot-brand p{color:var(--dim);font-size:13.5px;max-width:32ch;margin:0}
+  .foot-links{display:flex;gap:26px;flex-wrap:wrap}
+  .foot-links a{color:var(--dim);font-size:14px}
+  .foot-links a:hover{color:var(--txt)}
+  .foot-ety{margin-top:28px;padding-top:20px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .foot-ety em{font-style:italic;color:var(--dim)}
+
+  /* page content */
+  .hero{padding:56px 0 26px}
   .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--bid);font-weight:600}
   h1{font-size:clamp(32px,5vw,52px);line-height:1.06;letter-spacing:-.02em;font-weight:680;margin:16px 0 14px;text-wrap:balance}
-  .sub{font-size:clamp(16px,1.9vw,19px);color:var(--dim);max-width:60ch;margin:0}
+  .sub{font-size:clamp(16px,1.9vw,19px);color:var(--dim);max-width:64ch;margin:0}
   .scope{font-family:var(--mono);font-size:12px;color:var(--faint);margin:22px 0 0;max-width:78ch;line-height:1.6}
-
   .guard{display:flex;gap:10px;flex-wrap:wrap;margin:26px 0 0}
   .guard span{font-family:var(--mono);font-size:11.5px;letter-spacing:.03em;color:var(--dim);border:1px solid var(--line2);border-radius:100px;padding:7px 14px}
   .guard span b{color:var(--bid);font-weight:600}
 
-  section.fam{padding:44px 0 8px}
+  section.fam{padding:40px 0 8px}
   section.fam h2{font-size:clamp(20px,2.6vw,28px);font-weight:660;letter-spacing:-.01em;margin:0}
   section.fam h2::before{content:"";display:inline-block;width:26px;height:3px;background:var(--bid);border-radius:2px;margin:0 12px 6px 0;vertical-align:middle}
   .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
@@ -91,27 +113,26 @@
   @media (max-width:880px){ .cards{grid-template-columns:1fr 1fr} }
   @media (max-width:560px){ .cards{grid-template-columns:1fr} }
 
-  .cta{padding:70px 0 80px;text-align:center;border-top:1px solid var(--line);margin-top:56px}
+  .cta{padding:64px 0 10px;text-align:center;border-top:1px solid var(--line);margin-top:52px}
   .cta h2{font-size:clamp(26px,3.6vw,40px);font-weight:680;letter-spacing:-.02em;margin:0 0 24px}
-  .btn{font-size:15px;font-weight:600;padding:12px 22px;border-radius:8px;border:1px solid transparent;display:inline-block;margin:0 6px}
-  .btn-primary{background:var(--bid);color:#04140C}
-  .btn-primary:hover{filter:brightness(1.08)}
-  .btn-ghost{border-color:var(--line2);color:var(--txt)}
-  .btn-ghost:hover{border-color:var(--bid);color:var(--bid)}
-
-  footer{border-top:1px solid var(--line);padding:26px 0 50px}
-  .foot{max-width:var(--wrap);margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--faint);font-size:13px}
-  .foot em{color:var(--dim)}
+  .cta .btn{margin:0 6px;padding:12px 22px;font-size:15px}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="head-in">
-    <a class="lockup" href="/" aria-label="Synallax home"><svg viewBox="0 0 182 52" role="img" aria-label="synallax"><text x="0" y="41" font-family="'Segoe UI',system-ui,sans-serif" font-size="40" font-weight="650" textLength="142" lengthAdjust="spacingAndGlyphs" fill="currentColor">synalla</text><polyline points="150,22 158.5,30.5 150,39" fill="none" stroke="#27B36B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="171,22 162.5,30.5 171,39" fill="none" stroke="#DB5A47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-    <div class="headright">
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="/" aria-label="Synallax home"><span class="lockup"></span></a>
+    <nav class="navlinks">
+      <a href="/#mission" data-i18n="n_mission">Mission</a>
+      <a href="/#builders" data-i18n="n_builders">For builders</a>
+      <a href="/#sellers" data-i18n="n_sellers">For sellers</a>
+      <a href="/platform/" class="here" data-i18n="n_platform">Platform</a>
+      <a href="/#faq" data-i18n="n_faq">FAQ</a>
+    </nav>
+    <div class="navright">
       <div class="lang" role="group" aria-label="Language"><button data-lang="en" class="on">EN</button><button data-lang="pt">PT</button><button data-lang="es">ES</button><button data-lang="fr">FR</button></div>
-      <a class="back" href="/" data-i18n="p_back">← synallax.com</a>
+      <a href="/#waitlist" class="btn btn-primary" data-i18n="n_cta">Join the waitlist</a>
     </div>
   </div>
 </header>
@@ -119,12 +140,13 @@
 <main class="wrap">
   <div class="hero">
     <span class="eyebrow" data-i18n="p_eyebrow">The platform</span>
-    <h1 data-i18n="p_title">Exchange-grade. Not exchange-regulated.</h1>
-    <p class="sub" data-i18n="p_sub">Everything a Synallax subscription buys into: the infrastructure of a modern exchange, applied to your products, under your brand. Built in the open with our design partners.</p>
+    <h1 data-i18n="p_title">Marketplace infrastructure, complete.</h1>
+    <p class="sub" data-i18n="p_sub">Everything a Synallax subscription buys into: the infrastructure of a modern marketplace, engineered to the standards of electronic trading systems — applied to your products, under your brand. Built in the open with our design partners.</p>
     <div class="guard">
       <span data-i18n-html="p_g1"><b>✓</b> Physical delivery only — never cash-settled differences</span>
       <span data-i18n-html="p_g2"><b>✓</b> Primary market — no secondary speculation</span>
       <span data-i18n-html="p_g3"><b>✓</b> No custody — settlement on licensed payment rails</span>
+      <span data-i18n-html="p_g4"><b>✓</b> Operator-controlled acceptance — manual, RFQ, or your rules</span>
     </div>
     <p class="scope" data-i18n="p_scope">Platform scope — capabilities land progressively as we build with design partners; the architecture is designed for all of it from day one.</p>
   </div>
@@ -132,7 +154,7 @@
   <section class="fam">
     <h2 data-i18n="f1">Access &amp; integration</h2>
     <div class="cards">
-      <div class="card"><h3 data-i18n="c1t">Real-time APIs</h3><p data-i18n="c1d">REST, WebSocket and MCP. Millisecond matching, engineered by exchange-infrastructure veterans.</p></div>
+      <div class="card"><h3 data-i18n="c1t">Real-time APIs</h3><p data-i18n="c1d">REST, WebSocket and MCP. Millisecond order handling, engineered by veterans of electronic trading systems.</p></div>
       <div class="card"><h3 data-i18n="c2t">White-label UI SDK</h3><p data-i18n="c2d">Order book, bid ticket and "Make an offer" components that drop into your site and apps — with transparent SSO (OIDC/SAML), so your logged-in users are already ours.</p></div>
       <div class="card"><h3 data-i18n="c3t">Catalog pipelines</h3><p data-i18n="c3d">Automatic product-catalog import and scheduled sync from your PMS, PSS, DMS or e-commerce stack — with validation and data-quality checks.</p></div>
       <div class="card"><h3 data-i18n="c4t">Back-office &amp; STP</h3><p data-i18n="c4d">Fills and settlements stream straight through to your ERP and accounting — reconciliation exports included.</p></div>
@@ -189,20 +211,44 @@
 </main>
 
 <footer>
-  <div class="foot">
-    <span data-i18n-html="p_ety">From the Greek <em>synállagma</em> — a contract that binds both sides. Exchange, together.</span>
-    <span>© 2026 Synallax</span>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand"><span class="lockup"></span><p data-i18n="f_tagline">The order book for the real economy.</p></div>
+      <div class="foot-links">
+        <a href="/#builders" data-i18n="n_builders">For builders</a>
+        <a href="/#sellers" data-i18n="n_sellers">For sellers</a>
+        <a href="/#mission" data-i18n="n_mission">Mission</a>
+        <a href="/platform/" data-i18n="n_platform">Platform</a>
+        <a href="/#faq" data-i18n="n_faq">FAQ</a>
+        <a href="mailto:contact@synallax.com">contact@synallax.com</a>
+        <a href="https://www.linkedin.com/company/synallax/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://x.com/synallax" target="_blank" rel="noopener">X</a>
+      </div>
+    </div>
+    <div class="foot-ety">
+      <span data-i18n-html="f_ety">From the Greek <em>synállagma</em> — a contract that binds both sides. Exchange, together.</span>
+      <span data-i18n="f_rights">© 2026 Synallax. Building in the open.</span>
+    </div>
   </div>
 </footer>
 
 <script>
-const I18N={
-en:{p_back:"← synallax.com",p_eyebrow:"The platform",p_title:"Exchange-grade. Not exchange-regulated.",
-p_sub:"Everything a Synallax subscription buys into: the infrastructure of a modern exchange, applied to your products, under your brand. Built in the open with our design partners.",
-p_g1:"<b>✓</b> Physical delivery only — never cash-settled differences",p_g2:"<b>✓</b> Primary market — no secondary speculation",p_g3:"<b>✓</b> No custody — settlement on licensed payment rails",
+const LOCKUP=`<svg viewBox="0 0 182 52" role="img" aria-label="synallax"><text x="0" y="41" font-family="'Segoe UI',system-ui,sans-serif" font-size="40" font-weight="650" textLength="142" lengthAdjust="spacingAndGlyphs" fill="currentColor">synalla</text><polyline points="150,22 158.5,30.5 150,39" fill="none" stroke="#27B36B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="171,22 162.5,30.5 171,39" fill="none" stroke="#DB5A47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+document.querySelectorAll('.lockup').forEach(e=>e.innerHTML=LOCKUP);
+
+const CHROME={
+en:{n_mission:"Mission",n_builders:"For builders",n_sellers:"For sellers",n_platform:"Platform",n_faq:"FAQ",n_cta:"Join the waitlist",f_tagline:"The order book for the real economy.",f_ety:"From the Greek <em>synállagma</em> — a contract that binds both sides. Exchange, together.",f_rights:"© 2026 Synallax. Building in the open."},
+pt:{n_mission:"Missão",n_builders:"Para quem constrói",n_sellers:"Para vendedores",n_platform:"Plataforma",n_faq:"Dúvidas",n_cta:"Entrar na lista",f_tagline:"O livro de ofertas da economia real.",f_ety:"Do grego <em>synállagma</em> — um contrato que obriga os dois lados. Trocar, juntos.",f_rights:"© 2026 Synallax. Construindo abertamente."},
+es:{n_mission:"Misión",n_builders:"Para quien construye",n_sellers:"Para vendedores",n_platform:"Plataforma",n_faq:"Preguntas",n_cta:"Unirme a la lista",f_tagline:"El libro de órdenes de la economía real.",f_ety:"Del griego <em>synállagma</em> — un contrato que obliga a ambas partes. Intercambio, juntos.",f_rights:"© 2026 Synallax. Construyendo en abierto."},
+fr:{n_mission:"Mission",n_builders:"Pour les développeurs",n_sellers:"Pour les vendeurs",n_platform:"Plateforme",n_faq:"FAQ",n_cta:"Rejoindre la liste",f_tagline:"Le carnet d'ordres de l'économie réelle.",f_ety:"Du grec <em>synállagma</em> — un contrat qui lie les deux parties. Échanger, ensemble.",f_rights:"© 2026 Synallax. Construit à ciel ouvert."}
+};
+const PAGE={
+en:{p_eyebrow:"The platform",p_title:"Marketplace infrastructure, complete.",
+p_sub:"Everything a Synallax subscription buys into: the infrastructure of a modern marketplace, engineered to the standards of electronic trading systems — applied to your products, under your brand. Built in the open with our design partners.",
+p_g1:"<b>✓</b> Physical delivery only — never cash-settled differences",p_g2:"<b>✓</b> Primary market — no secondary speculation",p_g3:"<b>✓</b> No custody — settlement on licensed payment rails",p_g4:"<b>✓</b> Operator-controlled acceptance — manual, RFQ, or your rules",
 p_scope:"Platform scope — capabilities land progressively as we build with design partners; the architecture is designed for all of it from day one.",
 f1:"Access & integration",f2:"Market operations",f3:"Trust, compliance & security",f4:"Reliability & service",f5:"Growth & intelligence",
-c1t:"Real-time APIs",c1d:"REST, WebSocket and MCP. Millisecond matching, engineered by exchange-infrastructure veterans.",
+c1t:"Real-time APIs",c1d:"REST, WebSocket and MCP. Millisecond order handling, engineered by veterans of electronic trading systems.",
 c2t:"White-label UI SDK",c2d:"Order book, bid ticket and \"Make an offer\" components that drop into your site and apps — with transparent SSO (OIDC/SAML), so your logged-in users are already ours.",
 c3t:"Catalog pipelines",c3d:"Automatic product-catalog import and scheduled sync from your PMS, PSS, DMS or e-commerce stack — with validation and data-quality checks.",
 c4t:"Back-office & STP",c4d:"Fills and settlements stream straight through to your ERP and accounting — reconciliation exports included.",
@@ -224,15 +270,14 @@ c19t:"AI concierge",c19d:"Natural-language bidding embedded in your portal — c
 c20t:"Agent-Ready Packs",c20d:"llms.txt, MCP manifests and instruction files per venue, so Claude, ChatGPT, Gemini or any agent platform connects in minutes.",
 c21t:"Notifications",c21d:"Branded email, push and WhatsApp on fills, expiries and counters.",
 c22t:"Global commerce",c22d:"Multi-currency pricing, tax and invoicing hooks, localized storefront components.",
-p_cta_t:"Open your venue.",p_cta1:"Join the waitlist",p_cta2:"Become a design partner",
-p_ety:"From the Greek <em>synállagma</em> — a contract that binds both sides. Exchange, together."},
+p_cta_t:"Open your venue.",p_cta1:"Join the waitlist",p_cta2:"Become a design partner"},
 
-pt:{p_back:"← synallax.com",p_eyebrow:"A plataforma",p_title:"Nível de bolsa. Sem regulação de bolsa.",
-p_sub:"Tudo o que uma assinatura Synallax contrata: a infraestrutura de uma bolsa moderna, aplicada aos seus produtos, sob a sua marca. Construída abertamente com nossos parceiros piloto.",
-p_g1:"<b>✓</b> Somente entrega física — nunca liquidação por diferença",p_g2:"<b>✓</b> Mercado primário — sem especulação secundária",p_g3:"<b>✓</b> Sem custódia — liquidação em trilhos de pagamento licenciados",
+pt:{p_eyebrow:"A plataforma",p_title:"Infraestrutura de marketplace, completa.",
+p_sub:"Tudo o que uma assinatura Synallax contrata: a infraestrutura de um marketplace moderno, projetada no padrão dos sistemas eletrônicos de negociação — aplicada aos seus produtos, sob a sua marca. Construída abertamente com nossos parceiros piloto.",
+p_g1:"<b>✓</b> Somente entrega física — nunca liquidação por diferença",p_g2:"<b>✓</b> Mercado primário — sem especulação secundária",p_g3:"<b>✓</b> Sem custódia — liquidação em trilhos de pagamento licenciados",p_g4:"<b>✓</b> Aceite controlado pelo operador — manual, RFQ ou pelas suas regras",
 p_scope:"Escopo da plataforma — as capacidades chegam progressivamente conforme construímos com os parceiros piloto; a arquitetura nasce pronta para tudo isso.",
 f1:"Acesso e integração",f2:"Operação de mercado",f3:"Confiança, compliance e segurança",f4:"Confiabilidade e serviço",f5:"Crescimento e inteligência",
-c1t:"APIs em tempo real",c1d:"REST, WebSocket e MCP. Casamento em milissegundos, projetado por veteranos de infraestrutura de bolsa.",
+c1t:"APIs em tempo real",c1d:"REST, WebSocket e MCP. Processamento de ordens em milissegundos, projetado por veteranos de sistemas eletrônicos de negociação.",
 c2t:"SDK de UI white-label",c2d:"Livro de ofertas, boleta e botão \"Faça sua oferta\" que se encaixam no seu site e apps — com SSO transparente (OIDC/SAML): o usuário logado no seu portal já está logado no mercado.",
 c3t:"Pipelines de catálogo",c3d:"Importação automática do catálogo de produtos e sincronização agendada a partir do seu PMS, PSS, DMS ou e-commerce — com validação e checagem de qualidade de dados.",
 c4t:"Back-office e STP",c4d:"Execuções e liquidações fluem direto para o seu ERP e a sua contabilidade — com exportações de conciliação.",
@@ -254,15 +299,14 @@ c19t:"Concierge de IA",c19d:"Ofertas em linguagem natural embutidas no seu porta
 c20t:"Pacotes Agent-Ready",c20d:"llms.txt, manifestos MCP e arquivos de instrução por mercado, para Claude, ChatGPT, Gemini ou qualquer plataforma de agentes conectar em minutos.",
 c21t:"Notificações",c21d:"E-mail, push e WhatsApp com a sua marca em execuções, expirações e contrapropostas.",
 c22t:"Comércio global",c22d:"Preços multimoeda, integrações de impostos e faturamento, componentes de loja localizados.",
-p_cta_t:"Abra o seu mercado.",p_cta1:"Entrar na lista de espera",p_cta2:"Tornar-se parceiro piloto",
-p_ety:"Do grego <em>synállagma</em> — um contrato que obriga os dois lados. Trocar, juntos."},
+p_cta_t:"Abra o seu mercado.",p_cta1:"Entrar na lista de espera",p_cta2:"Tornar-se parceiro piloto"},
 
-es:{p_back:"← synallax.com",p_eyebrow:"La plataforma",p_title:"Nivel de bolsa. Sin regulación de bolsa.",
-p_sub:"Todo lo que contrata una suscripción Synallax: la infraestructura de una bolsa moderna, aplicada a tus productos, bajo tu marca. Construida en abierto con nuestros socios piloto.",
-p_g1:"<b>✓</b> Solo entrega física — nunca liquidación por diferencias",p_g2:"<b>✓</b> Mercado primario — sin especulación secundaria",p_g3:"<b>✓</b> Sin custodia — liquidación en raíles de pago licenciados",
+es:{p_eyebrow:"La plataforma",p_title:"Infraestructura de marketplace, completa.",
+p_sub:"Todo lo que contrata una suscripción Synallax: la infraestructura de un marketplace moderno, diseñada al estándar de los sistemas electrónicos de negociación — aplicada a tus productos, bajo tu marca. Construida en abierto con nuestros socios piloto.",
+p_g1:"<b>✓</b> Solo entrega física — nunca liquidación por diferencias",p_g2:"<b>✓</b> Mercado primario — sin especulación secundaria",p_g3:"<b>✓</b> Sin custodia — liquidación en raíles de pago licenciados",p_g4:"<b>✓</b> Aceptación controlada por el operador — manual, RFQ o por tus reglas",
 p_scope:"Alcance de la plataforma — las capacidades llegan progresivamente mientras construimos con los socios piloto; la arquitectura nace lista para todo esto.",
 f1:"Acceso e integración",f2:"Operación de mercado",f3:"Confianza, compliance y seguridad",f4:"Confiabilidad y servicio",f5:"Crecimiento e inteligencia",
-c1t:"APIs en tiempo real",c1d:"REST, WebSocket y MCP. Emparejamiento en milisegundos, diseñado por veteranos de infraestructura bursátil.",
+c1t:"APIs en tiempo real",c1d:"REST, WebSocket y MCP. Procesamiento de órdenes en milisegundos, diseñado por veteranos de sistemas electrónicos de negociación.",
 c2t:"SDK de UI white-label",c2d:"Libro de órdenes, boleta y botón \"Haz tu oferta\" que encajan en tu sitio y apps — con SSO transparente (OIDC/SAML): tu usuario logueado ya está dentro del mercado.",
 c3t:"Pipelines de catálogo",c3d:"Importación automática del catálogo y sincronización programada desde tu PMS, PSS, DMS o e-commerce — con validación y control de calidad de datos.",
 c4t:"Back-office y STP",c4d:"Ejecuciones y liquidaciones fluyen directo a tu ERP y contabilidad — con exportaciones de conciliación.",
@@ -284,15 +328,14 @@ c19t:"Concierge de IA",c19d:"Ofertas en lenguaje natural integradas en tu portal
 c20t:"Paquetes Agent-Ready",c20d:"llms.txt, manifiestos MCP y archivos de instrucciones por mercado, para que Claude, ChatGPT, Gemini o cualquier plataforma de agentes se conecte en minutos.",
 c21t:"Notificaciones",c21d:"Email, push y WhatsApp con tu marca en ejecuciones, vencimientos y contraofertas.",
 c22t:"Comercio global",c22d:"Precios multimoneda, integraciones de impuestos y facturación, componentes de tienda localizados.",
-p_cta_t:"Abre tu mercado.",p_cta1:"Unirme a la lista de espera",p_cta2:"Ser socio piloto",
-p_ety:"Del griego <em>synállagma</em> — un contrato que obliga a ambas partes. Intercambio, juntos."},
+p_cta_t:"Abre tu mercado.",p_cta1:"Unirme a la lista de espera",p_cta2:"Ser socio piloto"},
 
-fr:{p_back:"← synallax.com",p_eyebrow:"La plateforme",p_title:"Niveau bourse. Sans régulation de bourse.",
-p_sub:"Tout ce qu'un abonnement Synallax comprend : l'infrastructure d'une bourse moderne, appliquée à vos produits, sous votre marque. Construite à ciel ouvert avec nos partenaires pilotes.",
-p_g1:"<b>✓</b> Livraison physique uniquement — jamais de règlement en différentiel",p_g2:"<b>✓</b> Marché primaire — pas de spéculation secondaire",p_g3:"<b>✓</b> Aucune garde de fonds — règlement via des rails de paiement agréés",
+fr:{p_eyebrow:"La plateforme",p_title:"L'infrastructure de place de marché, complète.",
+p_sub:"Tout ce qu'un abonnement Synallax comprend : l'infrastructure d'une place de marché moderne, conçue aux standards des systèmes de négociation électronique — appliquée à vos produits, sous votre marque. Construite à ciel ouvert avec nos partenaires pilotes.",
+p_g1:"<b>✓</b> Livraison physique uniquement — jamais de règlement en différentiel",p_g2:"<b>✓</b> Marché primaire — pas de spéculation secondaire",p_g3:"<b>✓</b> Aucune garde de fonds — règlement via des rails de paiement agréés",p_g4:"<b>✓</b> Acceptation contrôlée par l'opérateur — manuelle, RFQ ou selon vos règles",
 p_scope:"Périmètre de la plateforme — les capacités arrivent progressivement au fil de la construction avec les partenaires pilotes ; l'architecture est conçue pour tout cela dès le départ.",
 f1:"Accès et intégration",f2:"Opérations de marché",f3:"Confiance, conformité et sécurité",f4:"Fiabilité et service",f5:"Croissance et intelligence",
-c1t:"API temps réel",c1d:"REST, WebSocket et MCP. Appariement en millisecondes, conçu par des vétérans de l'infrastructure boursière.",
+c1t:"API temps réel",c1d:"REST, WebSocket et MCP. Traitement des ordres en millisecondes, conçu par des vétérans des systèmes de négociation électronique.",
 c2t:"SDK d'interface en marque blanche",c2d:"Carnet d'ordres, ticket d'offre et bouton « Faites votre offre » qui s'intègrent à votre site et vos apps — avec SSO transparent (OIDC/SAML) : votre utilisateur connecté l'est déjà sur la place.",
 c3t:"Pipelines de catalogue",c3d:"Import automatique du catalogue produits et synchronisation planifiée depuis votre PMS, PSS, DMS ou e-commerce — avec validation et contrôle qualité des données.",
 c4t:"Back-office et STP",c4d:"Exécutions et règlements filent directement vers votre ERP et votre comptabilité — exports de rapprochement inclus.",
@@ -314,11 +357,10 @@ c19t:"Concierge IA",c19d:"Des offres en langage naturel intégrées à votre por
 c20t:"Packs Agent-Ready",c20d:"llms.txt, manifestes MCP et fichiers d'instructions par place, pour que Claude, ChatGPT, Gemini ou toute plateforme d'agents se connecte en minutes.",
 c21t:"Notifications",c21d:"E-mail, push et WhatsApp à votre marque sur exécutions, expirations et contre-offres.",
 c22t:"Commerce global",c22d:"Prix multidevises, intégrations fiscales et de facturation, composants de boutique localisés.",
-p_cta_t:"Ouvrez votre place.",p_cta1:"Rejoindre la liste d'attente",p_cta2:"Devenir partenaire pilote",
-p_ety:"Du grec <em>synállagma</em> — un contrat qui lie les deux parties. Échanger, ensemble."}
+p_cta_t:"Ouvrez votre place.",p_cta1:"Rejoindre la liste d'attente",p_cta2:"Devenir partenaire pilote"}
 };
 function applyLang(l){
-  const lang=I18N[l]?l:'en', d=I18N[lang];
+  const lang=PAGE[l]?l:'en', d=Object.assign({},CHROME[lang],PAGE[lang]);
   document.documentElement.lang=lang;
   document.querySelectorAll('[data-i18n]').forEach(e=>{const k=e.getAttribute('data-i18n'); if(d[k]!=null) e.textContent=d[k];});
   document.querySelectorAll('[data-i18n-html]').forEach(e=>{const k=e.getAttribute('data-i18n-html'); if(d[k]!=null) e.innerHTML=d[k];});

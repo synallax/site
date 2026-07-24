@@ -1,12 +1,12 @@
 # Synallax
 
-> The order book for the real economy — where AI agents negotiate prices on anything. A universal marketplace engine with true exchange semantics: buyers and their AI agents post firm, expiring bids and requests-for-quote on real-world products and services; sellers match them anonymously, filling inventory that would otherwise expire worthless.
+> The order book for the real economy — where AI agents negotiate prices on anything. A universal marketplace engine built around a real order book: buyers and their AI agents post firm, expiring bids and requests-for-quote on real-world products and services; sellers accept them anonymously — manually, by answering RFQs, or through their own rules — filling inventory that would otherwise expire worthless.
 
 Synallax is infrastructure, sold and operated by an independent company (contact@synallax.com). It is agent-first: it exposes an open REST API and a Model Context Protocol (MCP) server so AI agents can search instruments, rest firm bids, run RFQs, and stream the order book in real time, with per-agent spend caps.
 
 ## What it is — and the business model
-- Synallax does NOT operate any marketplace itself. It licenses its marketplace/exchange engine by subscription, fully white-labeled: client companies parametrize their own venue — product templates for any vertical (flights, hotel nights, used cars, shared rides, freight, services...), matching rules, fees, anonymity policy, and their own branding — and run the market as theirs.
-- Continuous, price/time-priority matching with an anonymous ("dark pool") default so sellers accept bids below list price without publishing a discount. RFQ (request-for-quote) flow for illiquid instruments: a buyer broadcasts a request, sellers answer with private, firm, expiring quotes.
+- Synallax does NOT operate any marketplace itself. It licenses its marketplace engine by subscription, fully white-labeled: client companies parametrize their own venue — product templates for any vertical (flights, hotel nights, used cars, shared rides, freight, services...), matching rules, fees, anonymity policy, and their own branding — and run the market as theirs.
+- A standing order book with anonymous ("dark pool") acceptance: the venue operator always controls how deals conclude — sellers accept resting bids manually, answer RFQs with private firm expiring quotes, or configure rules that accept on their behalf. Sellers take bids below list price without ever publishing a discount.
 - Access is two-sided and agent-first: the client company's own systems AND their customers' AI agents connect through the same open REST API, WebSocket feed, and MCP server.
 - Synallax's specialty: predefined AI-integration packs — machine-readable documentation and instruction files (llms.txt, MCP manifests, markdown guides) — so Claude, ChatGPT, Gemini, or any AI agent platform can integrate with a venue in minutes.
 - Services included: onboarding and configuration consulting, plus interconnection with payment/settlement providers — matched trades clear on the client's rails; Synallax holds no custody.
@@ -16,7 +16,7 @@ Synallax is infrastructure, sold and operated by an independent company (contact
 - Brand operators selling their OWN perishable inventory through a private white-label venue: airlines (seats, load factor), hotel groups and resorts (rooms, occupancy), cinemas / events / entertainment venues (tickets, showtimes), car rental and mobility fleets (vehicles, utilization), freight and logistics operators (capacity, empty legs), retail and consumer brands (excess stock — anonymous bids allow discounting without violating MAP / minimum-advertised-price rules).
 - In this model the brand is the only seller; the venue is embedded in its own channels, public prices stay untouched, and the book only fires when the brand accepts a bid.
 - Durable-goods markets, where the book's second superpower is PATIENCE rather than expiry: dealers, classifieds platforms, and auction houses (used cars, machines, collectibles) and real estate / rentals. A firm bid can rest for weeks or months; the buyer's AI agent maintains it and captures the moment a seller accepts — replacing the manual vigil of checking listing sites daily.
-- Marketplace operators building a multi-seller exchange for an entire industry vertical run on the same engine.
+- Marketplace operators building a multi-seller marketplace for an entire industry vertical run on the same engine.
 - Agent builders whose AI agents search, bid, and trade on any Synallax venue through the open API and MCP server.
 
 ## Why it exists
@@ -25,9 +25,9 @@ Synallax is infrastructure, sold and operated by an independent company (contact
 - Human bidding (e.g. Priceline "name your own price") faded because it was stressful. AI agents manage many resting bids effortlessly, which makes buyer-side price discovery finally practical.
 - The agentic-commerce stack (ACP, UCP, AP2, MCP) standardizes discovery and checkout against posted prices, but no one owns the venue where agents negotiate. Synallax is that layer.
 
-## Regulatory position — "Exchange-grade, not exchange-regulated"
+## Regulatory position
 - Synallax venues are NOT securities or commodities exchanges and require no financial-market license: regulation follows the instrument traded, not the order-book mechanism. Venues trade real goods and services for physical delivery to end users — never securities, derivatives, or standardized cash-settled contracts.
-- Guardrails by design: trades settle only by delivering the product (no cash settlement of price differences); primary market only (no secondary speculation on matched contracts); Synallax holds no client funds (settlement through licensed payment providers).
+- Guardrails by design: trades settle only by delivering the product (no cash settlement of price differences); primary market only (no secondary speculation on concluded contracts); Synallax holds no client funds (settlement through licensed payment providers); and deal conclusion is always controlled by the venue operator — manual acceptance, RFQ answers, or seller-configured rules, never mandatory automatic execution by the platform.
 - Sector rules (consumer protection, travel, real-estate brokerage, auction rules, AML for high-value goods) remain with the venue operator exactly as in their existing sales channels. The platform ships compliance tooling: immutable event-sourced audit trails, replayable history, compliance reports, KYC/AML integration hooks.
 
 ## Key facts
@@ -40,7 +40,7 @@ Synallax is infrastructure, sold and operated by an independent company (contact
 ## Links
 - Home: https://synallax.com/
 - Manifesto ("The Silent Half of the Market"): https://synallax.com/manifesto/
-- Platform capabilities ("Exchange-grade. Not exchange-regulated."): https://synallax.com/platform/
+- Platform capabilities: https://synallax.com/platform/
 - Contact: contact@synallax.com
 - LinkedIn: https://www.linkedin.com/company/synallax/
 - X: https://x.com/synallax
