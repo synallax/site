@@ -19,7 +19,7 @@
 <meta name="twitter:description" content="How the buyer lost their voice — and how they get it back.">
 <meta name="twitter:image" content="https://synallax.com/og.png">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Article","headline":"The Silent Half of the Market","alternativeHeadline":"How the buyer lost their voice — and how they get it back","datePublished":"2026-07-23","author":{"@type":"Organization","name":"Synallax","url":"https://synallax.com/"},"publisher":{"@type":"Organization","name":"Synallax","url":"https://synallax.com/"},"image":"https://synallax.com/og.png","mainEntityOfPage":"https://synallax.com/manifesto/","description":"Why every consumer market runs on one voice, why bidding died for humans, and why AI agents finally let the demand curve speak. The founding manifesto of Synallax, the order book for the real economy."}
+{"@context":"https://schema.org","@type":"Article","headline":"The Silent Half of the Market","alternativeHeadline":"How the buyer lost their voice — and how they get it back","datePublished":"2026-07-23","author":{"@type":"Organization","name":"Synallax","url":"https://synallax.com/"},"publisher":{"@type":"Organization","name":"Synallax","url":"https://synallax.com/"},"image":"https://synallax.com/og.png","mainEntityOfPage":"https://synallax.com/manifesto/","inLanguage":["en","pt","es","fr"],"description":"Why every consumer market runs on one voice, why bidding died for humans, and why AI agents finally let the demand curve speak. The founding manifesto of Synallax, the order book for the real economy."}
 </script>
 <style>
   :root{
@@ -32,9 +32,16 @@
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--sans);-webkit-font-smoothing:antialiased}
   a{color:inherit}
+  :focus-visible{outline:2px solid var(--bid);outline-offset:2px}
 
-  header{max-width:720px;margin:0 auto;padding:34px 24px 0;display:flex;justify-content:space-between;align-items:center}
+  header{max-width:720px;margin:0 auto;padding:34px 24px 0;display:flex;justify-content:space-between;align-items:center;gap:14px}
   .lockup svg{height:30px;width:auto;display:block;color:var(--txt)}
+  .headright{display:flex;align-items:center;gap:14px}
+  .lang{display:flex;border:1px solid var(--line2);border-radius:6px;overflow:hidden}
+  .lang button{font-family:var(--mono);font-size:11px;padding:6px 8px;background:transparent;color:var(--dim);border:0;cursor:pointer}
+  .lang button+button{border-left:1px solid var(--line2)}
+  .lang button.on{background:var(--bid);color:#04140C;font-weight:700}
+  .lang button:hover:not(.on){color:var(--txt)}
   header a.back{font-family:var(--mono);font-size:12px;color:var(--dim);text-decoration:none;border-bottom:1px solid var(--line2);padding-bottom:2px}
   header a.back:hover{color:var(--bid);border-color:var(--bid)}
 
@@ -65,84 +72,205 @@
 
   footer{max-width:720px;margin:70px auto 0;padding:26px 24px 56px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--faint);font-size:13px}
   footer em{color:var(--dim)}
-  :focus-visible{outline:2px solid var(--bid);outline-offset:2px}
 </style>
 </head>
 <body>
 
 <header>
   <a class="lockup" href="/" aria-label="Synallax home"><svg viewBox="0 0 182 52" role="img" aria-label="synallax"><text x="0" y="41" font-family="'Segoe UI',system-ui,sans-serif" font-size="40" font-weight="650" textLength="142" lengthAdjust="spacingAndGlyphs" fill="currentColor">synalla</text><polyline points="150,22 158.5,30.5 150,39" fill="none" stroke="#27B36B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="171,22 162.5,30.5 171,39" fill="none" stroke="#DB5A47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-  <a class="back" href="/">← synallax.com</a>
+  <div class="headright">
+    <div class="lang" role="group" aria-label="Language"><button data-lang="en" class="on">EN</button><button data-lang="pt">PT</button><button data-lang="es">ES</button><button data-lang="fr">FR</button></div>
+    <a class="back" href="/">← synallax.com</a>
+  </div>
 </header>
 
 <article>
-  <span class="eyebrow">Synallax · Manifesto</span>
-  <h1>The Silent Half of the Market</h1>
-  <p class="deck">How the buyer lost their voice — and how they get it back.</p>
-  <p class="meta">July 2026 · 5 min read</p>
+  <span class="eyebrow" data-i18n="m_eyebrow">Synallax · Manifesto</span>
+  <h1 data-i18n="m_title">The Silent Half of the Market</h1>
+  <p class="deck" data-i18n="m_deck">How the buyer lost their voice — and how they get it back.</p>
+  <p class="meta" data-i18n="m_meta">July 2026 · 5 min read</p>
 
   <div class="sec">
     <span class="num">I</span>
-    <p>There's a film playing tonight at the theater around the corner. You'd go for five dollars. Your friend would come along for seven. The ticket says ten — take it or leave it. So you both stay home, and the theater plays to a half-empty room.</p>
-    <p>Run the arithmetic of that evening. You lost a film you wanted to see. Your friend lost the same. The theater lost twelve dollars it will never recover, because at showtime an empty seat becomes worth exactly nothing. Everyone lost, and nobody did anything wrong.</p>
-    <p>And here is the strangest part: <b>the theater never knew you existed.</b> It didn't refuse your five dollars. Your five dollars had nowhere to go. There is no place in the world where it could have been said.</p>
+    <p data-i18n-html="m1a">There's a film playing tonight at the theater around the corner. You'd go for five dollars. Your friend would come along for seven. The ticket says ten — take it or leave it. So you both stay home, and the theater plays to a half-empty room.</p>
+    <p data-i18n-html="m1b">Run the arithmetic of that evening. You lost a film you wanted to see. Your friend lost the same. The theater lost twelve dollars it will never recover, because at showtime an empty seat becomes worth exactly nothing. Everyone lost, and nobody did anything wrong.</p>
+    <p data-i18n-html="m1c">And here is the strangest part: <b>the theater never knew you existed.</b> It didn't refuse your five dollars. Your five dollars had nowhere to go. There is no place in the world where it could have been said.</p>
   </div>
 
   <div class="sec">
     <span class="num">II</span>
-    <p>Every economics textbook opens with the same drawing: two curves crossing — supply falling into demand, the fair price discovered where they meet. It is the founding diagram of the market economy. And almost nowhere in your daily life does it actually run.</p>
-    <p>Walk through your day as a buyer. The flight, the hotel, the groceries, the car. In every one of these markets, one side speaks in full sentences — catalogs, price lists, promotions — and the other side is limited to a single binary vote: buy, or walk away. The demand curve is real. It exists in millions of heads, precise to the dollar. But it is invisible, because no venue exists where it can be written down.</p>
-    <p>We call this capitalism. It is half of one.</p>
+    <p data-i18n-html="m2a">Every economics textbook opens with the same drawing: two curves crossing — supply falling into demand, the fair price discovered where they meet. It is the founding diagram of the market economy. And almost nowhere in your daily life does it actually run.</p>
+    <p data-i18n-html="m2b">Walk through your day as a buyer. The flight, the hotel, the groceries, the car. In every one of these markets, one side speaks in full sentences — catalogs, price lists, promotions — and the other side is limited to a single binary vote: buy, or walk away. The demand curve is real. It exists in millions of heads, precise to the dollar. But it is invisible, because no venue exists where it can be written down.</p>
+    <p data-i18n-html="m2c">We call this capitalism. It is half of one.</p>
   </div>
 
   <div class="sec">
     <span class="num">III</span>
-    <p>We know exactly what a whole market looks like, because we build them for the things we consider important. Oil trades in an order book. So do wheat, currencies, electricity, and the capital of every public company on earth. Buyers post bids. Sellers post offers. Everyone sees the depth, and the price is discovered — continuously, in the open, supply meeting demand in daylight.</p>
-    <p>Notice the hierarchy we've quietly accepted: a barrel of crude oil enjoys better price discovery than the room you will sleep in tonight. When something really matters, we give it a two-sided market. Everything else gets a price tag.</p>
+    <p data-i18n-html="m3a">We know exactly what a whole market looks like, because we build them for the things we consider important. Oil trades in an order book. So do wheat, currencies, electricity, and the capital of every public company on earth. Buyers post bids. Sellers post offers. Everyone sees the depth, and the price is discovered — continuously, in the open, supply meeting demand in daylight.</p>
+    <p data-i18n-html="m3b">Notice the hierarchy we've quietly accepted: a barrel of crude oil enjoys better price discovery than the room you will sleep in tonight. When something really matters, we give it a two-sided market. Everything else gets a price tag.</p>
   </div>
 
   <div class="sec">
     <span class="num">IV</span>
-    <p>The price tag was not a conspiracy. It was a compression algorithm. Negotiating with every customer was operationally impossible, so commerce collapsed the entire demand curve into a single number and called it <em>the</em> price. A century of retail was built on that shortcut — a monologue, because conversation didn't scale.</p>
-    <p class="aside">People tried to fix it. Priceline let travelers name their own price in the nineties. It worked — then faded, because bidding is stressful for humans: one shot, opaque, emotionally expensive. The experiment was right. The species was wrong.</p>
+    <p data-i18n-html="m4a">The price tag was not a conspiracy. It was a compression algorithm. Negotiating with every customer was operationally impossible, so commerce collapsed the entire demand curve into a single number and called it <em>the</em> price. A century of retail was built on that shortcut — a monologue, because conversation didn't scale.</p>
+    <p class="aside" data-i18n-html="m4b">People tried to fix it. Priceline let travelers name their own price in the nineties. It worked — then faded, because bidding is stressful for humans: one shot, opaque, emotionally expensive. The experiment was right. The species was wrong.</p>
   </div>
 
   <div class="sec">
     <span class="num">V</span>
-    <p>Then the buyer got an agent.</p>
-    <p>An AI agent will hold your five-dollar bid for the Tuesday screening without a flicker of anxiety. It will hold fifty other bids at the same time — the flight to Paris, capped; the hotel near the conference, capped; each one firm, expiring, revisable, disciplined. And it will wait. A bid can rest for months — on the car, the watch, the apartment — until the day a seller decides it's right. Patience used to be a daily vigil across listing sites. Now it's software.</p>
-    <p>What killed buyer-side bidding was never the economics. It was the human cost of speaking. <b>That cost just went to zero.</b></p>
-    <p>For the first time since the invention of the price tag, the silent half of the market can afford to talk.</p>
+    <p data-i18n-html="m5a">Then the buyer got an agent.</p>
+    <p data-i18n-html="m5b">An AI agent will hold your five-dollar bid for the Tuesday screening without a flicker of anxiety. It will hold fifty other bids at the same time — the flight to Paris, capped; the hotel near the conference, capped; each one firm, expiring, revisable, disciplined. And it will wait. A bid can rest for months — on the car, the watch, the apartment — until the day a seller decides it's right. Patience used to be a daily vigil across listing sites. Now it's software.</p>
+    <p data-i18n-html="m5c">What killed buyer-side bidding was never the economics. It was the human cost of speaking. <b>That cost just went to zero.</b></p>
+    <p data-i18n-html="m5d">For the first time since the invention of the price tag, the silent half of the market can afford to talk.</p>
   </div>
 
   <div class="sec">
     <span class="num">VI</span>
-    <p>Synallax is the venue where it talks: <span class="hl">an order book for the real economy</span>.</p>
-    <p>A bid on Synallax is firm — a commitment, not a wish. Sellers see, for the first time, the demand curve resting under their list price — and can accept it anonymously: no published discount, no wounded brand. A dark pool for the real economy. Any product a seller can describe becomes a market — a hotel night, a used car, an empty cargo leg, a shared ride between two cities.</p>
-    <p>And we do not run these markets. Synallax builds the engine and licenses it — your venue, your brand, your rules; hosted by us, or installed inside your walls. The conversation belongs to whoever owns the market. We make it possible.</p>
-    <p>The theater fills. The buyer gets in at what the evening was honestly worth to them. Nothing expires worthless.</p>
-    <p>This is not an attack on sellers, and it is not a discount machine. It is the completion of the market — the second curve, finally drawn. If you believe in markets at all, you believe the best price is <b>discovered, not declared</b>.</p>
+    <p data-i18n-html="m6a">Synallax is the venue where it talks: <span class="hl">an order book for the real economy</span>.</p>
+    <p data-i18n-html="m6b">A bid on Synallax is firm — a commitment, not a wish. Sellers see, for the first time, the demand curve resting under their list price — and can accept it anonymously: no published discount, no wounded brand. A dark pool for the real economy. Any product a seller can describe becomes a market — a hotel night, a used car, an empty cargo leg, a shared ride between two cities.</p>
+    <p data-i18n-html="m6c">And we do not run these markets. Synallax builds the engine and licenses it — your venue, your brand, your rules; hosted by us, or installed inside your walls. The conversation belongs to whoever owns the market. We make it possible.</p>
+    <p data-i18n-html="m6d">The theater fills. The buyer gets in at what the evening was honestly worth to them. Nothing expires worthless.</p>
+    <p data-i18n-html="m6e">This is not an attack on sellers, and it is not a discount machine. It is the completion of the market — the second curve, finally drawn. If you believe in markets at all, you believe the best price is <b>discovered, not declared</b>.</p>
   </div>
 
   <div class="sec">
     <span class="num">VII</span>
-    <p>We are building it now, in the open — agent-first, with an open API and an MCP server, so the machines that will do most of tomorrow's buying can rest their bids on the book.</p>
-    <p>If you build with agents: come make your agent one of the first voices in the room. If you sell what expires — rooms, seats, capacity, time: come see the demand you've been turning away.</p>
+    <p data-i18n-html="m7a">We are building it now, in the open — agent-first, with an open API and an MCP server, so the machines that will do most of tomorrow's buying can rest their bids on the book.</p>
+    <p data-i18n-html="m7b">If you build with agents: come make your agent one of the first voices in the room. If you sell what expires — rooms, seats, capacity, time: come see the demand you've been turning away.</p>
   </div>
 </article>
 
 <div class="close">
-  <blockquote>A price should be a <span class="hl">conversation</span>.<br>Let's have it.</blockquote>
+  <blockquote data-i18n-html="m_quote">A price should be a <span class="hl">conversation</span>.<br>Let's have it.</blockquote>
   <div class="ctas">
-    <a class="btn btn-primary" href="/#waitlist">Join the waitlist</a>
-    <a class="btn btn-ghost" href="mailto:contact@synallax.com">Become a design partner</a>
+    <a class="btn btn-primary" href="/#waitlist" data-i18n="m_cta1">Join the waitlist</a>
+    <a class="btn btn-ghost" href="mailto:contact@synallax.com" data-i18n="m_cta2">Become a design partner</a>
   </div>
 </div>
 
 <footer>
-  <span>From the Greek <em>synállagma</em> — a contract that binds both sides. Exchange, together.</span>
+  <span data-i18n-html="m_ety">From the Greek <em>synállagma</em> — a contract that binds both sides. Exchange, together.</span>
   <span>© 2026 Synallax</span>
 </footer>
 
+<script>
+const I18N={
+en:{m_eyebrow:"Synallax · Manifesto",m_title:"The Silent Half of the Market",m_deck:"How the buyer lost their voice — and how they get it back.",m_meta:"July 2026 · 5 min read",
+m1a:"There's a film playing tonight at the theater around the corner. You'd go for five dollars. Your friend would come along for seven. The ticket says ten — take it or leave it. So you both stay home, and the theater plays to a half-empty room.",
+m1b:"Run the arithmetic of that evening. You lost a film you wanted to see. Your friend lost the same. The theater lost twelve dollars it will never recover, because at showtime an empty seat becomes worth exactly nothing. Everyone lost, and nobody did anything wrong.",
+m1c:"And here is the strangest part: <b>the theater never knew you existed.</b> It didn't refuse your five dollars. Your five dollars had nowhere to go. There is no place in the world where it could have been said.",
+m2a:"Every economics textbook opens with the same drawing: two curves crossing — supply falling into demand, the fair price discovered where they meet. It is the founding diagram of the market economy. And almost nowhere in your daily life does it actually run.",
+m2b:"Walk through your day as a buyer. The flight, the hotel, the groceries, the car. In every one of these markets, one side speaks in full sentences — catalogs, price lists, promotions — and the other side is limited to a single binary vote: buy, or walk away. The demand curve is real. It exists in millions of heads, precise to the dollar. But it is invisible, because no venue exists where it can be written down.",
+m2c:"We call this capitalism. It is half of one.",
+m3a:"We know exactly what a whole market looks like, because we build them for the things we consider important. Oil trades in an order book. So do wheat, currencies, electricity, and the capital of every public company on earth. Buyers post bids. Sellers post offers. Everyone sees the depth, and the price is discovered — continuously, in the open, supply meeting demand in daylight.",
+m3b:"Notice the hierarchy we've quietly accepted: a barrel of crude oil enjoys better price discovery than the room you will sleep in tonight. When something really matters, we give it a two-sided market. Everything else gets a price tag.",
+m4a:"The price tag was not a conspiracy. It was a compression algorithm. Negotiating with every customer was operationally impossible, so commerce collapsed the entire demand curve into a single number and called it <em>the</em> price. A century of retail was built on that shortcut — a monologue, because conversation didn't scale.",
+m4b:"People tried to fix it. Priceline let travelers name their own price in the nineties. It worked — then faded, because bidding is stressful for humans: one shot, opaque, emotionally expensive. The experiment was right. The species was wrong.",
+m5a:"Then the buyer got an agent.",
+m5b:"An AI agent will hold your five-dollar bid for the Tuesday screening without a flicker of anxiety. It will hold fifty other bids at the same time — the flight to Paris, capped; the hotel near the conference, capped; each one firm, expiring, revisable, disciplined. And it will wait. A bid can rest for months — on the car, the watch, the apartment — until the day a seller decides it's right. Patience used to be a daily vigil across listing sites. Now it's software.",
+m5c:"What killed buyer-side bidding was never the economics. It was the human cost of speaking. <b>That cost just went to zero.</b>",
+m5d:"For the first time since the invention of the price tag, the silent half of the market can afford to talk.",
+m6a:"Synallax is the venue where it talks: <span class=\"hl\">an order book for the real economy</span>.",
+m6b:"A bid on Synallax is firm — a commitment, not a wish. Sellers see, for the first time, the demand curve resting under their list price — and can accept it anonymously: no published discount, no wounded brand. A dark pool for the real economy. Any product a seller can describe becomes a market — a hotel night, a used car, an empty cargo leg, a shared ride between two cities.",
+m6c:"And we do not run these markets. Synallax builds the engine and licenses it — your venue, your brand, your rules; hosted by us, or installed inside your walls. The conversation belongs to whoever owns the market. We make it possible.",
+m6d:"The theater fills. The buyer gets in at what the evening was honestly worth to them. Nothing expires worthless.",
+m6e:"This is not an attack on sellers, and it is not a discount machine. It is the completion of the market — the second curve, finally drawn. If you believe in markets at all, you believe the best price is <b>discovered, not declared</b>.",
+m7a:"We are building it now, in the open — agent-first, with an open API and an MCP server, so the machines that will do most of tomorrow's buying can rest their bids on the book.",
+m7b:"If you build with agents: come make your agent one of the first voices in the room. If you sell what expires — rooms, seats, capacity, time: come see the demand you've been turning away.",
+m_quote:"A price should be a <span class=\"hl\">conversation</span>.<br>Let's have it.",
+m_cta1:"Join the waitlist",m_cta2:"Become a design partner",
+m_ety:"From the Greek <em>synállagma</em> — a contract that binds both sides. Exchange, together."},
+
+pt:{m_eyebrow:"Synallax · Manifesto",m_title:"A Metade Silenciosa do Mercado",m_deck:"Como o comprador perdeu a voz — e como vai recuperá-la.",m_meta:"Julho de 2026 · leitura de 5 min",
+m1a:"Há um filme em cartaz hoje à noite no cinema da esquina. Você iria por cinco dólares. Seu amigo toparia por sete. O ingresso diz dez — é pegar ou largar. Então vocês dois ficam em casa, e o cinema projeta para uma sala metade vazia.",
+m1b:"Faça as contas daquela noite. Você perdeu um filme que queria ver. Seu amigo perdeu o mesmo. O cinema perdeu doze dólares que nunca vai recuperar, porque na hora da sessão uma poltrona vazia passa a valer exatamente nada. Todos perderam, e ninguém fez nada de errado.",
+m1c:"E aqui está a parte mais estranha: <b>o cinema nunca soube que você existia.</b> Ele não recusou os seus cinco dólares. Os seus cinco dólares não tinham para onde ir. Não existe no mundo um lugar onde eles pudessem ter sido ditos.",
+m2a:"Todo manual de economia abre com o mesmo desenho: duas curvas se cruzando — a oferta descendo ao encontro da procura, o preço justo descoberto onde elas se encontram. É o diagrama fundador da economia de mercado. E em quase nenhum momento do seu dia a dia ele de fato funciona.",
+m2b:"Percorra o seu dia como comprador. O voo, o hotel, o supermercado, o carro. Em cada um desses mercados, um lado fala em frases completas — catálogos, tabelas de preço, promoções — e o outro lado se limita a um único voto binário: comprar, ou ir embora. A curva de demanda é real. Existe em milhões de cabeças, precisa até o centavo. Mas é invisível, porque não existe um lugar onde possa ser escrita.",
+m2c:"Chamamos isso de capitalismo. É metade de um.",
+m3a:"Sabemos exatamente como é um mercado completo, porque nós os construímos para as coisas que consideramos importantes. Petróleo negocia em livro de ofertas. Trigo também, e moedas, energia, e o capital de toda empresa aberta do planeta. Compradores registram ofertas de compra. Vendedores registram ofertas de venda. Todos veem a profundidade, e o preço é descoberto — continuamente, às claras, a oferta encontrando a procura à luz do dia.",
+m3b:"Repare na hierarquia que aceitamos em silêncio: um barril de petróleo bruto desfruta de melhor formação de preço do que o quarto em que você vai dormir hoje. Quando algo importa de verdade, damos a ele um mercado de dois lados. Todo o resto recebe uma etiqueta de preço.",
+m4a:"A etiqueta de preço não foi uma conspiração. Foi um algoritmo de compressão. Negociar com cada cliente era operacionalmente impossível, então o comércio colapsou a curva de demanda inteira em um único número e o chamou de <em>o</em> preço. Um século de varejo foi construído sobre esse atalho — um monólogo, porque conversar não escalava.",
+m4b:"Tentaram consertar. A Priceline deixou viajantes dizerem o próprio preço nos anos noventa. Funcionou — e depois murchou, porque dar lances é estressante para humanos: uma chance só, opaca, emocionalmente cara. O experimento estava certo. A espécie estava errada.",
+m5a:"Então o comprador ganhou um agente.",
+m5b:"Um agente de IA segura a sua oferta de cinco dólares para a sessão de terça sem um tremor de ansiedade. Segura outras cinquenta ao mesmo tempo — o voo para Paris, com teto; o hotel perto da conferência, com teto; cada uma firme, com validade, revisável, disciplinada. E ele espera. Uma oferta pode descansar por meses — pelo carro, pelo relógio, pelo apartamento — até o dia em que um vendedor decide que está certo. Paciência era uma vigília diária pelos sites de anúncios. Agora é software.",
+m5c:"O que matou o lance do lado comprador nunca foi a economia. Foi o custo humano de falar. <b>Esse custo acabou de ir a zero.</b>",
+m5d:"Pela primeira vez desde a invenção da etiqueta de preço, a metade silenciosa do mercado pode se dar ao luxo de falar.",
+m6a:"A Synallax é o lugar onde ela fala: <span class=\"hl\">um livro de ofertas para a economia real</span>.",
+m6b:"Uma oferta na Synallax é firme — um compromisso, não um desejo. Vendedores veem, pela primeira vez, a curva de demanda descansando abaixo do seu preço de tabela — e podem aceitá-la no anonimato: nenhum desconto publicado, nenhuma marca ferida. Um dark pool para a economia real. Qualquer produto que um vendedor consiga descrever vira um mercado — uma diária de hotel, um carro usado, uma perna de carga vazia, uma carona entre duas cidades.",
+m6c:"E nós não operamos esses mercados. A Synallax constrói o motor e o licencia — o seu mercado, a sua marca, as suas regras; hospedado por nós, ou instalado dentro das suas paredes. A conversa pertence a quem é dono do mercado. Nós a tornamos possível.",
+m6d:"O cinema enche. O comprador entra pelo que a noite honestamente valia para ele. Nada expira sem valor.",
+m6e:"Isso não é um ataque aos vendedores, e não é uma máquina de descontos. É a conclusão do mercado — a segunda curva, enfim desenhada. Se você acredita em mercados, acredita que o melhor preço é <b>descoberto, não decretado</b>.",
+m7a:"Estamos construindo agora, às claras — agent-first, com API aberta e um servidor MCP, para que as máquinas que farão a maior parte das compras de amanhã possam descansar as suas ofertas no livro.",
+m7b:"Se você constrói com agentes: venha fazer do seu agente uma das primeiras vozes na sala. Se você vende o que expira — quartos, assentos, capacidade, tempo: venha ver a demanda que você vem recusando.",
+m_quote:"Um preço deveria ser uma <span class=\"hl\">conversa</span>.<br>Vamos conversar.",
+m_cta1:"Entrar na lista de espera",m_cta2:"Tornar-se parceiro piloto",
+m_ety:"Do grego <em>synállagma</em> — um contrato que obriga os dois lados. Trocar, juntos."},
+
+es:{m_eyebrow:"Synallax · Manifiesto",m_title:"La Mitad Silenciosa del Mercado",m_deck:"Cómo el comprador perdió la voz — y cómo la recupera.",m_meta:"Julio de 2026 · lectura de 5 min",
+m1a:"Hay una película en cartel esta noche en el cine de la esquina. Tú irías por cinco dólares. Tu amigo iría por siete. La entrada dice diez — lo tomas o lo dejas. Así que los dos se quedan en casa, y el cine proyecta para una sala medio vacía.",
+m1b:"Haz las cuentas de esa noche. Tú perdiste una película que querías ver. Tu amigo perdió lo mismo. El cine perdió doce dólares que nunca recuperará, porque a la hora de la función una butaca vacía pasa a valer exactamente nada. Todos perdieron, y nadie hizo nada mal.",
+m1c:"Y aquí está lo más extraño: <b>el cine nunca supo que existías.</b> No rechazó tus cinco dólares. Tus cinco dólares no tenían adónde ir. No existe en el mundo un lugar donde pudieran haberse dicho.",
+m2a:"Todo manual de economía abre con el mismo dibujo: dos curvas cruzándose — la oferta bajando al encuentro de la demanda, el precio justo descubierto donde se encuentran. Es el diagrama fundacional de la economía de mercado. Y casi en ningún momento de tu vida diaria funciona de verdad.",
+m2b:"Recorre tu día como comprador. El vuelo, el hotel, el supermercado, el auto. En cada uno de esos mercados, un lado habla con frases completas — catálogos, listas de precios, promociones — y el otro queda limitado a un único voto binario: comprar, o marcharse. La curva de demanda es real. Existe en millones de cabezas, precisa hasta el centavo. Pero es invisible, porque no existe un lugar donde pueda escribirse.",
+m2c:"A esto lo llamamos capitalismo. Es la mitad de uno.",
+m3a:"Sabemos exactamente cómo es un mercado completo, porque los construimos para las cosas que consideramos importantes. El petróleo cotiza en un libro de órdenes. También el trigo, las divisas, la electricidad y el capital de cada empresa pública del planeta. Los compradores ponen ofertas de compra. Los vendedores, de venta. Todos ven la profundidad, y el precio se descubre — continuamente, a la vista, la oferta encontrando a la demanda a plena luz.",
+m3b:"Fíjate en la jerarquía que aceptamos en silencio: un barril de crudo goza de mejor descubrimiento de precios que la habitación donde dormirás esta noche. Cuando algo importa de verdad, le damos un mercado de dos lados. Todo lo demás recibe una etiqueta de precio.",
+m4a:"La etiqueta de precio no fue una conspiración. Fue un algoritmo de compresión. Negociar con cada cliente era operacionalmente imposible, así que el comercio colapsó la curva de demanda entera en un solo número y lo llamó <em>el</em> precio. Un siglo de retail se construyó sobre ese atajo — un monólogo, porque conversar no escalaba.",
+m4b:"Intentaron arreglarlo. Priceline dejó a los viajeros poner su propio precio en los noventa. Funcionó — y luego se apagó, porque pujar es estresante para los humanos: una sola oportunidad, opaca, emocionalmente cara. El experimento era correcto. La especie, no.",
+m5a:"Entonces el comprador consiguió un agente.",
+m5b:"Un agente de IA sostiene tu oferta de cinco dólares para la función del martes sin un asomo de ansiedad. Sostiene otras cincuenta a la vez — el vuelo a París, con tope; el hotel junto a la conferencia, con tope; cada una firme, con vencimiento, revisable, disciplinada. Y sabe esperar. Una oferta puede descansar meses — por el auto, el reloj, el departamento — hasta el día en que un vendedor decide que está bien. La paciencia era una vigilia diaria por los sitios de anuncios. Ahora es software.",
+m5c:"Lo que mató la puja del lado comprador nunca fue la economía. Fue el costo humano de hablar. <b>Ese costo acaba de llegar a cero.</b>",
+m5d:"Por primera vez desde la invención de la etiqueta de precio, la mitad silenciosa del mercado puede permitirse hablar.",
+m6a:"Synallax es el lugar donde habla: <span class=\"hl\">un libro de órdenes para la economía real</span>.",
+m6b:"Una oferta en Synallax es firme — un compromiso, no un deseo. Los vendedores ven, por primera vez, la curva de demanda descansando bajo su precio de lista — y pueden aceptarla en el anonimato: ningún descuento publicado, ninguna marca herida. Un dark pool para la economía real. Cualquier producto que un vendedor pueda describir se vuelve un mercado — una noche de hotel, un auto usado, un tramo de carga vacío, un viaje compartido entre dos ciudades.",
+m6c:"Y nosotros no operamos esos mercados. Synallax construye el motor y lo licencia — tu mercado, tu marca, tus reglas; alojado por nosotros o instalado dentro de tus muros. La conversación pertenece al dueño del mercado. Nosotros la hacemos posible.",
+m6d:"El cine se llena. El comprador entra por lo que la noche honestamente valía para él. Nada caduca sin valor.",
+m6e:"Esto no es un ataque a los vendedores, y no es una máquina de descuentos. Es la culminación del mercado — la segunda curva, por fin dibujada. Si crees en los mercados, crees que el mejor precio se <b>descubre, no se decreta</b>.",
+m7a:"Lo estamos construyendo ahora, a la vista — agent-first, con API abierta y un servidor MCP, para que las máquinas que harán la mayor parte de las compras de mañana puedan descansar sus ofertas en el libro.",
+m7b:"Si construyes con agentes: ven a hacer de tu agente una de las primeras voces en la sala. Si vendes lo que caduca — habitaciones, asientos, capacidad, tiempo: ven a ver la demanda que has estado rechazando.",
+m_quote:"Un precio debería ser una <span class=\"hl\">conversación</span>.<br>Tengámosla.",
+m_cta1:"Unirme a la lista de espera",m_cta2:"Ser socio piloto",
+m_ety:"Del griego <em>synállagma</em> — un contrato que obliga a ambas partes. Intercambio, juntos."},
+
+fr:{m_eyebrow:"Synallax · Manifeste",m_title:"La Moitié Silencieuse du Marché",m_deck:"Comment l'acheteur a perdu sa voix — et comment il la retrouve.",m_meta:"Juillet 2026 · 5 min de lecture",
+m1a:"Il y a un film à l'affiche ce soir, au cinéma du coin. Vous iriez pour cinq dollars. Votre ami viendrait pour sept. Le billet affiche dix — à prendre ou à laisser. Alors vous restez tous les deux chez vous, et le cinéma projette devant une salle à moitié vide.",
+m1b:"Faites les comptes de cette soirée. Vous avez perdu un film que vous vouliez voir. Votre ami a perdu la même chose. Le cinéma a perdu douze dollars qu'il ne récupérera jamais, car à l'heure de la séance un fauteuil vide vaut exactement zéro. Tout le monde a perdu, et personne n'a rien fait de mal.",
+m1c:"Et voici le plus étrange : <b>le cinéma n'a jamais su que vous existiez.</b> Il n'a pas refusé vos cinq dollars. Vos cinq dollars n'avaient nulle part où aller. Il n'existe aucun endroit au monde où ils auraient pu être dits.",
+m2a:"Tout manuel d'économie s'ouvre sur le même dessin : deux courbes qui se croisent — l'offre descendant à la rencontre de la demande, le juste prix découvert là où elles se rejoignent. C'est le diagramme fondateur de l'économie de marché. Et presque nulle part dans votre vie quotidienne il ne tourne vraiment.",
+m2b:"Parcourez votre journée en tant qu'acheteur. Le vol, l'hôtel, les courses, la voiture. Sur chacun de ces marchés, un côté parle en phrases complètes — catalogues, grilles tarifaires, promotions — et l'autre est réduit à un unique vote binaire : acheter, ou s'en aller. La courbe de demande est réelle. Elle existe dans des millions de têtes, précise au centime. Mais elle est invisible, car il n'existe aucun lieu où l'écrire.",
+m2c:"Nous appelons cela le capitalisme. C'en est la moitié.",
+m3a:"Nous savons exactement à quoi ressemble un marché complet, car nous en construisons pour les choses que nous jugeons importantes. Le pétrole se négocie dans un carnet d'ordres. Le blé aussi, les devises, l'électricité, et le capital de chaque société cotée de la planète. Les acheteurs déposent des offres d'achat. Les vendeurs, des offres de vente. Tout le monde voit la profondeur, et le prix se découvre — en continu, au grand jour, l'offre rencontrant la demande en pleine lumière.",
+m3b:"Remarquez la hiérarchie que nous avons acceptée en silence : un baril de brut jouit d'une meilleure découverte des prix que la chambre où vous dormirez ce soir. Quand une chose compte vraiment, nous lui donnons un marché à deux côtés. Tout le reste reçoit une étiquette de prix.",
+m4a:"L'étiquette de prix n'était pas un complot. C'était un algorithme de compression. Négocier avec chaque client était matériellement impossible, alors le commerce a écrasé toute la courbe de demande en un seul nombre et l'a appelé <em>le</em> prix. Un siècle de commerce s'est bâti sur ce raccourci — un monologue, parce que la conversation ne passait pas à l'échelle.",
+m4b:"On a essayé de réparer. Priceline a laissé les voyageurs fixer leur propre prix dans les années quatre-vingt-dix. Ça a marché — puis ça s'est éteint, parce qu'enchérir est stressant pour un humain : une seule chance, opaque, émotionnellement coûteuse. L'expérience était juste. L'espèce ne l'était pas.",
+m5a:"Puis l'acheteur a reçu un agent.",
+m5b:"Un agent IA tiendra votre offre de cinq dollars pour la séance de mardi sans l'ombre d'une angoisse. Il en tiendra cinquante autres en même temps — le vol pour Paris, plafonné ; l'hôtel près de la conférence, plafonné ; chacune ferme, à échéance, révisable, disciplinée. Et il saura attendre. Une offre peut patienter des mois — pour la voiture, la montre, l'appartement — jusqu'au jour où un vendeur décide qu'elle est juste. La patience était une veille quotidienne sur les sites d'annonces. C'est désormais du logiciel.",
+m5c:"Ce qui a tué l'enchère côté acheteur n'a jamais été l'économie. C'était le coût humain de la parole. <b>Ce coût vient de tomber à zéro.</b>",
+m5d:"Pour la première fois depuis l'invention de l'étiquette de prix, la moitié silencieuse du marché peut se permettre de parler.",
+m6a:"Synallax est le lieu où elle parle : <span class=\"hl\">un carnet d'ordres pour l'économie réelle</span>.",
+m6b:"Une offre sur Synallax est ferme — un engagement, pas un souhait. Les vendeurs voient, pour la première fois, la courbe de demande qui repose sous leur prix affiché — et peuvent l'accepter dans l'anonymat : aucune remise publiée, aucune marque blessée. Un dark pool pour l'économie réelle. Tout produit qu'un vendeur sait décrire devient un marché — une nuit d'hôtel, une voiture d'occasion, un trajet de fret à vide, un covoiturage entre deux villes.",
+m6c:"Et nous n'opérons pas ces marchés. Synallax construit le moteur et le licencie — votre place, votre marque, vos règles ; hébergé par nous, ou installé entre vos murs. La conversation appartient au propriétaire du marché. Nous la rendons possible.",
+m6d:"Le cinéma se remplit. L'acheteur entre pour ce que la soirée valait honnêtement à ses yeux. Rien n'expire sans valeur.",
+m6e:"Ce n'est pas une attaque contre les vendeurs, et ce n'est pas une machine à rabais. C'est l'achèvement du marché — la seconde courbe, enfin tracée. Si vous croyez aux marchés, vous croyez que le meilleur prix se <b>découvre, et ne se décrète pas</b>.",
+m7a:"Nous le construisons maintenant, à ciel ouvert — agent-first, avec une API ouverte et un serveur MCP, pour que les machines qui feront l'essentiel des achats de demain puissent déposer leurs offres au carnet.",
+m7b:"Si vous construisez avec des agents : venez faire de votre agent l'une des premières voix de la salle. Si vous vendez ce qui expire — chambres, sièges, capacité, temps : venez voir la demande que vous refusez.",
+m_quote:"Un prix devrait être une <span class=\"hl\">conversation</span>.<br>Ayons-la.",
+m_cta1:"Rejoindre la liste d'attente",m_cta2:"Devenir partenaire pilote",
+m_ety:"Du grec <em>synállagma</em> — un contrat qui lie les deux parties. Échanger, ensemble."}
+};
+function applyLang(l){
+  const lang=I18N[l]?l:'en', d=I18N[lang];
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i18n]').forEach(e=>{const k=e.getAttribute('data-i18n'); if(d[k]!=null) e.textContent=d[k];});
+  document.querySelectorAll('[data-i18n-html]').forEach(e=>{const k=e.getAttribute('data-i18n-html'); if(d[k]!=null) e.innerHTML=d[k];});
+  document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang));
+  try{localStorage.setItem('synallax_lang',lang)}catch(e){}
+}
+document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>applyLang(b.dataset.lang)));
+(function(){let l=null;try{l=localStorage.getItem('synallax_lang')}catch(e){}
+ if(!l){const n=(navigator.language||'en').slice(0,2).toLowerCase();l=['en','pt','es','fr'].includes(n)?n:'en';}
+ applyLang(l);})();
+</script>
 </body>
 </html>

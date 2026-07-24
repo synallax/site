@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Platform — Synallax · Exchange-grade. Not exchange-regulated.</title>
+<meta name="description" content="Everything a Synallax subscription buys into: real-time APIs, white-label UI with transparent SSO, catalog pipelines, pre-trade risk, yield autopilot, immutable audit trails, Tier-1 SLAs, AI concierge and Agent-Ready packs — exchange-grade infrastructure for your own marketplace.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#0A111C">
+<link rel="canonical" href="https://synallax.com/platform/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Synallax">
+<meta property="og:title" content="The Synallax Platform — Exchange-grade. Not exchange-regulated.">
+<meta property="og:description" content="Real-time APIs, white-label components, risk controls, audit trails, Tier-1 SLAs, AI concierge — the full scope of the engine you license.">
+<meta property="og:url" content="https://synallax.com/platform/">
+<meta property="og:image" content="https://synallax.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Synallax Platform">
+<meta name="twitter:description" content="Exchange-grade infrastructure for your own marketplace — white-label, agent-first, compliance-ready.">
+<meta name="twitter:image" content="https://synallax.com/og.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Service","name":"Synallax Platform","serviceType":"White-label marketplace and exchange engine licensing (SaaS and enterprise installation)","provider":{"@type":"Organization","name":"Synallax","url":"https://synallax.com/"},"description":"Subscription licensing of a white-label exchange engine: firm bids, RFQ, anonymous matching, agent-first APIs, risk controls, audit trails and enterprise-grade operations for a company's own branded marketplace.","hasOfferCatalog":{"@type":"OfferCatalog","name":"Platform capabilities","itemListElement":[
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Real-time APIs (REST, WebSocket, MCP)"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"White-label UI SDK with transparent SSO"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Automatic catalog import and referential pipelines"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Back-office ETL / STP integration"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Webhooks and event streaming"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Pre-trade risk controls and market protections"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"No-code business rules engine"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Yield autopilot (seller-side automation)"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Automatic inventory management"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Trade lifecycle operations (busts, disputes, refunds)"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Immutable audit trail and compliance reports"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"KYC/AML hooks, fraud and abuse protection"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Enterprise security (SSO, RBAC, encryption)"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Data residency (BR, EU, US) and LGPD/GDPR tooling"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Tier-1 SLAs, HA and disaster recovery"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Self-service operator, seller and developer portals"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Sandbox venues and session replay"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Demand intelligence dashboards"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"AI concierge for natural-language bidding"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Agent-Ready integration packs (llms.txt, MCP manifests)"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Branded notifications (email, push, WhatsApp)"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Multi-currency, tax and invoicing hooks"}}
+]}}
+</script>
+<style>
+  :root{
+    --bg:#0A111C; --panel:#0F1A28; --line:#1E2C3E; --line2:#2A3B50;
+    --txt:#E6EAF1; --dim:#93A0B2; --faint:#5E6C7E;
+    --bid:#27B36B; --ask:#DB5A47;
+    --sans:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;
+    --mono:ui-monospace,'Cascadia Mono','SF Mono',Consolas,'Liberation Mono',monospace;
+    --wrap:1080px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+  :focus-visible{outline:2px solid var(--bid);outline-offset:2px;border-radius:4px}
+
+  header{border-bottom:1px solid var(--line)}
+  .head-in{display:flex;justify-content:space-between;align-items:center;gap:16px;max-width:var(--wrap);margin:0 auto;padding:18px 24px}
+  .lockup svg{height:30px;width:auto;display:block;color:var(--txt)}
+  .headright{display:flex;align-items:center;gap:14px}
+  .lang{display:flex;border:1px solid var(--line2);border-radius:6px;overflow:hidden}
+  .lang button{font-family:var(--mono);font-size:11px;padding:6px 8px;background:transparent;color:var(--dim);border:0;cursor:pointer}
+  .lang button+button{border-left:1px solid var(--line2)}
+  .lang button.on{background:var(--bid);color:#04140C;font-weight:700}
+  .lang button:hover:not(.on){color:var(--txt)}
+  a.back{font-family:var(--mono);font-size:12px;color:var(--dim);border-bottom:1px solid var(--line2);padding-bottom:2px}
+  a.back:hover{color:var(--bid);border-color:var(--bid)}
+
+  .hero{padding:64px 0 30px}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--bid);font-weight:600}
+  h1{font-size:clamp(32px,5vw,52px);line-height:1.06;letter-spacing:-.02em;font-weight:680;margin:16px 0 14px;text-wrap:balance}
+  .sub{font-size:clamp(16px,1.9vw,19px);color:var(--dim);max-width:60ch;margin:0}
+  .scope{font-family:var(--mono);font-size:12px;color:var(--faint);margin:22px 0 0;max-width:78ch;line-height:1.6}
+
+  .guard{display:flex;gap:10px;flex-wrap:wrap;margin:26px 0 0}
+  .guard span{font-family:var(--mono);font-size:11.5px;letter-spacing:.03em;color:var(--dim);border:1px solid var(--line2);border-radius:100px;padding:7px 14px}
+  .guard span b{color:var(--bid);font-weight:600}
+
+  section.fam{padding:44px 0 8px}
+  section.fam h2{font-size:clamp(20px,2.6vw,28px);font-weight:660;letter-spacing:-.01em;margin:0}
+  section.fam h2::before{content:"";display:inline-block;width:26px;height:3px;background:var(--bid);border-radius:2px;margin:0 12px 6px 0;vertical-align:middle}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:18px 20px}
+  .card h3{font-size:15.5px;margin:0 0 6px;font-weight:650}
+  .card p{color:var(--dim);font-size:13.5px;line-height:1.55;margin:0}
+  @media (max-width:880px){ .cards{grid-template-columns:1fr 1fr} }
+  @media (max-width:560px){ .cards{grid-template-columns:1fr} }
+
+  .cta{padding:70px 0 80px;text-align:center;border-top:1px solid var(--line);margin-top:56px}
+  .cta h2{font-size:clamp(26px,3.6vw,40px);font-weight:680;letter-spacing:-.02em;margin:0 0 24px}
+  .btn{font-size:15px;font-weight:600;padding:12px 22px;border-radius:8px;border:1px solid transparent;display:inline-block;margin:0 6px}
+  .btn-primary{background:var(--bid);color:#04140C}
+  .btn-primary:hover{filter:brightness(1.08)}
+  .btn-ghost{border-color:var(--line2);color:var(--txt)}
+  .btn-ghost:hover{border-color:var(--bid);color:var(--bid)}
+
+  footer{border-top:1px solid var(--line);padding:26px 0 50px}
+  .foot{max-width:var(--wrap);margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--faint);font-size:13px}
+  .foot em{color:var(--dim)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="head-in">
+    <a class="lockup" href="/" aria-label="Synallax home"><svg viewBox="0 0 182 52" role="img" aria-label="synallax"><text x="0" y="41" font-family="'Segoe UI',system-ui,sans-serif" font-size="40" font-weight="650" textLength="142" lengthAdjust="spacingAndGlyphs" fill="currentColor">synalla</text><polyline points="150,22 158.5,30.5 150,39" fill="none" stroke="#27B36B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="171,22 162.5,30.5 171,39" fill="none" stroke="#DB5A47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    <div class="headright">
+      <div class="lang" role="group" aria-label="Language"><button data-lang="en" class="on">EN</button><button data-lang="pt">PT</button><button data-lang="es">ES</button><button data-lang="fr">FR</button></div>
+      <a class="back" href="/" data-i18n="p_back">← synallax.com</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <span class="eyebrow" data-i18n="p_eyebrow">The platform</span>
+    <h1 data-i18n="p_title">Exchange-grade. Not exchange-regulated.</h1>
+    <p class="sub" data-i18n="p_sub">Everything a Synallax subscription buys into: the infrastructure of a modern exchange, applied to your products, under your brand. Built in the open with our design partners.</p>
+    <div class="guard">
+      <span data-i18n-html="p_g1"><b>✓</b> Physical delivery only — never cash-settled differences</span>
+      <span data-i18n-html="p_g2"><b>✓</b> Primary market — no secondary speculation</span>
+      <span data-i18n-html="p_g3"><b>✓</b> No custody — settlement on licensed payment rails</span>
+    </div>
+    <p class="scope" data-i18n="p_scope">Platform scope — capabilities land progressively as we build with design partners; the architecture is designed for all of it from day one.</p>
+  </div>
+
+  <section class="fam">
+    <h2 data-i18n="f1">Access &amp; integration</h2>
+    <div class="cards">
+      <div class="card"><h3 data-i18n="c1t">Real-time APIs</h3><p data-i18n="c1d">REST, WebSocket and MCP. Millisecond matching, engineered by exchange-infrastructure veterans.</p></div>
+      <div class="card"><h3 data-i18n="c2t">White-label UI SDK</h3><p data-i18n="c2d">Order book, bid ticket and "Make an offer" components that drop into your site and apps — with transparent SSO (OIDC/SAML), so your logged-in users are already ours.</p></div>
+      <div class="card"><h3 data-i18n="c3t">Catalog pipelines</h3><p data-i18n="c3d">Automatic product-catalog import and scheduled sync from your PMS, PSS, DMS or e-commerce stack — with validation and data-quality checks.</p></div>
+      <div class="card"><h3 data-i18n="c4t">Back-office &amp; STP</h3><p data-i18n="c4d">Fills and settlements stream straight through to your ERP and accounting — reconciliation exports included.</p></div>
+      <div class="card"><h3 data-i18n="c5t">Webhooks &amp; streaming</h3><p data-i18n="c5d">Every lifecycle event — bid, fill, expiry, quote — pushed in real time to your systems.</p></div>
+    </div>
+  </section>
+
+  <section class="fam">
+    <h2 data-i18n="f2">Market operations</h2>
+    <div class="cards">
+      <div class="card"><h3 data-i18n="c6t">Pre-trade risk</h3><p data-i18n="c6d">Spend caps per agent, exposure limits, price collars, velocity limits and a kill switch — nothing enters your book unchecked.</p></div>
+      <div class="card"><h3 data-i18n="c7t">Rules engine</h3><p data-i18n="c7d">No-code venue configuration: trading hours, TTL bounds, minimum fills, auto-accept thresholds.</p></div>
+      <div class="card"><h3 data-i18n="c8t">Yield autopilot</h3><p data-i18n="c8d">The seller-side agent: rules or AI that accept or counter bids from your occupancy and utilization signals — connected to your revenue-management system.</p></div>
+      <div class="card"><h3 data-i18n="c9t">Inventory management</h3><p data-i18n="c9d">Real-time stock sync, overbooking guards, allotments and release schedules.</p></div>
+      <div class="card"><h3 data-i18n="c10t">Lifecycle operations</h3><p data-i18n="c10d">Busts, corrections, disputes and refund orchestration — with a full paper trail.</p></div>
+    </div>
+  </section>
+
+  <section class="fam">
+    <h2 data-i18n="f3">Trust, compliance &amp; security</h2>
+    <div class="cards">
+      <div class="card"><h3 data-i18n="c11t">Immutable audit trail</h3><p data-i18n="c11d">Every event journaled, replayable end to end — compliance reports your auditors will actually enjoy.</p></div>
+      <div class="card"><h3 data-i18n="c12t">KYC/AML &amp; anti-abuse</h3><p data-i18n="c12d">Identity hooks, sybil detection, bid-spam throttling and deposit policies.</p></div>
+      <div class="card"><h3 data-i18n="c13t">Security</h3><p data-i18n="c13d">SSO, role-based entitlements, encryption everywhere, penetration-tested — SOC 2 / ISO 27001 on the roadmap.</p></div>
+      <div class="card"><h3 data-i18n="c14t">Data residency</h3><p data-i18n="c14d">Region pinning across BR, EU and US — with LGPD / GDPR tooling built in.</p></div>
+    </div>
+  </section>
+
+  <section class="fam">
+    <h2 data-i18n="f4">Reliability &amp; service</h2>
+    <div class="cards">
+      <div class="card"><h3 data-i18n="c15t">Tier-1 SLAs</h3><p data-i18n="c15d">Active-active high availability, disaster recovery with hard RPO/RTO targets, 24×7 operations and monthly SLA reporting.</p></div>
+      <div class="card"><h3 data-i18n="c16t">Self-service portals</h3><p data-i18n="c16d">An operator console for venue and user management, a seller portal, and a developer portal with instant API keys.</p></div>
+      <div class="card"><h3 data-i18n="c17t">Sandbox &amp; replay</h3><p data-i18n="c17d">A permanent test venue for every client — capture and replay real sessions to test integrations safely.</p></div>
+    </div>
+  </section>
+
+  <section class="fam">
+    <h2 data-i18n="f5">Growth &amp; intelligence</h2>
+    <div class="cards">
+      <div class="card"><h3 data-i18n="c18t">Demand intelligence</h3><p data-i18n="c18d">The live demand curve under your list price, fill analytics and BI exports. Your RMS guesses; the book knows.</p></div>
+      <div class="card"><h3 data-i18n="c19t">AI concierge</h3><p data-i18n="c19d">Natural-language bidding embedded in your portal — customers without their own agent simply say the price they mean.</p></div>
+      <div class="card"><h3 data-i18n="c20t">Agent-Ready Packs</h3><p data-i18n="c20d">llms.txt, MCP manifests and instruction files per venue, so Claude, ChatGPT, Gemini or any agent platform connects in minutes.</p></div>
+      <div class="card"><h3 data-i18n="c21t">Notifications</h3><p data-i18n="c21d">Branded email, push and WhatsApp on fills, expiries and counters.</p></div>
+      <div class="card"><h3 data-i18n="c22t">Global commerce</h3><p data-i18n="c22d">Multi-currency pricing, tax and invoicing hooks, localized storefront components.</p></div>
+    </div>
+  </section>
+
+  <div class="cta">
+    <h2 data-i18n="p_cta_t">Open your venue.</h2>
+    <a class="btn btn-primary" href="/#waitlist" data-i18n="p_cta1">Join the waitlist</a>
+    <a class="btn btn-ghost" href="mailto:contact@synallax.com" data-i18n="p_cta2">Become a design partner</a>
+  </div>
+</main>
+
+<footer>
+  <div class="foot">
+    <span data-i18n-html="p_ety">From the Greek <em>synállagma</em> — a contract that binds both sides. Exchange, together.</span>
+    <span>© 2026 Synallax</span>
+  </div>
+</footer>
+
+<script>
+const I18N={
+en:{p_back:"← synallax.com",p_eyebrow:"The platform",p_title:"Exchange-grade. Not exchange-regulated.",
+p_sub:"Everything a Synallax subscription buys into: the infrastructure of a modern exchange, applied to your products, under your brand. Built in the open with our design partners.",
+p_g1:"<b>✓</b> Physical delivery only — never cash-settled differences",p_g2:"<b>✓</b> Primary market — no secondary speculation",p_g3:"<b>✓</b> No custody — settlement on licensed payment rails",
+p_scope:"Platform scope — capabilities land progressively as we build with design partners; the architecture is designed for all of it from day one.",
+f1:"Access & integration",f2:"Market operations",f3:"Trust, compliance & security",f4:"Reliability & service",f5:"Growth & intelligence",
+c1t:"Real-time APIs",c1d:"REST, WebSocket and MCP. Millisecond matching, engineered by exchange-infrastructure veterans.",
+c2t:"White-label UI SDK",c2d:"Order book, bid ticket and \"Make an offer\" components that drop into your site and apps — with transparent SSO (OIDC/SAML), so your logged-in users are already ours.",
+c3t:"Catalog pipelines",c3d:"Automatic product-catalog import and scheduled sync from your PMS, PSS, DMS or e-commerce stack — with validation and data-quality checks.",
+c4t:"Back-office & STP",c4d:"Fills and settlements stream straight through to your ERP and accounting — reconciliation exports included.",
+c5t:"Webhooks & streaming",c5d:"Every lifecycle event — bid, fill, expiry, quote — pushed in real time to your systems.",
+c6t:"Pre-trade risk",c6d:"Spend caps per agent, exposure limits, price collars, velocity limits and a kill switch — nothing enters your book unchecked.",
+c7t:"Rules engine",c7d:"No-code venue configuration: trading hours, TTL bounds, minimum fills, auto-accept thresholds.",
+c8t:"Yield autopilot",c8d:"The seller-side agent: rules or AI that accept or counter bids from your occupancy and utilization signals — connected to your revenue-management system.",
+c9t:"Inventory management",c9d:"Real-time stock sync, overbooking guards, allotments and release schedules.",
+c10t:"Lifecycle operations",c10d:"Busts, corrections, disputes and refund orchestration — with a full paper trail.",
+c11t:"Immutable audit trail",c11d:"Every event journaled, replayable end to end — compliance reports your auditors will actually enjoy.",
+c12t:"KYC/AML & anti-abuse",c12d:"Identity hooks, sybil detection, bid-spam throttling and deposit policies.",
+c13t:"Security",c13d:"SSO, role-based entitlements, encryption everywhere, penetration-tested — SOC 2 / ISO 27001 on the roadmap.",
+c14t:"Data residency",c14d:"Region pinning across BR, EU and US — with LGPD / GDPR tooling built in.",
+c15t:"Tier-1 SLAs",c15d:"Active-active high availability, disaster recovery with hard RPO/RTO targets, 24×7 operations and monthly SLA reporting.",
+c16t:"Self-service portals",c16d:"An operator console for venue and user management, a seller portal, and a developer portal with instant API keys.",
+c17t:"Sandbox & replay",c17d:"A permanent test venue for every client — capture and replay real sessions to test integrations safely.",
+c18t:"Demand intelligence",c18d:"The live demand curve under your list price, fill analytics and BI exports. Your RMS guesses; the book knows.",
+c19t:"AI concierge",c19d:"Natural-language bidding embedded in your portal — customers without their own agent simply say the price they mean.",
+c20t:"Agent-Ready Packs",c20d:"llms.txt, MCP manifests and instruction files per venue, so Claude, ChatGPT, Gemini or any agent platform connects in minutes.",
+c21t:"Notifications",c21d:"Branded email, push and WhatsApp on fills, expiries and counters.",
+c22t:"Global commerce",c22d:"Multi-currency pricing, tax and invoicing hooks, localized storefront components.",
+p_cta_t:"Open your venue.",p_cta1:"Join the waitlist",p_cta2:"Become a design partner",
+p_ety:"From the Greek <em>synállagma</em> — a contract that binds both sides. Exchange, together."},
+
+pt:{p_back:"← synallax.com",p_eyebrow:"A plataforma",p_title:"Nível de bolsa. Sem regulação de bolsa.",
+p_sub:"Tudo o que uma assinatura Synallax contrata: a infraestrutura de uma bolsa moderna, aplicada aos seus produtos, sob a sua marca. Construída abertamente com nossos parceiros piloto.",
+p_g1:"<b>✓</b> Somente entrega física — nunca liquidação por diferença",p_g2:"<b>✓</b> Mercado primário — sem especulação secundária",p_g3:"<b>✓</b> Sem custódia — liquidação em trilhos de pagamento licenciados",
+p_scope:"Escopo da plataforma — as capacidades chegam progressivamente conforme construímos com os parceiros piloto; a arquitetura nasce pronta para tudo isso.",
+f1:"Acesso e integração",f2:"Operação de mercado",f3:"Confiança, compliance e segurança",f4:"Confiabilidade e serviço",f5:"Crescimento e inteligência",
+c1t:"APIs em tempo real",c1d:"REST, WebSocket e MCP. Casamento em milissegundos, projetado por veteranos de infraestrutura de bolsa.",
+c2t:"SDK de UI white-label",c2d:"Livro de ofertas, boleta e botão \"Faça sua oferta\" que se encaixam no seu site e apps — com SSO transparente (OIDC/SAML): o usuário logado no seu portal já está logado no mercado.",
+c3t:"Pipelines de catálogo",c3d:"Importação automática do catálogo de produtos e sincronização agendada a partir do seu PMS, PSS, DMS ou e-commerce — com validação e checagem de qualidade de dados.",
+c4t:"Back-office e STP",c4d:"Execuções e liquidações fluem direto para o seu ERP e a sua contabilidade — com exportações de conciliação.",
+c5t:"Webhooks e streaming",c5d:"Cada evento do ciclo de vida — oferta, execução, expiração, cotação — enviado em tempo real para os seus sistemas.",
+c6t:"Risco pré-negociação",c6d:"Limites de gasto por agente, limites de exposição, bandas de preço, limites de velocidade e um kill switch — nada entra no seu livro sem checagem.",
+c7t:"Motor de regras",c7d:"Configuração do mercado sem código: horários de negociação, validade das ofertas, quantidade mínima, limiares de aceite automático.",
+c8t:"Piloto automático de yield",c8d:"O agente do lado vendedor: regras ou IA que aceitam ou contrapropõem ofertas a partir dos seus sinais de ocupação e utilização — conectado ao seu sistema de revenue management.",
+c9t:"Gestão de estoque",c9d:"Sincronização em tempo real, trava de overbooking, allotments e janelas de liberação.",
+c10t:"Operações do ciclo de vida",c10d:"Cancelamentos, correções, disputas e orquestração de reembolsos — com trilha completa.",
+c11t:"Trilha de auditoria imutável",c11d:"Cada evento registrado em journal, reproduzível de ponta a ponta — relatórios de compliance que os seus auditores vão gostar de ler.",
+c12t:"KYC/AML e antiabuso",c12d:"Integrações de identidade, detecção de contas falsas, contenção de spam de ofertas e políticas de depósito.",
+c13t:"Segurança",c13d:"SSO, permissões por papel, criptografia em toda parte, testes de invasão — SOC 2 / ISO 27001 no roadmap.",
+c14t:"Residência de dados",c14d:"Fixação de região entre BR, UE e EUA — com ferramentas de LGPD / GDPR embutidas.",
+c15t:"SLAs nível Tier 1",c15d:"Alta disponibilidade ativo-ativo, disaster recovery com RPO/RTO firmes, operação 24×7 e relatório mensal de SLA.",
+c16t:"Portais self-service",c16d:"Console do operador para gerir mercado e usuários, portal do vendedor e portal do desenvolvedor com chaves de API instantâneas.",
+c17t:"Sandbox e replay",c17d:"Um ambiente de testes permanente para cada cliente — capture e reproduza sessões reais para testar integrações com segurança.",
+c18t:"Inteligência de demanda",c18d:"A curva de demanda ao vivo abaixo do seu preço de tabela, análises de preenchimento e exportações de BI. Seu RMS estima; o livro sabe.",
+c19t:"Concierge de IA",c19d:"Ofertas em linguagem natural embutidas no seu portal — o cliente sem agente próprio simplesmente diz o preço que quer.",
+c20t:"Pacotes Agent-Ready",c20d:"llms.txt, manifestos MCP e arquivos de instrução por mercado, para Claude, ChatGPT, Gemini ou qualquer plataforma de agentes conectar em minutos.",
+c21t:"Notificações",c21d:"E-mail, push e WhatsApp com a sua marca em execuções, expirações e contrapropostas.",
+c22t:"Comércio global",c22d:"Preços multimoeda, integrações de impostos e faturamento, componentes de loja localizados.",
+p_cta_t:"Abra o seu mercado.",p_cta1:"Entrar na lista de espera",p_cta2:"Tornar-se parceiro piloto",
+p_ety:"Do grego <em>synállagma</em> — um contrato que obriga os dois lados. Trocar, juntos."},
+
+es:{p_back:"← synallax.com",p_eyebrow:"La plataforma",p_title:"Nivel de bolsa. Sin regulación de bolsa.",
+p_sub:"Todo lo que contrata una suscripción Synallax: la infraestructura de una bolsa moderna, aplicada a tus productos, bajo tu marca. Construida en abierto con nuestros socios piloto.",
+p_g1:"<b>✓</b> Solo entrega física — nunca liquidación por diferencias",p_g2:"<b>✓</b> Mercado primario — sin especulación secundaria",p_g3:"<b>✓</b> Sin custodia — liquidación en raíles de pago licenciados",
+p_scope:"Alcance de la plataforma — las capacidades llegan progresivamente mientras construimos con los socios piloto; la arquitectura nace lista para todo esto.",
+f1:"Acceso e integración",f2:"Operación de mercado",f3:"Confianza, compliance y seguridad",f4:"Confiabilidad y servicio",f5:"Crecimiento e inteligencia",
+c1t:"APIs en tiempo real",c1d:"REST, WebSocket y MCP. Emparejamiento en milisegundos, diseñado por veteranos de infraestructura bursátil.",
+c2t:"SDK de UI white-label",c2d:"Libro de órdenes, boleta y botón \"Haz tu oferta\" que encajan en tu sitio y apps — con SSO transparente (OIDC/SAML): tu usuario logueado ya está dentro del mercado.",
+c3t:"Pipelines de catálogo",c3d:"Importación automática del catálogo y sincronización programada desde tu PMS, PSS, DMS o e-commerce — con validación y control de calidad de datos.",
+c4t:"Back-office y STP",c4d:"Ejecuciones y liquidaciones fluyen directo a tu ERP y contabilidad — con exportaciones de conciliación.",
+c5t:"Webhooks y streaming",c5d:"Cada evento del ciclo de vida — oferta, ejecución, vencimiento, cotización — enviado en tiempo real a tus sistemas.",
+c6t:"Riesgo pre-negociación",c6d:"Límites de gasto por agente, límites de exposición, bandas de precio, límites de velocidad y un kill switch — nada entra a tu libro sin control.",
+c7t:"Motor de reglas",c7d:"Configuración del mercado sin código: horarios, vigencia de ofertas, cantidad mínima, umbrales de aceptación automática.",
+c8t:"Piloto automático de yield",c8d:"El agente del lado vendedor: reglas o IA que aceptan o contraofertan según tus señales de ocupación y utilización — conectado a tu sistema de revenue management.",
+c9t:"Gestión de inventario",c9d:"Sincronización en tiempo real, freno de overbooking, cupos y ventanas de liberación.",
+c10t:"Operaciones del ciclo de vida",c10d:"Anulaciones, correcciones, disputas y orquestación de reembolsos — con rastro completo.",
+c11t:"Pista de auditoría inmutable",c11d:"Cada evento registrado y reproducible de punta a punta — reportes de compliance que tus auditores disfrutarán.",
+c12t:"KYC/AML y antiabuso",c12d:"Integraciones de identidad, detección de cuentas falsas, freno al spam de ofertas y políticas de depósito.",
+c13t:"Seguridad",c13d:"SSO, permisos por rol, cifrado en todas partes, pruebas de penetración — SOC 2 / ISO 27001 en el roadmap.",
+c14t:"Residencia de datos",c14d:"Fijación de región entre BR, UE y EE. UU. — con herramientas LGPD / GDPR integradas.",
+c15t:"SLAs nivel Tier 1",c15d:"Alta disponibilidad activo-activo, disaster recovery con RPO/RTO firmes, operación 24×7 y reporte mensual de SLA.",
+c16t:"Portales autoservicio",c16d:"Consola del operador para gestionar mercado y usuarios, portal del vendedor y portal del desarrollador con claves API instantáneas.",
+c17t:"Sandbox y replay",c17d:"Un entorno de pruebas permanente para cada cliente — captura y reproduce sesiones reales para probar integraciones con seguridad.",
+c18t:"Inteligencia de demanda",c18d:"La curva de demanda en vivo bajo tu precio de lista, analítica de llenado y exportaciones a BI. Tu RMS estima; el libro sabe.",
+c19t:"Concierge de IA",c19d:"Ofertas en lenguaje natural integradas en tu portal — el cliente sin agente propio simplemente dice el precio que quiere.",
+c20t:"Paquetes Agent-Ready",c20d:"llms.txt, manifiestos MCP y archivos de instrucciones por mercado, para que Claude, ChatGPT, Gemini o cualquier plataforma de agentes se conecte en minutos.",
+c21t:"Notificaciones",c21d:"Email, push y WhatsApp con tu marca en ejecuciones, vencimientos y contraofertas.",
+c22t:"Comercio global",c22d:"Precios multimoneda, integraciones de impuestos y facturación, componentes de tienda localizados.",
+p_cta_t:"Abre tu mercado.",p_cta1:"Unirme a la lista de espera",p_cta2:"Ser socio piloto",
+p_ety:"Del griego <em>synállagma</em> — un contrato que obliga a ambas partes. Intercambio, juntos."},
+
+fr:{p_back:"← synallax.com",p_eyebrow:"La plateforme",p_title:"Niveau bourse. Sans régulation de bourse.",
+p_sub:"Tout ce qu'un abonnement Synallax comprend : l'infrastructure d'une bourse moderne, appliquée à vos produits, sous votre marque. Construite à ciel ouvert avec nos partenaires pilotes.",
+p_g1:"<b>✓</b> Livraison physique uniquement — jamais de règlement en différentiel",p_g2:"<b>✓</b> Marché primaire — pas de spéculation secondaire",p_g3:"<b>✓</b> Aucune garde de fonds — règlement via des rails de paiement agréés",
+p_scope:"Périmètre de la plateforme — les capacités arrivent progressivement au fil de la construction avec les partenaires pilotes ; l'architecture est conçue pour tout cela dès le départ.",
+f1:"Accès et intégration",f2:"Opérations de marché",f3:"Confiance, conformité et sécurité",f4:"Fiabilité et service",f5:"Croissance et intelligence",
+c1t:"API temps réel",c1d:"REST, WebSocket et MCP. Appariement en millisecondes, conçu par des vétérans de l'infrastructure boursière.",
+c2t:"SDK d'interface en marque blanche",c2d:"Carnet d'ordres, ticket d'offre et bouton « Faites votre offre » qui s'intègrent à votre site et vos apps — avec SSO transparent (OIDC/SAML) : votre utilisateur connecté l'est déjà sur la place.",
+c3t:"Pipelines de catalogue",c3d:"Import automatique du catalogue produits et synchronisation planifiée depuis votre PMS, PSS, DMS ou e-commerce — avec validation et contrôle qualité des données.",
+c4t:"Back-office et STP",c4d:"Exécutions et règlements filent directement vers votre ERP et votre comptabilité — exports de rapprochement inclus.",
+c5t:"Webhooks et streaming",c5d:"Chaque événement du cycle de vie — offre, exécution, expiration, cotation — poussé en temps réel vers vos systèmes.",
+c6t:"Risque pré-négociation",c6d:"Plafonds de dépense par agent, limites d'exposition, bandes de prix, limites de vélocité et un kill switch — rien n'entre dans votre carnet sans contrôle.",
+c7t:"Moteur de règles",c7d:"Configuration de la place sans code : horaires de négociation, durées de validité, quantités minimales, seuils d'acceptation automatique.",
+c8t:"Pilote automatique de yield",c8d:"L'agent côté vendeur : des règles ou une IA qui acceptent ou contre-proposent selon vos signaux d'occupation et d'utilisation — connecté à votre système de revenue management.",
+c9t:"Gestion des stocks",c9d:"Synchronisation en temps réel, garde-fou anti-surréservation, allotements et fenêtres de libération.",
+c10t:"Opérations du cycle de vie",c10d:"Annulations, corrections, litiges et orchestration des remboursements — avec traçabilité complète.",
+c11t:"Piste d'audit immuable",c11d:"Chaque événement journalisé, rejouable de bout en bout — des rapports de conformité que vos auditeurs apprécieront.",
+c12t:"KYC/AML et anti-abus",c12d:"Intégrations d'identité, détection de comptes fictifs, limitation du spam d'offres et politiques de dépôt.",
+c13t:"Sécurité",c13d:"SSO, habilitations par rôle, chiffrement partout, tests d'intrusion — SOC 2 / ISO 27001 en feuille de route.",
+c14t:"Résidence des données",c14d:"Ancrage régional BR, UE et É.-U. — avec outils LGPD / RGPD intégrés.",
+c15t:"SLA de niveau Tier 1",c15d:"Haute disponibilité actif-actif, reprise après sinistre avec RPO/RTO fermes, exploitation 24×7 et rapport mensuel de SLA.",
+c16t:"Portails en libre-service",c16d:"Console opérateur pour gérer place et utilisateurs, portail vendeur et portail développeur avec clés API instantanées.",
+c17t:"Sandbox et replay",c17d:"Un environnement de test permanent pour chaque client — capturez et rejouez des sessions réelles pour tester vos intégrations en sécurité.",
+c18t:"Intelligence de la demande",c18d:"La courbe de demande en direct sous votre prix affiché, analyses de remplissage et exports BI. Votre RMS estime ; le carnet sait.",
+c19t:"Concierge IA",c19d:"Des offres en langage naturel intégrées à votre portail — le client sans agent dit simplement le prix qu'il veut.",
+c20t:"Packs Agent-Ready",c20d:"llms.txt, manifestes MCP et fichiers d'instructions par place, pour que Claude, ChatGPT, Gemini ou toute plateforme d'agents se connecte en minutes.",
+c21t:"Notifications",c21d:"E-mail, push et WhatsApp à votre marque sur exécutions, expirations et contre-offres.",
+c22t:"Commerce global",c22d:"Prix multidevises, intégrations fiscales et de facturation, composants de boutique localisés.",
+p_cta_t:"Ouvrez votre place.",p_cta1:"Rejoindre la liste d'attente",p_cta2:"Devenir partenaire pilote",
+p_ety:"Du grec <em>synállagma</em> — un contrat qui lie les deux parties. Échanger, ensemble."}
+};
+function applyLang(l){
+  const lang=I18N[l]?l:'en', d=I18N[lang];
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i18n]').forEach(e=>{const k=e.getAttribute('data-i18n'); if(d[k]!=null) e.textContent=d[k];});
+  document.querySelectorAll('[data-i18n-html]').forEach(e=>{const k=e.getAttribute('data-i18n-html'); if(d[k]!=null) e.innerHTML=d[k];});
+  document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang));
+  try{localStorage.setItem('synallax_lang',lang)}catch(e){}
+}
+document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>applyLang(b.dataset.lang)));
+(function(){let l=null;try{l=localStorage.getItem('synallax_lang')}catch(e){}
+ if(!l){const n=(navigator.language||'en').slice(0,2).toLowerCase();l=['en','pt','es','fr'].includes(n)?n:'en';}
+ applyLang(l);})();
+</script>
+</body>
+</html>
