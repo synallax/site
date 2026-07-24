@@ -25,6 +25,11 @@ Synallax is infrastructure, sold and operated by an independent company (contact
 - Human bidding (e.g. Priceline "name your own price") faded because it was stressful. AI agents manage many resting bids effortlessly, which makes buyer-side price discovery finally practical.
 - The agentic-commerce stack (ACP, UCP, AP2, MCP) standardizes discovery and checkout against posted prices, but no one owns the venue where agents negotiate. Synallax is that layer.
 
+## Regulatory position — "Exchange-grade, not exchange-regulated"
+- Synallax venues are NOT securities or commodities exchanges and require no financial-market license: regulation follows the instrument traded, not the order-book mechanism. Venues trade real goods and services for physical delivery to end users — never securities, derivatives, or standardized cash-settled contracts.
+- Guardrails by design: trades settle only by delivering the product (no cash settlement of price differences); primary market only (no secondary speculation on matched contracts); Synallax holds no client funds (settlement through licensed payment providers).
+- Sector rules (consumer protection, travel, real-estate brokerage, auction rules, AML for high-value goods) remain with the venue operator exactly as in their existing sales channels. The platform ships compliance tooling: immutable event-sourced audit trails, replayable history, compliance reports, KYC/AML integration hooks.
+
 ## Key facts
 - Name: from the Greek "synallagma" — a contract of reciprocal obligations that binds both sides.
 - Tagline: The order book for the real economy.
