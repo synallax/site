@@ -125,9 +125,9 @@
     <a class="brand" href="/" aria-label="Synallax home"><span class="lockup"></span></a>
     <nav class="navlinks">
       <a href="/#mission" data-i18n="n_mission">Mission</a>
-      <a href="/#builders" data-i18n="n_builders">For builders</a>
-      <a href="/#sellers" data-i18n="n_sellers">For sellers</a>
+      <a href="/#industries" data-i18n="n_who">Who it's for</a>
       <a href="/platform/" class="here" data-i18n="n_platform">Platform</a>
+      <a href="/manifesto/" data-i18n="n_manifesto">Manifesto</a>
       <a href="/#faq" data-i18n="n_faq">FAQ</a>
     </nav>
     <div class="navright">
@@ -215,10 +215,10 @@
     <div class="foot-grid">
       <div class="foot-brand"><span class="lockup"></span><p data-i18n="f_tagline">The order book for the real economy.</p></div>
       <div class="foot-links">
-        <a href="/#builders" data-i18n="n_builders">For builders</a>
-        <a href="/#sellers" data-i18n="n_sellers">For sellers</a>
         <a href="/#mission" data-i18n="n_mission">Mission</a>
+        <a href="/#industries" data-i18n="n_who">Who it's for</a>
         <a href="/platform/" data-i18n="n_platform">Platform</a>
+        <a href="/manifesto/" data-i18n="n_manifesto">Manifesto</a>
         <a href="/#faq" data-i18n="n_faq">FAQ</a>
         <a href="mailto:contact@synallax.com">contact@synallax.com</a>
         <a href="https://www.linkedin.com/company/synallax/" target="_blank" rel="noopener">LinkedIn</a>
@@ -237,10 +237,10 @@ const LOCKUP=`<svg viewBox="0 0 182 52" role="img" aria-label="synallax"><text x
 document.querySelectorAll('.lockup').forEach(e=>e.innerHTML=LOCKUP);
 
 const CHROME={
-en:{n_mission:"Mission",n_builders:"For builders",n_sellers:"For sellers",n_platform:"Platform",n_faq:"FAQ",n_cta:"Join the waitlist",f_tagline:"The order book for the real economy.",f_ety:"From the Greek <em>synállagma</em> — a contract that binds both sides. Exchange, together.",f_rights:"© 2026 Synallax. Building in the open."},
-pt:{n_mission:"Missão",n_builders:"Para quem constrói",n_sellers:"Para vendedores",n_platform:"Plataforma",n_faq:"Dúvidas",n_cta:"Entrar na lista",f_tagline:"O livro de ofertas da economia real.",f_ety:"Do grego <em>synállagma</em> — um contrato que obriga os dois lados. Trocar, juntos.",f_rights:"© 2026 Synallax. Construindo abertamente."},
-es:{n_mission:"Misión",n_builders:"Para quien construye",n_sellers:"Para vendedores",n_platform:"Plataforma",n_faq:"Preguntas",n_cta:"Unirme a la lista",f_tagline:"El libro de órdenes de la economía real.",f_ety:"Del griego <em>synállagma</em> — un contrato que obliga a ambas partes. Intercambio, juntos.",f_rights:"© 2026 Synallax. Construyendo en abierto."},
-fr:{n_mission:"Mission",n_builders:"Pour les développeurs",n_sellers:"Pour les vendeurs",n_platform:"Plateforme",n_faq:"FAQ",n_cta:"Rejoindre la liste",f_tagline:"Le carnet d'ordres de l'économie réelle.",f_ety:"Du grec <em>synállagma</em> — un contrat qui lie les deux parties. Échanger, ensemble.",f_rights:"© 2026 Synallax. Construit à ciel ouvert."}
+en:{n_mission:"Mission",n_builders:"For builders",n_sellers:"For sellers",n_who:"Who it's for",n_platform:"Platform",n_manifesto:"Manifesto",n_faq:"FAQ",n_cta:"Join the waitlist",f_tagline:"The order book for the real economy.",f_ety:"From the Greek <em>synállagma</em> — a contract that binds both sides. Exchange, together.",f_rights:"© 2026 Synallax. Building in the open."},
+pt:{n_mission:"Missão",n_builders:"Para quem constrói",n_sellers:"Para vendedores",n_who:"Para quem",n_platform:"Plataforma",n_manifesto:"Manifesto",n_faq:"Dúvidas",n_cta:"Entrar na lista",f_tagline:"O livro de ofertas da economia real.",f_ety:"Do grego <em>synállagma</em> — um contrato que obriga os dois lados. Trocar, juntos.",f_rights:"© 2026 Synallax. Construindo abertamente."},
+es:{n_mission:"Misión",n_builders:"Para quien construye",n_sellers:"Para vendedores",n_who:"Para quién",n_platform:"Plataforma",n_manifesto:"Manifiesto",n_faq:"Preguntas",n_cta:"Unirme a la lista",f_tagline:"El libro de órdenes de la economía real.",f_ety:"Del griego <em>synállagma</em> — un contrato que obliga a ambas partes. Intercambio, juntos.",f_rights:"© 2026 Synallax. Construyendo en abierto."},
+fr:{n_mission:"Mission",n_builders:"Pour les développeurs",n_sellers:"Pour les vendeurs",n_who:"Pour qui",n_platform:"Plateforme",n_manifesto:"Manifeste",n_faq:"FAQ",n_cta:"Rejoindre la liste",f_tagline:"Le carnet d'ordres de l'économie réelle.",f_ety:"Du grec <em>synállagma</em> — un contrat qui lie les deux parties. Échanger, ensemble.",f_rights:"© 2026 Synallax. Construit à ciel ouvert."}
 };
 const PAGE={
 en:{p_eyebrow:"The platform",p_title:"Marketplace infrastructure, complete.",
