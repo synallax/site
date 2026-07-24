@@ -199,13 +199,14 @@
 
   /* doors */
   .doors{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-  .door{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px;display:flex;flex-direction:column;border-top-width:3px}
+  .door{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:28px;display:flex;flex-direction:column;border-top-width:3px;min-width:0}
+  @media (max-width:560px){ .door{padding:20px} }
   .door.sellers{border-color:var(--ask)} .door.builders{border-color:var(--bid)}
   .door h3{font-size:22px;margin:10px 0 10px}
   .door>p{color:var(--dim);font-size:14.5px;margin:0 0 18px}
   .door .btn{align-self:flex-start;margin-top:auto}
   .door.builders .eyebrow{color:var(--bid)} .door.sellers .eyebrow{color:var(--ask)}
-  pre.code{background:#07101B;border:1px solid var(--line2);border-radius:9px;padding:13px;overflow-x:auto;font-family:var(--mono);font-size:11.5px;line-height:1.7;color:var(--dim);margin:0 0 18px}
+  pre.code{background:#07101B;border:1px solid var(--line2);border-radius:9px;padding:13px;overflow-x:auto;font-family:var(--mono);font-size:11.5px;line-height:1.7;color:var(--dim);margin:0 0 18px;max-width:100%;min-width:0}
   pre.code .c{color:var(--faint)} pre.code .g{color:var(--bid)} pre.code .p{color:var(--txt)}
   @media (max-width:780px){ .doors{grid-template-columns:1fr} }
 
@@ -259,7 +260,6 @@
       <div class="lang" role="group" aria-label="Language">
         <button data-lang="en" class="on">EN</button><button data-lang="pt">PT</button><button data-lang="es">ES</button><button data-lang="fr">FR</button>
       </div>
-      <a href="#waitlist" class="btn btn-primary" data-i18n="n_cta">Join the waitlist</a>
     </div>
   </div>
 </header>
@@ -467,7 +467,7 @@
 <footer>
   <div class="wrap">
     <div class="foot-grid">
-      <div class="foot-brand"><span class="lockup"></span><p data-i18n="f_tagline">The order book for the real economy.</p></div>
+      <div class="foot-brand"><span class="lockup"></span></div>
       <div class="foot-links">
         <a href="#mission" data-i18n="n_mission">Mission</a>
         <a href="#industries" data-i18n="n_who">Who it's for</a>
