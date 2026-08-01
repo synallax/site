@@ -49,6 +49,8 @@
   .lang button+button{border-left:1px solid var(--line2)}
   .lang button.on{background:var(--bid);color:#04140C;font-weight:700}
   .lang button:hover:not(.on){color:var(--txt)}
+  .btn-console{font-size:13px;padding:7px 14px;border:1px solid var(--line2);border-radius:6px;color:var(--txt);flex:0 0 auto}
+  .btn-console:hover{border-color:var(--bid);color:var(--bid);text-decoration:none}
   .btn{font-family:var(--sans);font-size:14px;font-weight:600;padding:9px 16px;border-radius:7px;border:1px solid transparent;display:inline-block;text-align:center;text-decoration:none}
   .btn-primary{background:var(--bid);color:#04140C}
   .btn-primary:hover{filter:brightness(1.08)}
@@ -103,6 +105,7 @@
       <a href="/#faq" data-i18n="n_faq">FAQ</a>
     </nav>
     <div class="navright">
+      <a id="consoleLink" class="btn-console" href="https://app.synallax.com/">Console</a>
       <div class="lang" role="group" aria-label="Language"><button data-lang="en" class="on">EN</button><button data-lang="pt">PT</button><button data-lang="es">ES</button><button data-lang="fr">FR</button></div>
     </div>
   </div>
@@ -321,5 +324,6 @@ document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',
  if(!l){const n=(navigator.language||'en').slice(0,2).toLowerCase();l=['en','pt','es','fr'].includes(n)?n:'en';}
  applyLang(l);})();
 </script>
+<script>(function(){function s(){var cl=document.getElementById("consoleLink");if(!cl)return;var t={en:"Console",pt:"Console",es:"Consola",fr:"Console"};cl.textContent=t[lang]||"Console";cl.href="https://app.synallax.com/?lang="+lang;}document.querySelectorAll(".lang button").forEach(function(b){b.addEventListener("click",function(){setTimeout(s,0)})});s();})();</script>
 </body>
 </html>
