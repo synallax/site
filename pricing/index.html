@@ -14,7 +14,7 @@
     --bid-wash:rgba(39,179,107,.14); --ask-wash:rgba(219,90,71,.14);
     --sans:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;
     --mono:ui-monospace,'Cascadia Mono','SF Mono',Consolas,'Liberation Mono',monospace;
-    --wrap:1140px;
+    --wrap:1180px;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -42,20 +42,29 @@
   h1{font-size:38px;margin:0 0 8px;text-align:center}
   .sub{color:var(--dim);text-align:center;max-width:640px;margin:0 auto 42px}
 
-  .plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;align-items:start}
-  .plan{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px 24px;display:flex;flex-direction:column;position:relative}
+  .plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;align-items:stretch}
+  .plan{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px 22px;display:flex;flex-direction:column;position:relative}
   .plan.hot{border-color:var(--bid);box-shadow:0 0 0 1px var(--bid), 0 18px 50px rgba(39,179,107,.12)}
   .ribbon{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--bid);color:#04140C;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 12px;border-radius:999px;white-space:nowrap}
   .plan h2{margin:0 0 2px;font-size:20px}
-  .tag{color:var(--dim);font-size:13px;min-height:38px;margin:0 0 12px}
-  .price{font-size:34px;font-weight:800;margin:0}
+  .tag{color:var(--dim);font-size:13px;height:40px;margin:0 0 10px;overflow:hidden}
+  .price{font-size:32px;font-weight:800;margin:0;height:42px;display:flex;align-items:baseline;gap:6px}
   .price small{font-size:13px;color:var(--dim);font-weight:400}
-  .per{color:var(--faint);font-size:12px;margin:0 0 16px}
-  ul.feat{list-style:none;margin:0 0 18px;padding:0;font-size:13.5px}
-  ul.feat li{padding:5px 0 5px 24px;position:relative;border-bottom:1px dashed var(--line)}
+  .price.talk{font-size:24px;align-items:center}
+  .per{color:var(--faint);font-size:12px;height:18px;margin:0 0 14px}
+
+  /* The SAME feature list on every card - checks and crosses show what accumulates. */
+  ul.feat{list-style:none;margin:0 0 18px;padding:0;font-size:13px}
+  ul.feat li{padding:6px 0 6px 24px;position:relative;border-bottom:1px dashed var(--line);min-height:31px}
   ul.feat li:last-child{border-bottom:0}
-  ul.feat li::before{content:"";position:absolute;left:0;top:11px;width:14px;height:14px;border-radius:50%;background:var(--bid-wash);border:1px solid var(--bid)}
-  ul.feat li::after{content:"";position:absolute;left:4px;top:14px;width:6px;height:3px;border-left:2px solid var(--bid);border-bottom:2px solid var(--bid);transform:rotate(-45deg)}
+  ul.feat li.yes::before{content:"";position:absolute;left:0;top:10px;width:14px;height:14px;border-radius:50%;background:var(--bid-wash);border:1px solid var(--bid)}
+  ul.feat li.yes::after{content:"";position:absolute;left:4px;top:13px;width:6px;height:3px;border-left:2px solid var(--bid);border-bottom:2px solid var(--bid);transform:rotate(-45deg)}
+  ul.feat li.no{color:var(--faint)}
+  ul.feat li.no::before{content:"";position:absolute;left:0;top:10px;width:14px;height:14px;border-radius:50%;background:var(--ask-wash);border:1px solid var(--ask);opacity:.55}
+  ul.feat li.no::after{content:"\00d7";position:absolute;left:3.5px;top:8px;color:var(--ask);font-size:12px;font-weight:700;opacity:.75}
+  ul.feat b{color:var(--txt);font-weight:600}
+  ul.feat li.no b{color:var(--faint);font-weight:400}
+
   .cta{display:block;text-align:center;padding:11px 16px;border-radius:8px;font-weight:700;font-size:14px;margin-top:auto;text-decoration:none}
   .cta.primary{background:var(--bid);color:#04140C}
   .cta.primary:hover{filter:brightness(1.08);text-decoration:none}
@@ -109,21 +118,28 @@
       <p class="price">$0</p>
       <p class="per" data-i18n="p1_per">forever</p>
       <ul class="feat">
-        <li data-i18n="p1_f1">1 marketplace</li>
-        <li data-i18n="p1_f2">1 product type</li>
-        <li data-i18n="p1_f3">10 parameters per product</li>
-        <li data-i18n="p1_f4">20 open offers</li>
-        <li data-i18n="f_store">Hosted storefront + embed widget</li>
-        <li data-i18n="f_book">Live order book</li>
-        <li data-i18n="f_api">Full API access</li>
+        <li class="yes"><b>1</b> <span data-i18n="r_mp">marketplace(s)</span></li>
+        <li class="yes"><b>1</b> <span data-i18n="r_tpl">product type(s)</span></li>
+        <li class="yes"><b>10</b> <span data-i18n="r_par">parameters per product</span></li>
+        <li class="yes"><b>20</b> <span data-i18n="r_off">open offers</span></li>
+        <li class="yes"><span data-i18n="r_store">Hosted storefront + embed widget</span></li>
+        <li class="yes"><span data-i18n="r_book">Live order book</span></li>
+        <li class="yes"><span data-i18n="r_api">Full API access</span></li>
+        <li class="no"><b data-i18n="r_csv">CSV / Excel import</b></li>
+        <li class="no"><b data-i18n="r_badge">Remove "powered by"</b></li>
+        <li class="no"><b data-i18n="r_fonts">Custom fonts</b></li>
+        <li class="no"><b data-i18n="r_css">Custom CSS</b></li>
+        <li class="no"><b data-i18n="r_int">Custom integrations</b></li>
+        <li class="no"><b data-i18n="r_rules">Custom business rules</b></li>
+        <li class="no"><b data-i18n="r_supp">Support</b></li>
       </ul>
       <a class="cta ghost" href="https://app.synallax.com/" data-i18n="p1_cta">Start free</a>
       <details class="more">
         <summary data-i18n="more">More details</summary>
         <div class="more-in">
           <p data-i18n="p1_d1">Everything you need to prove the idea: create your marketplace in the five-question wizard, define your product's typed parameters (text, number, date, time, price, rating, place, pictures), brand it with your colors and logo, and share your storefront link or paste the embed widget on your own site.</p>
-          <p data-i18n="p1_d2"><b>20 open offers</b> means up to 20 bids resting in your book at any moment - as offers conclude or expire, room opens for new ones. Your page carries a small "powered by Synallax" note.</p>
-          <div class="ex"><b data-i18n="ex">Example:</b> <span data-i18n="p1_ex">A padel club lists its courts as "court-slot" with parameters court, date, hour and level. Players open the link, sign in with an e-mail code, and bid for Tuesday 19:00. The club accepts the best offer from its console.</span></div>
+          <p data-i18n="p1_d2"><b>20 open offers</b> means up to 20 bids resting in your book at any moment - as offers conclude or expire, room opens for new ones. Your page carries a small “powered by Synallax” note.</p>
+          <div class="ex"><b data-i18n="ex">Example:</b> <span data-i18n="p1_ex">A padel club lists its courts as “court-slot” with parameters court, date, hour and level. Players open the link, sign in with an e-mail code, and bid for Tuesday 19:00. The club accepts the best offer from its console.</span></div>
         </div>
       </details>
     </div>
@@ -134,16 +150,22 @@
       <p class="price">$100 <small>USD</small></p>
       <p class="per" data-i18n="per_month">per month</p>
       <ul class="feat">
-        <li data-i18n="p2_f1">3 marketplaces</li>
-        <li data-i18n="p2_f2">20 product types</li>
-        <li data-i18n="p2_f3">20 parameters per product</li>
-        <li data-i18n="f_unlo">Unlimited open offers</li>
-        <li data-i18n="p2_f4">Remove "powered by"</li>
-        <li data-i18n="p2_f5">Custom fonts</li>
-        <li data-i18n="p2_f6">CSV / Excel inventory import</li>
-        <li data-i18n="p2_f7">E-mail support</li>
+        <li class="yes"><b>3</b> <span data-i18n="r_mp">marketplace(s)</span></li>
+        <li class="yes"><b>20</b> <span data-i18n="r_tpl">product type(s)</span></li>
+        <li class="yes"><b>20</b> <span data-i18n="r_par">parameters per product</span></li>
+        <li class="yes"><b data-i18n="u">Unlimited</b> <span data-i18n="r_off">open offers</span></li>
+        <li class="yes"><span data-i18n="r_store">Hosted storefront + embed widget</span></li>
+        <li class="yes"><span data-i18n="r_book">Live order book</span></li>
+        <li class="yes"><span data-i18n="r_api">Full API access</span></li>
+        <li class="yes"><span data-i18n="r_csv">CSV / Excel import</span></li>
+        <li class="yes"><span data-i18n="r_badge">Remove "powered by"</span></li>
+        <li class="yes"><span data-i18n="r_fonts">Custom fonts</span></li>
+        <li class="no"><b data-i18n="r_css">Custom CSS</b></li>
+        <li class="no"><b data-i18n="r_int">Custom integrations</b></li>
+        <li class="no"><b data-i18n="r_rules">Custom business rules</b></li>
+        <li class="yes"><span data-i18n="r_supp">Support</span>: <b data-i18n="v_email">e-mail</b></li>
       </ul>
-      <a class="cta ghost" href="https://app.synallax.com/Billing" data-i18n="p2_cta">Choose Basic</a>
+      <a class="cta ghost" href="https://app.synallax.com/Subscribe?plan=basic" data-i18n="p2_cta">Choose Basic</a>
       <details class="more">
         <summary data-i18n="more">More details</summary>
         <div class="more-in">
@@ -161,15 +183,22 @@
       <p class="price">$750 <small>USD</small></p>
       <p class="per" data-i18n="per_month">per month</p>
       <ul class="feat">
-        <li data-i18n="p3_f1">20 marketplaces</li>
-        <li data-i18n="p3_f2">Unlimited product types</li>
-        <li data-i18n="p3_f3">Unlimited parameters</li>
-        <li data-i18n="f_unlo">Unlimited open offers</li>
-        <li data-i18n="p3_f4">Custom CSS on your storefront</li>
-        <li data-i18n="p3_f5">3 custom integrations, built with you</li>
-        <li data-i18n="p3_f6">Priority support</li>
+        <li class="yes"><b>20</b> <span data-i18n="r_mp">marketplace(s)</span></li>
+        <li class="yes"><b data-i18n="u">Unlimited</b> <span data-i18n="r_tpl">product type(s)</span></li>
+        <li class="yes"><b data-i18n="u">Unlimited</b> <span data-i18n="r_par">parameters per product</span></li>
+        <li class="yes"><b data-i18n="u">Unlimited</b> <span data-i18n="r_off">open offers</span></li>
+        <li class="yes"><span data-i18n="r_store">Hosted storefront + embed widget</span></li>
+        <li class="yes"><span data-i18n="r_book">Live order book</span></li>
+        <li class="yes"><span data-i18n="r_api">Full API access</span></li>
+        <li class="yes"><span data-i18n="r_csv">CSV / Excel import</span></li>
+        <li class="yes"><span data-i18n="r_badge">Remove "powered by"</span></li>
+        <li class="yes"><span data-i18n="r_fonts">Custom fonts</span></li>
+        <li class="yes"><span data-i18n="r_css">Custom CSS</span></li>
+        <li class="yes"><b>3</b> <span data-i18n="v_3int">custom integrations, built with you</span></li>
+        <li class="no"><b data-i18n="r_rules">Custom business rules</b></li>
+        <li class="yes"><span data-i18n="r_supp">Support</span>: <b data-i18n="v_prio">priority</b></li>
       </ul>
-      <a class="cta primary" href="https://app.synallax.com/Billing" data-i18n="p3_cta">Choose Premium</a>
+      <a class="cta primary" href="https://app.synallax.com/Subscribe?plan=premium" data-i18n="p3_cta">Choose Premium</a>
       <details class="more">
         <summary data-i18n="more">More details</summary>
         <div class="more-in">
@@ -182,15 +211,24 @@
 
     <div class="plan">
       <h2 data-i18n="p4_name">Custom</h2>
-      <p class="tag" data-i18n="p4_tag">Your exchange, your rules.</p>
-      <p class="price" data-i18n="p4_price">Let's talk</p>
+      <p class="tag" data-i18n="p4_tag">Your marketplace network, your rules.</p>
+      <p class="price talk" data-i18n="p4_price">Let's talk</p>
       <p class="per" data-i18n="p4_per">tailored contract</p>
       <ul class="feat">
-        <li data-i18n="p4_f1">Unlimited everything</li>
-        <li data-i18n="p4_f2">Fully custom look &amp; feel</li>
-        <li data-i18n="p4_f3">Custom business rules</li>
-        <li data-i18n="p4_f4">Custom integrations &amp; SLA</li>
-        <li data-i18n="p4_f5">Dedicated environment option</li>
+        <li class="yes"><b data-i18n="u">Unlimited</b> <span data-i18n="r_mp">marketplace(s)</span></li>
+        <li class="yes"><b data-i18n="u">Unlimited</b> <span data-i18n="r_tpl">product type(s)</span></li>
+        <li class="yes"><b data-i18n="u">Unlimited</b> <span data-i18n="r_par">parameters per product</span></li>
+        <li class="yes"><b data-i18n="u">Unlimited</b> <span data-i18n="r_off">open offers</span></li>
+        <li class="yes"><span data-i18n="r_store">Hosted storefront + embed widget</span></li>
+        <li class="yes"><span data-i18n="r_book">Live order book</span></li>
+        <li class="yes"><span data-i18n="r_api">Full API access</span></li>
+        <li class="yes"><span data-i18n="r_csv">CSV / Excel import</span></li>
+        <li class="yes"><span data-i18n="r_badge">Remove "powered by"</span></li>
+        <li class="yes"><span data-i18n="v_look">Fully custom look &amp; feel</span></li>
+        <li class="yes"><span data-i18n="r_css">Custom CSS</span></li>
+        <li class="yes"><b data-i18n="u">Unlimited</b> <span data-i18n="r_int_l">custom integrations &amp; SLA</span></li>
+        <li class="yes"><span data-i18n="r_rules">Custom business rules</span></li>
+        <li class="yes"><span data-i18n="r_supp">Support</span>: <b data-i18n="v_ded">dedicated</b></li>
       </ul>
       <a class="cta ghost" href="mailto:contact@synallax.com?subject=Synallax%20Custom%20plan" data-i18n="p4_cta">Get in touch</a>
       <details class="more">
@@ -198,7 +236,7 @@
         <div class="more-in">
           <p data-i18n="p4_d1">When the platform should disappear behind your brand entirely: design beyond CSS, <b>custom business rules</b> - acceptance policies, matching windows, fee models, participation tiers - and integrations with SLAs.</p>
           <p data-i18n="p4_d2">A dedicated environment (your own instance and database) is available for organizations that require isolation. Pricing follows scope - a conversation, not a card.</p>
-          <div class="ex"><b data-i18n="ex">Example:</b> <span data-i18n="p4_ex">An industry association runs a members-only exchange with its own admission rules, custom clearing windows, and a fully white-labeled buyer experience.</span></div>
+          <div class="ex"><b data-i18n="ex">Example:</b> <span data-i18n="p4_ex">An industry association runs a members-only marketplace network with its own admission rules, custom clearing windows, and a fully white-labeled buyer experience.</span></div>
         </div>
       </details>
     </div>
@@ -219,35 +257,28 @@ en:{
  n_mission:"Mission", n_who:"Who it's for", n_platform:"Platform", n_manifesto:"Manifesto", n_pricing:"Pricing", n_faq:"FAQ",
  h_title:"Simple plans, a real order book in every one.",
  h_sub:"Start free, launch your marketplace today, and grow when it works. Every plan includes the hosted storefront, the embed widget, the order book, and the complete API - humans and AI agents use the same doors.",
- more:"More details", ex:"Example:", popular:"Most popular", per_month:"per month",
- f_store:"Hosted storefront + embed widget", f_book:"Live order book", f_api:"Full API access", f_unlo:"Unlimited open offers",
- p1_name:"Free", p1_tag:"Your first marketplace, live today.", p1_per:"forever",
- p1_f1:"1 marketplace", p1_f2:"1 product type", p1_f3:"10 parameters per product", p1_f4:"20 open offers",
- p1_cta:"Start free",
+ more:"More details", ex:"Example:", popular:"Most popular", per_month:"per month", u:"Unlimited",
+ r_mp:"marketplace(s)", r_tpl:"product type(s)", r_par:"parameters per product", r_off:"open offers",
+ r_store:"Hosted storefront + embed widget", r_book:"Live order book", r_api:"Full API access",
+ r_csv:"CSV / Excel import", r_badge:"Remove “powered by”", r_fonts:"Custom fonts", r_css:"Custom CSS",
+ r_int:"Custom integrations", r_int_l:"custom integrations & SLA", r_rules:"Custom business rules", r_supp:"Support",
+ v_email:"e-mail", v_prio:"priority", v_ded:"dedicated", v_3int:"custom integrations, built with you", v_look:"Fully custom look & feel",
+ p1_name:"Free", p1_tag:"Your first marketplace, live today.", p1_per:"forever", p1_cta:"Start free",
  p1_d1:"Everything you need to prove the idea: create your marketplace in the five-question wizard, define your product's typed parameters (text, number, date, time, price, rating, place, pictures), brand it with your colors and logo, and share your storefront link or paste the embed widget on your own site.",
  p1_d2:"<b>20 open offers</b> means up to 20 bids resting in your book at any moment - as offers conclude or expire, room opens for new ones. Your page carries a small “powered by Synallax” note.",
  p1_ex:"A padel club lists its courts as “court-slot” with parameters court, date, hour and level. Players open the link, sign in with an e-mail code, and bid for Tuesday 19:00. The club accepts the best offer from its console.",
- p2_name:"Basic", p2_tag:"A real operation, without the badge.",
- p2_f1:"3 marketplaces", p2_f2:"20 product types", p2_f3:"20 parameters per product",
- p2_f4:"Remove “powered by”", p2_f5:"Custom fonts", p2_f6:"CSV / Excel inventory import", p2_f7:"E-mail support",
- p2_cta:"Choose Basic",
+ p2_name:"Basic", p2_tag:"A real operation, without the badge.", p2_cta:"Choose Basic",
  p2_d1:"For an operator running a real business on the book: up to <b>3 marketplaces</b> (a hotel, a restaurant, an events space - each with its own brand and link), <b>20 product types</b> across them, and <b>unlimited resting offers</b>.",
  p2_d2:"All standard integrations are included and self-serve: bulk inventory by CSV/Excel with a downloadable template, the embed widget for your website, and the full REST API so your systems - or your customers' AI agents - list, bid and accept programmatically.",
  p2_ex:"A hotel loads 200 room-nights from a spreadsheet, brands the page in its colors and typeface without the Synallax badge, and manages the acceptance queue from one console.",
- p3_name:"Premium", p3_tag:"Your business runs on Synallax.",
- p3_f1:"20 marketplaces", p3_f2:"Unlimited product types", p3_f3:"Unlimited parameters",
- p3_f4:"Custom CSS on your storefront", p3_f5:"3 custom integrations, built with you", p3_f6:"Priority support",
- p3_cta:"Choose Premium",
+ p3_name:"Premium", p3_tag:"Your business runs on Synallax.", p3_cta:"Choose Premium",
  p3_d1:"Scale across brands and business lines: up to <b>20 marketplaces</b> with unlimited product types and parameters (fair use). Go beyond design tokens with <b>custom CSS</b> over your storefront.",
  p3_d2:"<b>3 custom integrations built with you</b> means our engineers connect your world: a channel manager or PMS feeding inventory, an ERP export of concluded trades, a price feed driving your list prices - you name the systems, we wire them.",
  p3_ex:"A hotel group runs one marketplace per property; its channel manager syncs availability through a custom integration, and finance receives a nightly export of every concluded trade.",
- p4_name:"Custom", p4_tag:"Your exchange, your rules.", p4_price:"Let's talk", p4_per:"tailored contract",
- p4_f1:"Unlimited everything", p4_f2:"Fully custom look & feel", p4_f3:"Custom business rules",
- p4_f4:"Custom integrations & SLA", p4_f5:"Dedicated environment option",
- p4_cta:"Get in touch",
+ p4_name:"Custom", p4_tag:"Your marketplace network, your rules.", p4_price:"Let's talk", p4_per:"tailored contract", p4_cta:"Get in touch",
  p4_d1:"When the platform should disappear behind your brand entirely: design beyond CSS, <b>custom business rules</b> - acceptance policies, matching windows, fee models, participation tiers - and integrations with SLAs.",
  p4_d2:"A dedicated environment (your own instance and database) is available for organizations that require isolation. Pricing follows scope - a conversation, not a card.",
- p4_ex:"An industry association runs a members-only exchange with its own admission rules, custom clearing windows, and a fully white-labeled buyer experience.",
+ p4_ex:"An industry association runs a members-only marketplace network with its own admission rules, custom clearing windows, and a fully white-labeled buyer experience.",
  foot1:"Prices in USD, billed monthly through Stripe, cancel anytime. Every plan speaks the same API - upgrading changes limits, never the product. Questions? <a href='mailto:contact@synallax.com'>contact@synallax.com</a>",
  foot2:"Synallax - the order book for the real economy."
 },
@@ -255,35 +286,28 @@ pt:{
  n_mission:"Missão", n_who:"Para quem", n_platform:"Plataforma", n_manifesto:"Manifesto", n_pricing:"Preços", n_faq:"FAQ",
  h_title:"Planos simples, um livro de ofertas de verdade em todos.",
  h_sub:"Comece grátis, lance seu marketplace hoje e cresça quando funcionar. Todos os planos incluem a vitrine hospedada, o widget embutido, o livro de ofertas e a API completa - humanos e agentes de IA usam as mesmas portas.",
- more:"Mais detalhes", ex:"Exemplo:", popular:"Mais popular", per_month:"por mês",
- f_store:"Vitrine hospedada + widget embutido", f_book:"Livro de ofertas ao vivo", f_api:"Acesso completo à API", f_unlo:"Ofertas abertas ilimitadas",
- p1_name:"Gratuito", p1_tag:"Seu primeiro marketplace, no ar hoje.", p1_per:"para sempre",
- p1_f1:"1 marketplace", p1_f2:"1 tipo de produto", p1_f3:"10 parâmetros por produto", p1_f4:"20 ofertas abertas",
- p1_cta:"Começar grátis",
+ more:"Mais detalhes", ex:"Exemplo:", popular:"Mais popular", per_month:"por mês", u:"Ilimitados",
+ r_mp:"marketplace(s)", r_tpl:"tipo(s) de produto", r_par:"parâmetros por produto", r_off:"ofertas abertas",
+ r_store:"Vitrine hospedada + widget embutido", r_book:"Livro de ofertas ao vivo", r_api:"Acesso completo à API",
+ r_csv:"Importação CSV / Excel", r_badge:"Remover o “powered by”", r_fonts:"Fontes personalizadas", r_css:"CSS personalizado",
+ r_int:"Integrações sob medida", r_int_l:"integrações sob medida e SLA", r_rules:"Regras de negócio sob medida", r_supp:"Suporte",
+ v_email:"e-mail", v_prio:"prioritário", v_ded:"dedicado", v_3int:"integrações feitas com você", v_look:"Visual totalmente sob medida",
+ p1_name:"Gratuito", p1_tag:"Seu primeiro marketplace, no ar hoje.", p1_per:"para sempre", p1_cta:"Começar grátis",
  p1_d1:"Tudo para provar a ideia: crie seu marketplace no assistente de cinco perguntas, defina os parâmetros tipados do seu produto (texto, número, data, hora, preço, nota, local, fotos), aplique suas cores e logo, e compartilhe o link da vitrine ou cole o widget no seu próprio site.",
  p1_d2:"<b>20 ofertas abertas</b> significa até 20 lances descansando no seu livro a qualquer momento - conforme ofertas se concluem ou expiram, abre espaço para novas. Sua página leva uma pequena nota “powered by Synallax”.",
  p1_ex:"Um clube de padel lista suas quadras como “court-slot” com parâmetros quadra, data, hora e nível. Jogadores abrem o link, entram com código por e-mail e dão lances pela terça às 19h. O clube aceita a melhor oferta pelo console.",
- p2_name:"Básico", p2_tag:"Uma operação de verdade, sem o selo.",
- p2_f1:"3 marketplaces", p2_f2:"20 tipos de produto", p2_f3:"20 parâmetros por produto",
- p2_f4:"Remover o “powered by”", p2_f5:"Fontes personalizadas", p2_f6:"Importação CSV / Excel", p2_f7:"Suporte por e-mail",
- p2_cta:"Escolher o Básico",
+ p2_name:"Básico", p2_tag:"Uma operação de verdade, sem o selo.", p2_cta:"Escolher o Básico",
  p2_d1:"Para quem opera um negócio de verdade sobre o livro: até <b>3 marketplaces</b> (um hotel, um restaurante, um espaço de eventos - cada um com sua marca e seu link), <b>20 tipos de produto</b> no total e <b>ofertas ilimitadas</b>.",
  p2_d2:"Todas as integrações padrão incluídas e self-service: estoque em massa por CSV/Excel com modelo para baixar, widget embutido para seu site e a API REST completa para seus sistemas - ou os agentes de IA dos seus clientes - listarem, ofertarem e aceitarem programaticamente.",
  p2_ex:"Um hotel carrega 200 diárias de uma planilha, veste a página com suas cores e tipografia sem o selo Synallax, e gerencia a fila de aceitação de um só console.",
- p3_name:"Premium", p3_tag:"Seu negócio roda na Synallax.",
- p3_f1:"20 marketplaces", p3_f2:"Tipos de produto ilimitados", p3_f3:"Parâmetros ilimitados",
- p3_f4:"CSS personalizado na vitrine", p3_f5:"3 integrações feitas com você", p3_f6:"Suporte prioritário",
- p3_cta:"Escolher o Premium",
+ p3_name:"Premium", p3_tag:"Seu negócio roda na Synallax.", p3_cta:"Escolher o Premium",
  p3_d1:"Escale entre marcas e linhas de negócio: até <b>20 marketplaces</b> com tipos de produto e parâmetros ilimitados (uso justo). Vá além dos tokens de design com <b>CSS personalizado</b> na sua vitrine.",
  p3_d2:"<b>3 integrações feitas com você</b> significa nossos engenheiros conectando o seu mundo: um channel manager ou PMS alimentando estoque, um export de negócios concluídos para o ERP, um feed de preços guiando sua tabela - você nomeia os sistemas, nós cabeamos.",
  p3_ex:"Um grupo hoteleiro roda um marketplace por propriedade; o channel manager sincroniza disponibilidade por integração dedicada, e o financeiro recebe toda noite o export dos negócios concluídos.",
- p4_name:"Personalizado", p4_tag:"Sua bolsa, suas regras.", p4_price:"Vamos conversar", p4_per:"contrato sob medida",
- p4_f1:"Tudo ilimitado", p4_f2:"Visual totalmente sob medida", p4_f3:"Regras de negócio sob medida",
- p4_f4:"Integrações sob medida e SLA", p4_f5:"Opção de ambiente dedicado",
- p4_cta:"Fale conosco",
+ p4_name:"Personalizado", p4_tag:"Sua rede de marketplaces, suas regras.", p4_price:"Vamos conversar", p4_per:"contrato sob medida", p4_cta:"Fale conosco",
  p4_d1:"Quando a plataforma deve desaparecer atrás da sua marca por completo: design além do CSS, <b>regras de negócio sob medida</b> - políticas de aceitação, janelas de matching, modelos de tarifa, níveis de participação - e integrações com SLA.",
  p4_d2:"Um ambiente dedicado (sua própria instância e banco) está disponível para organizações que exigem isolamento. O preço segue o escopo - uma conversa, não um cartão.",
- p4_ex:"Uma associação setorial roda uma bolsa só para membros com regras próprias de admissão, janelas de clearing sob medida e experiência do comprador 100% white-label.",
+ p4_ex:"Uma associação setorial roda uma rede de marketplaces só para membros com regras próprias de admissão, janelas de clearing sob medida e experiência do comprador 100% white-label.",
  foot1:"Preços em USD, cobrança mensal via Stripe, cancele quando quiser. Todos os planos falam a mesma API - o upgrade muda limites, nunca o produto. Dúvidas? <a href='mailto:contact@synallax.com'>contact@synallax.com</a>",
  foot2:"Synallax - o livro de ofertas da economia real."
 },
@@ -291,35 +315,28 @@ es:{
  n_mission:"Misión", n_who:"Para quién", n_platform:"Plataforma", n_manifesto:"Manifiesto", n_pricing:"Precios", n_faq:"FAQ",
  h_title:"Planes simples, un libro de órdenes real en todos.",
  h_sub:"Empieza gratis, lanza tu marketplace hoy y crece cuando funcione. Todos los planes incluyen la tienda alojada, el widget integrable, el libro de órdenes y la API completa - humanos y agentes de IA usan las mismas puertas.",
- more:"Más detalles", ex:"Ejemplo:", popular:"Más popular", per_month:"al mes",
- f_store:"Tienda alojada + widget integrable", f_book:"Libro de órdenes en vivo", f_api:"Acceso completo a la API", f_unlo:"Pujas abiertas ilimitadas",
- p1_name:"Gratis", p1_tag:"Tu primer marketplace, en vivo hoy.", p1_per:"para siempre",
- p1_f1:"1 marketplace", p1_f2:"1 tipo de producto", p1_f3:"10 parámetros por producto", p1_f4:"20 pujas abiertas",
- p1_cta:"Empezar gratis",
+ more:"Más detalles", ex:"Ejemplo:", popular:"Más popular", per_month:"al mes", u:"Ilimitados",
+ r_mp:"marketplace(s)", r_tpl:"tipo(s) de producto", r_par:"parámetros por producto", r_off:"pujas abiertas",
+ r_store:"Tienda alojada + widget integrable", r_book:"Libro de órdenes en vivo", r_api:"Acceso completo a la API",
+ r_csv:"Importación CSV / Excel", r_badge:"Quitar el “powered by”", r_fonts:"Fuentes personalizadas", r_css:"CSS personalizado",
+ r_int:"Integraciones a medida", r_int_l:"integraciones a medida y SLA", r_rules:"Reglas de negocio a medida", r_supp:"Soporte",
+ v_email:"correo", v_prio:"prioritario", v_ded:"dedicado", v_3int:"integraciones hechas contigo", v_look:"Apariencia totalmente a medida",
+ p1_name:"Gratis", p1_tag:"Tu primer marketplace, en vivo hoy.", p1_per:"para siempre", p1_cta:"Empezar gratis",
  p1_d1:"Todo para probar la idea: crea tu marketplace con el asistente de cinco preguntas, define los parámetros tipados de tu producto (texto, número, fecha, hora, precio, nota, lugar, fotos), ponle tus colores y tu logo, y comparte el enlace de la tienda o pega el widget en tu propio sitio.",
  p1_d2:"<b>20 pujas abiertas</b> significa hasta 20 ofertas descansando en tu libro en cada momento - cuando se concluyen o expiran, se abre espacio para nuevas. Tu página lleva una pequeña nota “powered by Synallax”.",
  p1_ex:"Un club de pádel lista sus pistas como “court-slot” con parámetros pista, fecha, hora y nivel. Los jugadores abren el enlace, entran con un código por correo y pujan por el martes a las 19:00. El club acepta la mejor oferta desde su consola.",
- p2_name:"Básico", p2_tag:"Una operación real, sin el sello.",
- p2_f1:"3 marketplaces", p2_f2:"20 tipos de producto", p2_f3:"20 parámetros por producto",
- p2_f4:"Quitar el “powered by”", p2_f5:"Fuentes personalizadas", p2_f6:"Importación CSV / Excel", p2_f7:"Soporte por correo",
- p2_cta:"Elegir Básico",
+ p2_name:"Básico", p2_tag:"Una operación real, sin el sello.", p2_cta:"Elegir Básico",
  p2_d1:"Para quien opera un negocio real sobre el libro: hasta <b>3 marketplaces</b> (un hotel, un restaurante, un espacio de eventos - cada uno con su marca y su enlace), <b>20 tipos de producto</b> en total y <b>pujas ilimitadas</b>.",
  p2_d2:"Todas las integraciones estándar incluidas y self-service: inventario masivo por CSV/Excel con plantilla descargable, el widget para tu web y la API REST completa para que tus sistemas - o los agentes de IA de tus clientes - listen, pujen y acepten programáticamente.",
  p2_ex:"Un hotel carga 200 noches desde una hoja de cálculo, viste la página con sus colores y tipografía sin el sello de Synallax, y gestiona la cola de aceptación desde una sola consola.",
- p3_name:"Premium", p3_tag:"Tu negocio corre sobre Synallax.",
- p3_f1:"20 marketplaces", p3_f2:"Tipos de producto ilimitados", p3_f3:"Parámetros ilimitados",
- p3_f4:"CSS personalizado en tu tienda", p3_f5:"3 integraciones hechas contigo", p3_f6:"Soporte prioritario",
- p3_cta:"Elegir Premium",
+ p3_name:"Premium", p3_tag:"Tu negocio corre sobre Synallax.", p3_cta:"Elegir Premium",
  p3_d1:"Escala entre marcas y líneas de negocio: hasta <b>20 marketplaces</b> con tipos de producto y parámetros ilimitados (uso justo). Ve más allá de los tokens de diseño con <b>CSS personalizado</b>.",
  p3_d2:"<b>3 integraciones hechas contigo</b> significa nuestros ingenieros conectando tu mundo: un channel manager o PMS alimentando inventario, un export de operaciones al ERP, un feed de precios guiando tu lista - tú nombras los sistemas, nosotros los cableamos.",
  p3_ex:"Un grupo hotelero corre un marketplace por propiedad; su channel manager sincroniza disponibilidad por una integración dedicada, y finanzas recibe cada noche el export de operaciones concluidas.",
- p4_name:"Personalizado", p4_tag:"Tu bolsa, tus reglas.", p4_price:"Hablemos", p4_per:"contrato a medida",
- p4_f1:"Todo ilimitado", p4_f2:"Apariencia totalmente a medida", p4_f3:"Reglas de negocio a medida",
- p4_f4:"Integraciones a medida y SLA", p4_f5:"Opción de entorno dedicado",
- p4_cta:"Contáctanos",
+ p4_name:"Personalizado", p4_tag:"Tu red de marketplaces, tus reglas.", p4_price:"Hablemos", p4_per:"contrato a medida", p4_cta:"Contáctanos",
  p4_d1:"Cuando la plataforma debe desaparecer del todo detrás de tu marca: diseño más allá del CSS, <b>reglas de negocio a medida</b> - políticas de aceptación, ventanas de matching, modelos de tarifas, niveles de participación - e integraciones con SLA.",
  p4_d2:"Hay un entorno dedicado (tu propia instancia y base de datos) para organizaciones que exigen aislamiento. El precio sigue al alcance - una conversación, no una tarjeta.",
- p4_ex:"Una asociación sectorial opera una bolsa solo para miembros con sus propias reglas de admisión, ventanas de clearing a medida y una experiencia de comprador 100% white-label.",
+ p4_ex:"Una asociación sectorial opera una red de marketplaces solo para miembros con sus propias reglas de admisión, ventanas de clearing a medida y una experiencia de comprador 100% white-label.",
  foot1:"Precios en USD, cobro mensual vía Stripe, cancela cuando quieras. Todos los planes hablan la misma API - subir de plan cambia límites, nunca el producto. ¿Dudas? <a href='mailto:contact@synallax.com'>contact@synallax.com</a>",
  foot2:"Synallax - el libro de órdenes de la economía real."
 },
@@ -327,35 +344,28 @@ fr:{
  n_mission:"Mission", n_who:"Pour qui", n_platform:"Plateforme", n_manifesto:"Manifeste", n_pricing:"Tarifs", n_faq:"FAQ",
  h_title:"Des offres simples, un vrai carnet d'ordres dans chacune.",
  h_sub:"Commencez gratuitement, lancez votre place de marché aujourd'hui, grandissez quand ça marche. Chaque offre inclut la vitrine hébergée, le widget intégrable, le carnet d'ordres et l'API complète - humains et agents IA passent par les mêmes portes.",
- more:"Plus de détails", ex:"Exemple :", popular:"Le plus populaire", per_month:"par mois",
- f_store:"Vitrine hébergée + widget intégrable", f_book:"Carnet d'ordres en direct", f_api:"Accès complet à l'API", f_unlo:"Offres ouvertes illimitées",
- p1_name:"Gratuit", p1_tag:"Votre première place de marché, en ligne aujourd'hui.", p1_per:"pour toujours",
- p1_f1:"1 place de marché", p1_f2:"1 type de produit", p1_f3:"10 paramètres par produit", p1_f4:"20 offres ouvertes",
- p1_cta:"Commencer gratuitement",
+ more:"Plus de détails", ex:"Exemple :", popular:"Le plus populaire", per_month:"par mois", u:"Illimité(s)",
+ r_mp:"place(s) de marché", r_tpl:"type(s) de produit", r_par:"paramètres par produit", r_off:"offres ouvertes",
+ r_store:"Vitrine hébergée + widget intégrable", r_book:"Carnet d'ordres en direct", r_api:"Accès complet à l'API",
+ r_csv:"Import CSV / Excel", r_badge:"Retrait du “powered by”", r_fonts:"Polices personnalisées", r_css:"CSS personnalisé",
+ r_int:"Intégrations sur mesure", r_int_l:"intégrations sur mesure et SLA", r_rules:"Règles métier sur mesure", r_supp:"Support",
+ v_email:"e-mail", v_prio:"prioritaire", v_ded:"dédié", v_3int:"intégrations construites avec vous", v_look:"Design entièrement sur mesure",
+ p1_name:"Gratuit", p1_tag:"Votre première place de marché, en ligne aujourd'hui.", p1_per:"pour toujours", p1_cta:"Commencer gratuitement",
  p1_d1:"Tout pour prouver l'idée : créez votre place de marché avec l'assistant en cinq questions, définissez les paramètres typés de votre produit (texte, nombre, date, heure, prix, note, lieu, photos), appliquez vos couleurs et votre logo, et partagez le lien de la vitrine ou collez le widget sur votre propre site.",
  p1_d2:"<b>20 offres ouvertes</b> signifie jusqu'à 20 enchères au repos dans votre carnet à tout instant - quand elles se concluent ou expirent, la place se libère. Votre page porte une petite mention “powered by Synallax”.",
  p1_ex:"Un club de padel liste ses terrains en “court-slot” avec les paramètres terrain, date, heure et niveau. Les joueurs ouvrent le lien, se connectent par code e-mail et enchérissent pour mardi 19h. Le club accepte la meilleure offre depuis sa console.",
- p2_name:"Basic", p2_tag:"Une vraie exploitation, sans le badge.",
- p2_f1:"3 places de marché", p2_f2:"20 types de produit", p2_f3:"20 paramètres par produit",
- p2_f4:"Retrait du “powered by”", p2_f5:"Polices personnalisées", p2_f6:"Import CSV / Excel", p2_f7:"Support par e-mail",
- p2_cta:"Choisir Basic",
+ p2_name:"Basic", p2_tag:"Une vraie exploitation, sans le badge.", p2_cta:"Choisir Basic",
  p2_d1:"Pour un opérateur qui fait tourner un vrai business sur le carnet : jusqu'à <b>3 places de marché</b> (un hôtel, un restaurant, une salle d'événements - chacune avec sa marque et son lien), <b>20 types de produit</b> au total et des <b>offres illimitées</b>.",
  p2_d2:"Toutes les intégrations standard incluses, en self-service : inventaire en masse par CSV/Excel avec modèle téléchargeable, widget pour votre site, et l'API REST complète pour que vos systèmes - ou les agents IA de vos clients - listent, enchérissent et acceptent par programme.",
  p2_ex:"Un hôtel charge 200 nuitées depuis un tableur, habille la page à ses couleurs et sa typographie sans le badge Synallax, et gère la file d'acceptation depuis une seule console.",
- p3_name:"Premium", p3_tag:"Votre business tourne sur Synallax.",
- p3_f1:"20 places de marché", p3_f2:"Types de produit illimités", p3_f3:"Paramètres illimités",
- p3_f4:"CSS personnalisé sur votre vitrine", p3_f5:"3 intégrations construites avec vous", p3_f6:"Support prioritaire",
- p3_cta:"Choisir Premium",
+ p3_name:"Premium", p3_tag:"Votre business tourne sur Synallax.", p3_cta:"Choisir Premium",
  p3_d1:"Passez à l'échelle entre marques et lignes de métier : jusqu'à <b>20 places de marché</b> avec types de produit et paramètres illimités (usage raisonnable). Allez au-delà des tokens de design avec du <b>CSS personnalisé</b>.",
  p3_d2:"<b>3 intégrations construites avec vous</b> : nos ingénieurs connectent votre monde - un channel manager ou PMS qui alimente l'inventaire, un export des transactions vers l'ERP, un flux de prix qui pilote vos tarifs affichés. Vous nommez les systèmes, nous les câblons.",
  p3_ex:"Un groupe hôtelier exploite une place de marché par établissement ; son channel manager synchronise les disponibilités via une intégration dédiée, et la finance reçoit chaque nuit l'export des transactions conclues.",
- p4_name:"Sur mesure", p4_tag:"Votre bourse, vos règles.", p4_price:"Parlons-en", p4_per:"contrat sur mesure",
- p4_f1:"Tout illimité", p4_f2:"Design entièrement sur mesure", p4_f3:"Règles métier sur mesure",
- p4_f4:"Intégrations sur mesure et SLA", p4_f5:"Option d'environnement dédié",
- p4_cta:"Nous contacter",
+ p4_name:"Sur mesure", p4_tag:"Votre réseau de places de marché, vos règles.", p4_price:"Parlons-en", p4_per:"contrat sur mesure", p4_cta:"Nous contacter",
  p4_d1:"Quand la plateforme doit disparaître complètement derrière votre marque : design au-delà du CSS, <b>règles métier sur mesure</b> - politiques d'acceptation, fenêtres de matching, modèles de frais, niveaux de participation - et intégrations avec SLA.",
  p4_d2:"Un environnement dédié (votre propre instance et base de données) est disponible pour les organisations exigeant l'isolation. Le prix suit le périmètre - une conversation, pas une carte.",
- p4_ex:"Une association professionnelle exploite une bourse réservée à ses membres avec ses propres règles d'admission, des fenêtres de clearing sur mesure et une expérience acheteur 100% white-label.",
+ p4_ex:"Une association professionnelle exploite un réseau de places de marché réservé à ses membres avec ses propres règles d'admission, des fenêtres de clearing sur mesure et une expérience acheteur 100% white-label.",
  foot1:"Prix en USD, facturation mensuelle via Stripe, annulez à tout moment. Toutes les offres parlent la même API - monter en gamme change les limites, jamais le produit. Des questions ? <a href='mailto:contact@synallax.com'>contact@synallax.com</a>",
  foot2:"Synallax - le carnet d'ordres de l'économie réelle."
 }
