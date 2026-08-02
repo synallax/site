@@ -45,12 +45,31 @@
         "publique o que você procura" — tudo com a marca do <i>marketplace</i>,
         funcionando dentro de qualquer site.</p>
       </div>
+      <div class="note">
+        <p style="margin:0"><b>Widget "fatiado":</b> com <code>data-hide</code> e
+        <code>data-query</code> a página embute só um recorte do inventário —
+        sem árvore, sem filtros, sem formulário — e o visitante não navega para fora.
+        Veja o exemplo no fim da página.</p>
+      </div>
     </div>
     <div class="market">
       <h2>Reserve pelo nosso marketplace</h2>
       <!-- THE WIDGET - this line is the whole integration. -->
       <script src="https://app.synallax.com/embed.js" data-venue="meridiana-experiences" data-lang="pt" data-height="760"></script>
     </div>
+  </div>
+
+  <div class="market" style="margin-top:40px">
+    <h2>Só bem-estar</h2>
+    <p class="about" style="font-size:14px;color:#55493A;margin:6px 0 14px">
+      O mesmo marketplace, <b>pré-filtrado pela página</b>: a categoria vem no embed
+      (<code style="background:#F1E8D8;padding:2px 6px;border-radius:4px;font-size:12px">data-query="cat=wellness"</code>)
+      e a navegação foi ocultada
+      (<code style="background:#F1E8D8;padding:2px 6px;border-radius:4px;font-size:12px">data-hide="wish,tree,filters"</code>).
+      O visitante vê apenas spa e massagens — e ainda pode dar lances.</p>
+    <!-- A PINNED slice: predefined filter, no navigation chrome. -->
+    <script src="https://app.synallax.com/embed.js" data-venue="meridiana-experiences" data-lang="pt"
+            data-height="560" data-hide="wish,tree,filters" data-query="cat=wellness"></script>
   </div>
 </div>
 
