@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Embed demo - Synallax widget on a third-party site</title>
+<meta name="robots" content="noindex">
+<style>
+  /* Deliberately NOT Synallax's design: this page plays the role of a CLIENT's own
+     website (a fictional boutique venue), to show the widget living inside foreign CSS. */
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Georgia, 'Times New Roman', serif; background: #FAF7F2; color: #2C2620; }
+  .hero { background: #2C2620; color: #F5EFE6; padding: 48px 24px; text-align: center; }
+  .hero h1 { margin: 0 0 6px; font-size: 34px; letter-spacing: .5px; font-weight: 500; }
+  .hero p { margin: 0; color: #C9BFB0; font-style: italic; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 32px 20px 60px; }
+  .cols { display: grid; grid-template-columns: 1fr 2fr; gap: 28px; align-items: start; }
+  @media (max-width: 800px) { .cols { grid-template-columns: 1fr; } }
+  .about h2, .market h2 { font-size: 20px; font-weight: 600; border-bottom: 2px solid #B08D4A; display: inline-block; padding-bottom: 4px; }
+  .about p { font-size: 15px; line-height: 1.7; color: #55493A; }
+  .note { background: #F1E8D8; border-left: 4px solid #B08D4A; padding: 12px 16px; font-size: 13px; color: #6B5B41; margin-top: 20px; }
+  .note code { background: #FAF7F2; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+  footer { text-align: center; color: #9A8C77; font-size: 12px; padding: 24px; border-top: 1px solid #E4DACA; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <h1>Casa Meridiana</h1>
+  <p>Experiências exclusivas — spa, gastronomia e passeios (site fictício de demonstração)</p>
+</header>
+
+<div class="wrap">
+  <div class="cols">
+    <div class="about">
+      <h2>Sobre esta página</h2>
+      <p>Esta página finge ser o <b>site próprio de um cliente</b> — tipografia serifada,
+         paleta terrosa, nada da identidade Synallax. O marketplace ao lado está
+         <b>embutido com uma única linha</b>:</p>
+      <div class="note">
+        <code>&lt;script src="https://app.synallax.com/embed.js"
+        data-venue="meridiana-experiences" data-lang="pt"&gt;&lt;/script&gt;</code>
+        <p style="margin:8px 0 0">O widget carrega a vitrine do marketplace num iframe:
+        árvore de categorias, filtros, livro de ofertas, lances e o formulário
+        "publique o que você procura" — tudo com a marca do <i>marketplace</i>,
+        funcionando dentro de qualquer site.</p>
+      </div>
+    </div>
+    <div class="market">
+      <h2>Reserve pelo nosso marketplace</h2>
+      <!-- THE WIDGET - this line is the whole integration. -->
+      <script src="https://app.synallax.com/embed.js" data-venue="meridiana-experiences" data-lang="pt" data-height="760"></script>
+    </div>
+  </div>
+</div>
+
+<footer>Página de demonstração do widget Synallax — o "site" acima é fictício.</footer>
+
+</body>
+</html>
