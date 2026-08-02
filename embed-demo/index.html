@@ -39,11 +39,18 @@
          <b>embutido com uma única linha</b>:</p>
       <div class="note">
         <code>&lt;script src="https://app.synallax.com/embed.js"
-        data-venue="meridiana-experiences" data-lang="pt"&gt;&lt;/script&gt;</code>
+        data-venue="meridiana-experiences"
+        data-key="ek_..." data-lang="pt"&gt;&lt;/script&gt;</code>
         <p style="margin:8px 0 0">O widget carrega a vitrine do marketplace num iframe:
         árvore de categorias, filtros, livro de ofertas, lances e o formulário
         "publique o que você procura" — tudo com a marca do <i>marketplace</i>,
         funcionando dentro de qualquer site.</p>
+      </div>
+      <div class="note">
+        <p style="margin:0"><b>Chave vinculada ao dom&iacute;nio:</b> o <code>data-key</code> &eacute;
+        p&uacute;blico de prop&oacute;sito - quem copiar chave e marketplace para outro site
+        recebe um quadro vazio, porque o navegador s&oacute; renderiza o widget nos dom&iacute;nios
+        autorizados pelo operador.</p>
       </div>
       <div class="note">
         <p style="margin:0"><b>Widget "fatiado":</b> com <code>data-hide</code> e
@@ -55,7 +62,7 @@
     <div class="market">
       <h2>Reserve pelo nosso marketplace</h2>
       <!-- THE WIDGET - this line is the whole integration. -->
-      <script src="https://app.synallax.com/embed.js" data-venue="meridiana-experiences" data-lang="pt" data-height="760"></script>
+      <script src="https://app.synallax.com/embed.js" data-venue="meridiana-experiences" data-key="ek_qvt75mygefgaor63p6by4b8u" data-lang="pt" data-height="760"></script>
     </div>
   </div>
 
@@ -68,7 +75,7 @@
       (<code style="background:#F1E8D8;padding:2px 6px;border-radius:4px;font-size:12px">data-hide="wish,tree,filters"</code>).
       O visitante vê apenas spa e massagens — e ainda pode dar lances.</p>
     <!-- A PINNED slice: predefined filter, no navigation chrome. -->
-    <script src="https://app.synallax.com/embed.js" data-venue="meridiana-experiences" data-lang="pt"
+    <script src="https://app.synallax.com/embed.js" data-venue="meridiana-experiences" data-key="ek_qvt75mygefgaor63p6by4b8u" data-lang="pt"
             data-height="560" data-hide="wish,tree,filters" data-query="cat=wellness"></script>
   </div>
 </div>
