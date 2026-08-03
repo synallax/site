@@ -785,7 +785,7 @@ paths:
                 required: [name, type]
                 properties:
                   name: { type: string, maxLength: 60 }
-                  type: { enum: [number, text, time, date, price, rating, place, image, images] }
+                  type: { enum: [number, text, time, date, price, rating, place, address, geo, image, images, category] }
                   filterable: { type: boolean, default: false }
                   required: { type: boolean, default: false }
                   min: { type: number }

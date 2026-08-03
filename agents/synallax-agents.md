@@ -92,8 +92,12 @@ Idempotency-Key: venue-1
 Field notes:
 
 - Parameter `type` is one of: `number` `text` `time` `date` `price` `rating` `place`
-  `image` `images` `category`. `min`/`max` bound the VALUE for numeric kinds, the LENGTH
-  for text, and the COUNT for `images`. `date` values are `yyyy-MM-dd`; `time` is `HH:mm`.
+  `address` `geo` `image` `images` `category`. `place` is a NAMED locality (city, area -
+  short label, powers dropdown filters); `address` is a full postal address; `geo` is
+  coordinates `"lat,lng"` (rendered as a map link; cannot be `filterable` - no distance
+  search yet). `min`/`max` bound the VALUE for numeric kinds, the LENGTH for text/address,
+  and the COUNT for `images` - they are ignored for date/time/image/category/geo.
+  `date` values are `yyyy-MM-dd`; `time` is `HH:mm`.
 - The storefront's "post what you're looking for" form offers EVERY public parameter,
   so buyers can describe exactly what they want; `filterable: true` additionally puts the
   parameter in the filter bar, with a dropdown of the values currently listed.
