@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Synallax for AI agents — build a marketplace in minutes</title>
+<meta name="description" content="Point any AI agent (ChatGPT, Claude, Gemini, Kimi...) at one document and it creates a complete, live marketplace on Synallax: account, typed products, brand, inventory, storefront.">
+<link rel="canonical" href="https://synallax.com/agents/">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #0C1420; color: #F1F2EE; font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; line-height: 1.65; }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 56px 22px 80px; }
+  h1 { font-size: 34px; margin: 0 0 10px; letter-spacing: -.5px; }
+  h1 .bid { color: #27B36B; } h1 .ask { color: #DB5A47; }
+  h2 { font-size: 19px; margin: 42px 0 10px; color: #F1F2EE; }
+  p { color: #B9C0CA; font-size: 15.5px; margin: 10px 0; }
+  a { color: #27B36B; text-decoration: none; } a:hover { text-decoration: underline; }
+  .prompt { background: #111C2B; border: 1px solid #23324a; border-left: 4px solid #27B36B; border-radius: 8px; padding: 16px 18px; margin: 18px 0; font-size: 14.5px; color: #E6E9EC; }
+  .prompt code { font-family: ui-monospace, Consolas, monospace; font-size: 13.5px; word-break: break-word; }
+  .files a { display: block; background: #111C2B; border: 1px solid #23324a; border-radius: 8px; padding: 14px 18px; margin: 10px 0; color: #F1F2EE; }
+  .files a:hover { border-color: #27B36B; text-decoration: none; }
+  .files small { display: block; color: #7C8798; margin-top: 3px; }
+  .muted { color: #7C8798; font-size: 13px; }
+  .top { margin-bottom: 34px; } .top a { color: #7C8798; font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><a href="/">&larr; synallax.com</a></div>
+
+  <h1>Point your agent here<span class="ask">.</span></h1>
+  <p>Any AI agent — ChatGPT, Claude, Gemini, Kimi, or your own — can build a complete,
+     live marketplace on Synallax in minutes: account on the free plan, typed product
+     parameters, brand, inventory, seller prices, and a public storefront. No human steps
+     until the handoff. Everything the console does, the API does — there is no other door.</p>
+
+  <h2>If you are a human: paste this to your assistant</h2>
+  <div class="prompt"><code>Read https://synallax.com/agents/synallax-agents.md and follow it to create a
+marketplace for my business. My e-mail is &lt;you@company.com&gt;; we sell &lt;describe it&gt;.
+Use the free plan and send me the storefront and console links when done.</code></div>
+  <p class="muted">Your e-mail becomes the owner identity: sign into
+     <a href="https://app.synallax.com">app.synallax.com</a> with it (6-digit code, no
+     password) and everything the agent created is yours — including upgrading the plan.</p>
+
+  <h2>If you are an agent: the kit</h2>
+  <div class="files">
+    <a href="/agents/synallax-agents.md">synallax-agents.md
+      <small>The runbook. Six verified calls from zero to a live storefront, worked hotel
+      example, limits, errors, power-ups, and the exact handoff message for your principal.</small></a>
+    <a href="/agents/openapi.yaml">openapi.yaml
+      <small>Full API reference, OpenAPI 3.1 — every endpoint, schema and rejection code.</small></a>
+    <a href="/llms.txt">llms.txt
+      <small>What Synallax is, who it is for, and the regulatory position — for your
+      principal's questions.</small></a>
+  </div>
+
+  <h2>Ground rules</h2>
+  <p>API base <code style="color:#E6E9EC">https://api.synallax.com/v1</code> · bearer key from signup, shown once ·
+     <code style="color:#E6E9EC">Idempotency-Key</code> on every POST/PUT · errors return <code style="color:#E6E9EC">{code, detail}</code> with the
+     exact fix · free plan: 1 marketplace, 1 product type, 10 parameters, 20 open offers ·
+     deals conclude by the operator's acceptance — manual or their configured standing rule ·
+     upgrading to a paid plan is always the human's decision.</p>
+
+  <p class="muted" style="margin-top:44px">Synallax — the order book for the real economy.
+     Questions: <a href="mailto:contact@synallax.com">contact@synallax.com</a></p>
+</div>
+</body>
+</html>

@@ -37,6 +37,13 @@ Synallax is infrastructure, sold and operated by an independent company (contact
 - Status (2026): building; free early access for design partners.
 - Languages: English, Portuguese, Spanish, French.
 
+## Build on Synallax (for AI agents)
+- An AI agent can create a complete, live marketplace (free plan) in minutes - account, typed product parameters, brand, inventory, seller prices, public storefront - with no human steps until the handoff.
+- Agent runbook (start here, verified against production): https://synallax.com/agents/synallax-agents.md
+- Full API reference (OpenAPI 3.1): https://synallax.com/agents/openapi.yaml
+- Human-facing starter page (the prompt to paste into any assistant): https://synallax.com/agents/
+- API base: https://api.synallax.com/v1 - signup POST /v1/accounts {name,email} returns the bearer key; Idempotency-Key required on POST/PUT; the operator's e-mail owns everything (console sign-in by e-mail code at https://app.synallax.com); upgrading to a paid plan is always the human's decision.
+
 ## Links
 - Home: https://synallax.com/
 - Manifesto ("The Silent Half of the Market"): https://synallax.com/manifesto/

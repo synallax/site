@@ -1,0 +1,1874 @@
+# Synallax API — OpenAPI 3.1 specification (draft)
+#
+# The single source of truth (ROADMAP E6): this file drives docs.synallax.com, the MCP server
+# (x-mcp-tool maps operations to agent tools), and the GPT-Action manifest. Operations carry
+# x-synallax-release marking when they ship: "0.1" engine core · "0.2" agent surface, RFQ,
+# counters, reputation · "0.4" money. The spec describes the full core surface; the release
+# tags ARE the scope cut (REVIEW-FINDINGS F38) — nothing here is implied to exist before its tag.
+#
+# Design rules inherited from the engine contract (docs/CORE-MODEL.md, docs/ENGINE-INTERFACES.md):
+# decide-don't-do (mutations return the decision; adapters act), rejections are data
+# (RejectionCode, never bare 500s for domain refusals), Idempotency-Key on every mutation
+# (agents retry; the book must not double-count), operator-controlled acceptance (invariant 8:
+# matching suggests, only an acceptance concludes), anonymity by venue policy (PartyView is
+# pseudonymous unless the venue reveals), and money as decimal STRINGS — never floats.
+
+openapi: 3.1.0
+
+info:
+  title: Synallax API
+  version: 0.1.0-draft
+  summary: The marketplace engine with a real order book — firm bids, RFQs, operator-controlled acceptance.
+  description: |
+    Synallax is a white-label **marketplace engine built around a real order book**. Buyers —
+    increasingly AI agents acting for humans — post **firm, expiring bids** on real goods and
+    services (a predicate + a price + a validity); sellers see the demand their inventory can
+    satisfy and **accept anonymously**, manually or by their own configured rules. One engine,
+    configured per venue, serves every vertical.
+
+    **Core concepts** — `Venue` (a market: one config, one book, one journal) · `Instrument`
+    (what is sold, described by a versioned template) · `Order` (firm: what I give ⇄ what I
+    want, with quantity and validity — the instrument side of a bid is a **predicate**, so
+    "any 4★ near Trocadéro under €180" is one order) · `Acceptance` (the operator-controlled
+    conclusion — the platform never auto-executes) · `Trade` (the immutable result, feeding
+    settlement) · `Reputation` (dual: Payer / Quality, trade-anchored).
+
+    **Two clocks.** Perishables ride `GTE` validity (the bid dies with the night, the truck,
+    the campaign); durables rest for months on `GTC` with a reaffirmation pulse.
+
+    **Agents are first-class.** Every capability here is also exposed as MCP tools
+    (`x-mcp-tool`); credentials carry mandates (spend caps) so "let my agent bid" is safe to say.
+  contact: { name: Synallax, email: contact@synallax.com, url: 'https://synallax.com' }
+  x-spec-home: Published at github.com/synallax/spec at launch; canonical copy lives in the product repo until then.
+
+servers:
+  - url: https://sandbox.api.synallax.com/v1
+    description: Sandbox — free forever; synthetic liquidity; fake money, no warranties.
+  - url: https://api.synallax.com/v1
+    description: Production.
+
+security:
+  - bearerAuth: []
+
+tags:
+  - { name: accounts,    description: Accounts and API keys - the identity layer; the portal is a client of exactly these routes. }
+  - { name: venues,      description: Create and configure venues (journaled, change-classed). }
+  - { name: templates,   description: The versioned instrument-template registry. }
+  - { name: instruments, description: Listed inventory and capacity. }
+  - { name: orders,      description: Firm orders — predicate bids, amendments, reaffirmation. }
+  - { name: book,        description: Depth, matches and the demand curve. }
+  - { name: acceptance,  description: Operator-controlled conclusion. }
+  - { name: rfq,         description: RFQs, private quotes and counters. }
+  - { name: trades,      description: Concluded trades and their settlement. }
+  - { name: trust,       description: Ratings and trust signals. }
+
+paths:
+
+  /accounts:
+    post:
+      tags: [accounts]
+      operationId: signup
+      summary: Create an account (the front door - no auth)
+      description: |
+        Self-service signup for humans, portals AND agents - one code path, two front doors.
+        Returns the account plus its FIRST API key, shown exactly once (only a hash is
+        stored). The key IS the identity: party identity (owner/submitter/actor) is always
+        DERIVED from the presented credential, never from request bodies.
+      x-synallax-release: "0.2"
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, email]
+              properties:
+                name: { type: string }
+                email: { type: string, format: email }
+      responses:
+        '201':
+          description: Account created; the apiKey appears ONLY here.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accountId: { type: string }
+                  apiKey: { type: string, description: 'sk_… - store it now; it is never shown again.' }
+                  plan: { type: string }
+        '409': { description: Email already registered., content: { application/json: { schema: { $ref: '#/components/schemas/Rejection' } } } }
+        '422': { $ref: '#/components/responses/Rejected' }
+
+  /accounts/me:
+    get:
+      tags: [accounts]
+      operationId: getMyAccount
+      summary: The authenticated account
+      x-synallax-release: "0.2"
+      responses:
+        '200': { description: The account., content: { application/json: { schema: { $ref: '#/components/schemas/Account' } } } }
+
+  /keys:
+    post:
+      tags: [accounts]
+      operationId: mintKey
+      summary: Mint an additional API key (shown once)
+      x-synallax-release: "0.2"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                label: { type: string, description: '"ci-bot", "my-agent" - for the key list.' }
+      responses:
+        '201':
+          description: The new key - the secret appears ONLY here.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  keyId: { type: string }
+                  apiKey: { type: string }
+    get:
+      tags: [accounts]
+      operationId: listKeys
+      summary: List keys (prefixes only - never secrets)
+      x-synallax-release: "0.2"
+      responses:
+        '200': { description: Keys., content: { application/json: { schema: { type: array, items: { $ref: '#/components/schemas/ApiKeyInfo' } } } } }
+
+  /keys/{keyId}:
+    delete:
+      tags: [accounts]
+      operationId: revokeKey
+      summary: Revoke a key (own keys only)
+      x-synallax-release: "0.2"
+      parameters:
+        - { name: keyId, in: path, required: true, schema: { type: string } }
+      responses:
+        '204': { description: Revoked - the key stops working immediately. }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /auth/start:
+    post:
+      tags: [accounts]
+      operationId: platformAuthStart
+      summary: Platform sign-in, step 1 - the console's human door (no auth)
+      description: Same codes and sessions as the venue-scoped flow, no venue and no membership - operators are humans too; nobody pastes sk_ keys into a browser.
+      x-synallax-release: "0.2"
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email: { type: string, format: email }
+                name: { type: string }
+      responses:
+        '200': { description: Code sent (always the same answer). }
+
+  /auth/verify:
+    post:
+      tags: [accounts]
+      operationId: platformAuthVerify
+      summary: Platform sign-in, step 2 - trade the code for a session
+      x-synallax-release: "0.2"
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, code]
+              properties:
+                email: { type: string, format: email }
+                code: { type: string }
+      responses:
+        '201': { description: Signed in; sessionToken shown once. }
+        '401': { description: Wrong or expired code. }
+
+  /venues/{venueId}/auth/start:
+    post:
+      tags: [accounts]
+      operationId: buyerAuthStart
+      summary: Buyer sign-in, step 1 - send a magic-link code (no auth)
+      description: |
+        The buyer's front door, venue-branded UX over the PLATFORM identity spine ("one
+        identity, per-venue membership"). Finds-or-creates the party by email and mails a
+        6-digit code. The answer never reveals whether the email was already known.
+      x-synallax-release: "0.2"
+      security: []
+      parameters: [ { $ref: '#/components/parameters/VenueId' } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email: { type: string, format: email }
+                name: { type: string, description: Used only if the party is new. }
+      responses:
+        '200': { description: Code sent (always the same answer). }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /venues/{venueId}/auth/verify:
+    post:
+      tags: [accounts]
+      operationId: buyerAuthVerify
+      summary: Buyer sign-in, step 2 - trade the code for a session
+      description: |
+        A correct, unexpired code (five wrong guesses burn it) creates the venue MEMBERSHIP -
+        proven email = joined - and returns an `st_` session token (shown once, stored
+        hashed). Sessions and `sk_` keys are two credential kinds over ONE identity: every
+        route accepts either.
+      x-synallax-release: "0.2"
+      security: []
+      parameters: [ { $ref: '#/components/parameters/VenueId' } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, code]
+              properties:
+                email: { type: string, format: email }
+                code: { type: string }
+      responses:
+        '201':
+          description: Signed in; the sessionToken appears ONLY here.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sessionToken: { type: string, description: 'st_… - Bearer credential for humans.' }
+                  accountId: { type: string }
+                  name: { type: string }
+                  venueId: { type: string }
+        '401': { description: Wrong or expired code. }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /sessions/current:
+    delete:
+      tags: [accounts]
+      operationId: signOut
+      summary: Revoke the current session (sign out)
+      x-synallax-release: "0.2"
+      responses:
+        '204': { description: Revoked - the token stops working immediately. }
+
+  /venues/{venueId}/members:
+    get:
+      tags: [venues]
+      operationId: listMembers
+      summary: The operator's members (name and tenure - never emails)
+      x-synallax-release: "0.2"
+      parameters: [ { $ref: '#/components/parameters/VenueId' } ]
+      responses:
+        '200':
+          description: Members of this venue, visible to its operator only.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    partyId: { type: string }
+                    name: { type: string }
+                    class: { type: string }
+                    joinedUtc: { type: string }
+        '403': { description: Not the venue's operator. }
+
+  /venues/{venueId}/embed-keys:
+    post:
+      tags: [venues]
+      operationId: createEmbedKey
+      summary: Mint a PUBLISHABLE embed key bound to allowed origins (operator only)
+      description: |
+        The widget-credential model (Stripe-publishable style): the key lives in the
+        client's public HTML, so it is an IDENTIFIER, never a secret - authorization comes
+        from the ORIGIN BINDING. A venue with at least one active key is "keyed": its
+        storefront renders inside a frame only with a valid key, and the response carries
+        frame-ancestors built from the key's origins, so the BROWSER refuses a copied
+        key+venue pair on any other site. Zero active keys = open embedding.
+      x-synallax-release: "0.2"
+      parameters: [ { $ref: '#/components/parameters/VenueId' } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [origins]
+              properties:
+                origins:
+                  type: array
+                  minItems: 1
+                  maxItems: 20
+                  items:
+                    type: string
+                    description: https origin - scheme + host only, no path (http://localhost accepted for development).
+      responses:
+        '201':
+          description: The key - re-displayable at will (publishable by design).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  embedKey: { type: string }
+                  origins: { type: array, items: { type: string } }
+        '403': { description: Not the venue's operator. }
+        '422': { description: Invalid origin, or more than 10 active keys. }
+    get:
+      tags: [venues]
+      operationId: listEmbedKeys
+      summary: The venue's embed keys, origins and state (operator only)
+      x-synallax-release: "0.2"
+      parameters: [ { $ref: '#/components/parameters/VenueId' } ]
+      responses:
+        '200':
+          description: All keys, active and revoked.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    embedKey: { type: string }
+                    origins: { type: array, items: { type: string } }
+                    createdUtc: { type: string }
+                    revokedUtc: { type: string }
+        '403': { description: Not the venue's operator. }
+
+  /venues/{venueId}/embed-keys/{embedKey}:
+    delete:
+      tags: [venues]
+      operationId: revokeEmbedKey
+      summary: Revoke an embed key (operator only; revoking the last one reopens embedding)
+      x-synallax-release: "0.2"
+      parameters:
+        - { $ref: '#/components/parameters/VenueId' }
+        - { name: embedKey, in: path, required: true, schema: { type: string } }
+      responses:
+        '204': { description: Revoked - frames using it stop rendering on next load. }
+        '403': { description: Not the venue's operator. }
+        '404': { description: Unknown or already-revoked key. }
+
+  /venues/{venueId}/embed-check:
+    get:
+      tags: [venues]
+      operationId: embedCheck
+      summary: PUBLIC embed-policy probe (what the storefront asks before rendering framed)
+      description: |
+        Reveals only the policy (open|keyed) and - for a VALID presented key - that key's
+        own origin list (which the embedding page exposes anyway). Never enumerates keys.
+        The gate is presentation-only - the same data stays public via the API and the
+        direct storefront URL; private venues are a separate, future visibility feature.
+      x-synallax-release: "0.2"
+      parameters:
+        - { $ref: '#/components/parameters/VenueId' }
+        - { name: key, in: query, required: false, schema: { type: string } }
+      responses:
+        '200':
+          description: The policy, plus origins when the presented key is valid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  policy: { type: string, enum: [open, keyed] }
+                  origins: { type: array, items: { type: string } }
+
+  /venues/{venueId}/access:
+    get:
+      tags: [venues]
+      operationId: getAccess
+      summary: The venue's visibility (operator only)
+      x-synallax-release: "0.2"
+      parameters: [ { $ref: '#/components/parameters/VenueId' } ]
+      responses:
+        '200':
+          description: The current policy.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  venueId: { type: string }
+                  visibility: { type: string, enum: [public, private] }
+        '403': { description: Not the venue's operator. }
+    patch:
+      tags: [venues]
+      operationId: setAccess
+      summary: Who may SEE the venue - public (default) or private (operator only)
+      description: |
+        Access control, not presentation - flippable anytime, never part of the trading
+        contract. PRIVATE means, for anyone who is neither the operator nor a member:
+        venue read, instruments, search, book, matches, trades AND order placement all
+        answer 403 "members only"; the buyer sign-in door issues codes ONLY to invited
+        emails (same ok answer either way - the guest list never leaks); the hosted
+        storefront shows a neutral sign-in gate with no brand leak. Members are invited
+        via POST /members below; on a PUBLIC venue buyers also self-join by signing in.
+      x-synallax-release: "0.2"
+      parameters: [ { $ref: '#/components/parameters/VenueId' } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [visibility]
+              properties:
+                visibility: { type: string, enum: [public, private] }
+      responses:
+        '200':
+          description: The new policy, effective immediately.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  venueId: { type: string }
+                  visibility: { type: string }
+        '403': { description: Not the venue's operator. }
+        '422': { description: visibility must be public or private. }
+
+  /venues/{venueId}/members:
+    post:
+      tags: [venues]
+      operationId: inviteMember
+      summary: Invite a member by email (operator only; the guest list of a private venue)
+      description: |
+        Finds or creates the platform identity for the email and joins it to the venue.
+        Idempotent. Sends nothing - it AUTHORIZES the address: when that person signs in
+        on the storefront, their code arrives and they are in.
+      x-synallax-release: "0.2"
+      parameters: [ { $ref: '#/components/parameters/VenueId' } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email: { type: string }
+                name: { type: string }
+      responses:
+        '201':
+          description: The member (partyId, name, class).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  partyId: { type: string }
+                  name: { type: string }
+                  class: { type: string }
+        '403': { description: Not the venue's operator. }
+        '422': { description: A valid email is required. }
+
+  /venues/{venueId}/members/{partyId}:
+    delete:
+      tags: [venues]
+      operationId: removeMember
+      summary: Remove a member (operator only)
+      x-synallax-release: "0.2"
+      parameters:
+        - { $ref: '#/components/parameters/VenueId' }
+        - { name: partyId, in: path, required: true, schema: { type: string } }
+      responses:
+        '204': { description: Removed - on a private venue their access ends immediately. }
+        '403': { description: Not the venue's operator. }
+        '404': { description: Not a member. }
+
+  /venues/{venueId}/automation:
+    get:
+      tags: [venues]
+      operationId: getAutomation
+      summary: The venue's deal automation (operator only)
+      x-synallax-release: "0.2"
+      parameters: [ { $ref: '#/components/parameters/VenueId' } ]
+      responses:
+        '200':
+          description: The current rule.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  venueId: { type: string }
+                  autoAccept: { type: string, enum: [off, crossing] }
+        '403': { description: Not the venue's operator. }
+    patch:
+      tags: [venues]
+      operationId: setAutomation
+      summary: The STANDING acceptance rule - off (default) or crossing (operator only)
+      description: |
+        This is the operator ACCEPTING IN ADVANCE, never exchange-style matching: with
+        autoAccept=crossing, when a buyer's offer meets the item owner's OWN resting sell
+        offer on the same item, the platform issues that owner's acceptance immediately -
+        the same command the manual Accept sends, so authorization, capacity races,
+        exclusivity siblings and the journal behave identically. The trade concludes at
+        the BUYER's offered price. Both directions fire: a new crossing bid concludes
+        instantly, and a new (re-priced) ask sweeps resting crossing bids best-price-first
+        until capacity runs out. Offers below the resting ask still rest for a manual
+        decision. When a placement concludes instantly, the order POST answers
+        {orderId, status: "concluded", trades: [...]} instead of a resting order view.
+      x-synallax-release: "0.2"
+      parameters: [ { $ref: '#/components/parameters/VenueId' } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [autoAccept]
+              properties:
+                autoAccept: { type: string, enum: [off, crossing] }
+      responses:
+        '200':
+          description: The new rule, effective for the next placement.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  venueId: { type: string }
+                  autoAccept: { type: string }
+        '403': { description: Not the venue's operator. }
+        '422': { description: autoAccept is off or crossing. }
+
+  /venues/{venueId}/brand:
+    patch:
+      tags: [venues]
+      operationId: setBrand
+      summary: The white-label surface - colors, logo, display name, lens (operator only)
+      description: |
+        Presentation plane - editable forever, never freezes with the spec. Accumulated fields:
+        displayName, logo/dark/favicon URLs, poweredBy, theme tokens, customCss (enterprise),
+        cardLayout {template: {title/subtitle/badges/hidden[], anchor, gallery carousel|mosaic|random}},
+        paramDisplay {template: {param: {label {en,pt,es,fr}, multiline, format short|medium|long}}},
+        bookDisplay always|collapsed|none, criteriaBids (storefront wish form on/off),
+        categories [{id, parentId, title{4}, subtitle{4}, image}] - the storefront tree filters
+        by node INCLUDING descendants.
+      description: |
+        Presentation config, stored beside the venue - never inside the engine. Drives the
+        hosted storefront and the embed widget. The white-label ladder (C167): TOKENS for
+        everyone (validated per-type server-side; WE emit the CSS, so no injection surface);
+        removing "powered by" requires growth; customCss requires enterprise and is NEVER
+        rendered without the sanitizer + confirm-iframe that ship with the storefront.
+      x-synallax-release: "0.2"
+      parameters: [ { $ref: '#/components/parameters/VenueId' } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName: { type: string, maxLength: 120 }
+                logoUrl: { type: string, maxLength: 500, description: https only. }
+                logoDarkUrl: { type: string, maxLength: 500 }
+                faviconUrl: { type: string, maxLength: 500 }
+                lens: { enum: [ladder, calendarGrid, priceCurve, progressMeter, map] }
+                poweredBy: { type: boolean, description: false requires the growth plan. }
+                customCss: { type: string, maxLength: 50000, description: Enterprise plan only; sanitized at render. }
+                theme:
+                  type: object
+                  properties:
+                    ink: { type: string, pattern: '^#[0-9a-fA-F]{6}$' }
+                    paper: { type: string, pattern: '^#[0-9a-fA-F]{6}$' }
+                    surface: { type: string, pattern: '^#[0-9a-fA-F]{6}$' }
+                    accent: { type: string, pattern: '^#[0-9a-fA-F]{6}$' }
+                    bid: { type: string, pattern: '^#[0-9a-fA-F]{6}$' }
+                    ask: { type: string, pattern: '^#[0-9a-fA-F]{6}$' }
+                    success: { type: string, pattern: '^#[0-9a-fA-F]{6}$' }
+                    error: { type: string, pattern: '^#[0-9a-fA-F]{6}$' }
+                    muted: { type: string, pattern: '^#[0-9a-fA-F]{6}$' }
+                    fontFamily: { enum: [system-ui, Inter, Space Grotesk, IBM Plex Sans, Source Serif 4, Georgia, JetBrains Mono] }
+                    radius: { enum: [none, sm, md, lg, full] }
+                    density: { enum: [compact, regular, comfortable] }
+      responses:
+        '200': { description: Applied. }
+        '403': { description: Not the venue's operator. }
+
+  /venues:
+    post:
+      tags: [venues]
+      operationId: createVenue
+      summary: Create a venue
+      description: |
+        A blank venue (no pack) is fully valid; packs pre-fill, never limit. The five-question
+        onboarding and the agent path (an AI creating a venue) both land here — one code path,
+        two front doors.
+      x-synallax-release: "0.1"
+      parameters: [ { $ref: '#/components/parameters/IdempotencyKey' } ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/VenueConfig' }
+      responses:
+        '201': { description: Venue created., content: { application/json: { schema: { $ref: '#/components/schemas/Venue' } } } }
+        '422': { $ref: '#/components/responses/Rejected' }
+
+  /venues/{venueId}:
+    get:
+      tags: [venues]
+      operationId: getVenue
+      summary: Get a venue and its effective config
+      x-synallax-release: "0.1"
+      parameters: [ { $ref: '#/components/parameters/VenueId' } ]
+      responses:
+        '200': { description: The venue., content: { application/json: { schema: { $ref: '#/components/schemas/Venue' } } } }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /venues/{venueId}/config:
+    patch:
+      tags: [venues]
+      operationId: changeVenueConfig
+      summary: Change venue configuration (journaled, change-classed)
+      description: |
+        Hot changes apply immediately; staged changes apply to NEW orders only (resting orders
+        keep the terms they were placed under); frozen fields are immutable once the venue has
+        traded — attempting one is a `PolicyViolation`. Every change is a `VenueConfigChanged`
+        event: "who changed the collar, when" is auditable for free.
+      x-synallax-release: "0.1"
+      parameters:
+        - { $ref: '#/components/parameters/VenueId' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: A partial VenueConfig — paths not present are untouched.
+      responses:
+        '200': { description: Applied., content: { application/json: { schema: { $ref: '#/components/schemas/Venue' } } } }
+        '422': { $ref: '#/components/responses/Rejected' }
+
+  /templates:
+    get:
+      tags: [templates]
+      operationId: listTemplates
+      summary: List instrument templates (the registry)
+      x-synallax-release: "0.1"
+      parameters: [ { $ref: '#/components/parameters/Cursor' }, { $ref: '#/components/parameters/Limit' } ]
+      responses:
+        '200':
+          description: Templates, versioned. Venues reference `id@version` — upgrades are explicit.
+          content: { application/json: { schema: { $ref: '#/components/schemas/TemplatePage' } } }
+    post:
+      tags: [templates]
+      operationId: createTemplate
+      summary: Register a template version
+      description: The "describe your product once" promise — an attribute schema whose facets become the bid form and the predicate vocabulary.
+      x-synallax-release: "0.1"
+      parameters: [ { $ref: '#/components/parameters/IdempotencyKey' } ]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/InstrumentTemplate' } } }
+      responses:
+        '201': { description: Registered., content: { application/json: { schema: { $ref: '#/components/schemas/InstrumentTemplate' } } } }
+        '422': { $ref: '#/components/responses/Rejected' }
+
+  /templates/{templateId}:
+    get:
+      tags: [templates]
+      operationId: getTemplate
+      summary: Get a template (latest or `id@version`)
+      x-synallax-release: "0.1"
+      parameters:
+        - { name: templateId, in: path, required: true, schema: { type: string }, description: "`hotel-night` or `hotel-night@2`" }
+      responses:
+        '200': { description: The template., content: { application/json: { schema: { $ref: '#/components/schemas/InstrumentTemplate' } } } }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /billing:
+    get:
+      tags: [billing]
+      operationId: getBilling
+      summary: Current plan, entitlements, and whether online payment is configured
+      x-synallax-release: "0.1"
+      responses:
+        '200': { description: "{plan, monthlyUsd, entitlements, configured, purchasable[], subscribed, subscriptionPlan}." }
+
+  /billing/checkout:
+    post:
+      tags: [billing]
+      operationId: createCheckout
+      summary: Start a Stripe Checkout for basic|premium (monthly recurring)
+      description: |
+        acceptTerms MUST be true - a human's checkbox on /Subscribe and an agent's field are
+        the same binding acceptance of the Terms and Privacy Policy (terms_accepted_at is
+        stamped into the Stripe metadata). One active subscription per account: while one
+        exists, checkout is refused and plan changes go through /billing/portal. Returns the
+        hosted payment URL; card entry happens on Stripe's page (the one human step - agents
+        do everything else programmatically). 503 BillingNotConfigured while keys are absent.
+      x-synallax-release: "0.1"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [plan, acceptTerms]
+              properties:
+                plan: { enum: [basic, premium] }
+                acceptTerms: { type: boolean }
+      responses:
+        '200': { description: "{url} - the Stripe Checkout page." }
+        '422': { $ref: '#/components/responses/Rejected' }
+        '503': { description: BillingNotConfigured. }
+
+  /billing/portal:
+    post:
+      tags: [billing]
+      operationId: createBillingPortal
+      summary: Open Stripe's customer portal (change plan, card, invoices, cancel)
+      x-synallax-release: "0.1"
+      responses:
+        '200': { description: "{url} - the customer portal session." }
+        '422': { description: No subscription on file. }
+        '503': { description: BillingNotConfigured. }
+
+  /billing/webhook:
+    post:
+      tags: [billing]
+      operationId: stripeWebhook
+      summary: Stripe events in (PUBLIC route - authenticated by SIGNATURE, never bearer)
+      description: checkout.session.completed flips the plan; customer.subscription.deleted downgrades to free. Linkage rides accountId in client_reference_id and metadata on both session and subscription.
+      x-synallax-release: "0.1"
+      responses:
+        '200': { description: "{received, outcome}." }
+        '400': { description: Bad signature. }
+
+  /venues/{venueId}/templates/{templateId}/params:
+    put:
+      tags: [venues]
+      operationId: putTemplateParams
+      summary: Edit a template's declared parameters (until its first offer)
+      description: |
+        Allowed only while the template has NEVER received an offer - buyers bid against a
+        vocabulary; the first offer freezes it forever (cancellation does not thaw). Live
+        listings must satisfy the new schema or the edit is refused naming the offender.
+        An empty array returns the template to FREE. Operator-only.
+      x-synallax-release: "0.1"
+      parameters:
+        - { $ref: '#/components/parameters/VenueId' }
+        - { name: templateId, in: path, required: true, schema: { type: string } }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              maxItems: 24
+              items:
+                type: object
+                required: [name, type]
+                properties:
+                  name: { type: string, maxLength: 60 }
+                  type: { enum: [number, text, time, date, price, rating, place, image, images] }
+                  filterable: { type: boolean, default: false }
+                  required: { type: boolean, default: false }
+                  min: { type: number }
+                  max: { type: number }
+      responses:
+        '200': { description: The new declared parameter list. }
+        '403': { description: Not the venue's operator. }
+        '422': { $ref: '#/components/responses/Rejected' }
+
+  /venues/{venueId}/instruments:
+    post:
+      tags: [instruments]
+      operationId: listInstrument
+      summary: List an instrument (supply side)
+      x-synallax-release: "0.1"
+      parameters:
+        - { $ref: '#/components/parameters/VenueId' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/InstrumentRequest' } } }
+      responses:
+        '201': { description: Listed., content: { application/json: { schema: { $ref: '#/components/schemas/Instrument' } } } }
+        '422': { $ref: '#/components/responses/Rejected' }
+    get:
+      tags: [instruments]
+      operationId: listInstruments
+      summary: Browse instruments
+      x-synallax-release: "0.1"
+      parameters:
+        - { $ref: '#/components/parameters/VenueId' }
+        - { $ref: '#/components/parameters/Cursor' }
+        - { $ref: '#/components/parameters/Limit' }
+        - { name: templateId, in: query, schema: { type: string } }
+      responses:
+        '200': { description: Instruments visible to the caller's entitlement., content: { application/json: { schema: { $ref: '#/components/schemas/InstrumentPage' } } } }
+
+  /venues/{venueId}/instruments/search:
+    post:
+      tags: [instruments]
+      operationId: searchInstruments
+      summary: Search instruments by predicate
+      description: The buyer's view of matching — the same predicate object an order targets.
+      x-synallax-release: "0.1"
+      x-mcp-tool: search_instruments
+      parameters: [ { $ref: '#/components/parameters/VenueId' } ]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/Predicate' } } }
+      responses:
+        '200': { description: Matching instruments., content: { application/json: { schema: { $ref: '#/components/schemas/InstrumentPage' } } } }
+        '422': { $ref: '#/components/responses/Rejected' }
+
+  /venues/{venueId}/instruments/{instrumentId}:
+    get:
+      tags: [instruments]
+      operationId: getInstrument
+      summary: Get an instrument
+      x-synallax-release: "0.1"
+      parameters:
+        - { $ref: '#/components/parameters/VenueId' }
+        - { $ref: '#/components/parameters/InstrumentId' }
+      responses:
+        '200': { description: The instrument., content: { application/json: { schema: { $ref: '#/components/schemas/Instrument' } } } }
+        '404': { $ref: '#/components/responses/NotFound' }
+    delete:
+      tags: [instruments]
+      operationId: withdrawInstrument
+      summary: Withdraw an instrument
+      x-synallax-release: "0.1"
+      parameters:
+        - { $ref: '#/components/parameters/VenueId' }
+        - { $ref: '#/components/parameters/InstrumentId' }
+      responses:
+        '204': { description: Withdrawn. }
+        '422': { $ref: '#/components/responses/Rejected' }
+
+  /venues/{venueId}/instruments/{instrumentId}/capacity:
+    post:
+      tags: [instruments]
+      operationId: setCapacity
+      summary: Set capacity (compare-and-set)
+      description: |
+        Capacity is an ABSOLUTE level plus the basis sequence it was observed at
+        (EVENT-MODEL §1b): the engine overlays holds and conclusions since that basis —
+        `available = absolute − activeHolds − concludedSinceBasis`. This is what kills the
+        channel-manager oversell classic. Blind deltas are not accepted.
+      x-synallax-release: "0.1"
+      parameters:
+        - { $ref: '#/components/parameters/VenueId' }
+        - { $ref: '#/components/parameters/InstrumentId' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/CapacityUpdate' } } }
+      responses:
+        '200': { description: Applied., content: { application/json: { schema: { $ref: '#/components/schemas/Instrument' } } } }
+        '409': { description: Basis sequence is stale — re-read and retry., content: { application/json: { schema: { $ref: '#/components/schemas/Rejection' } } } }
+        '422': { $ref: '#/components/responses/Rejected' }
+
+  /venues/{venueId}/instruments/{instrumentId}/attributes:
+    post:
+      tags: [instruments]
+      operationId: updateAttributes
+      summary: Update an instrument's attributes (the drift producer)
+      description: |
+        P12 - attributes drift while orders rest (mileage rises). Class predicates silently
+        gain or lose members at query time; resting orders are NEVER mutated (review F17),
+        and a drifted-out instrument cannot be accepted against the bid it left.
+      x-synallax-release: "0.2"
+      parameters:
+        - { $ref: '#/components/parameters/VenueId' }
+        - { $ref: '#/components/parameters/InstrumentId' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [attributes]
+              properties:
+                attributes: { type: object, description: Full replacement bag (predicate-relevant attributes only, per EVENT-MODEL 1b). }
+      responses:
+        '200': { description: Updated., content: { application/json: { schema: { $ref: '#/components/schemas/Instrument' } } } }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '422': { $ref: '#/components/responses/Rejected' }
+
+  /venues/{venueId}/orders:
+    post:
+      tags: [orders]
+      operationId: placeOrder
+      summary: Place a firm order
+      description: |
+        The heart of the system. A bid **wants** an instrument component (a specific id or a
+        predicate — "Civic EXL 2019–21, ≤60k km, ≤R$95k, seller ≥8") and **gives** money,
+        credits, assets (trade-in) or service. Validity picks the clock: `GTE` dies with the
+        instrument, `GTC` rests for months with a reaffirmation pulse. `exclusivityGroupKey`
+        groups at-most-one alternatives — the first acceptance atomically cancels siblings.
+        Firm means firm: placement may save a payment mandate per venue policy.
+      x-synallax-release: "0.1"
+      x-mcp-tool: place_bid
+      parameters:
+        - { $ref: '#/components/parameters/VenueId' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/OrderRequest' }
+            example:
+              side: bid
+              want:
+                components:
+                  - kind: instrument
+                    target:
+                      predicate:
+                        templateId: hotel-night
+                        criteria:
+                          - { attribute: city, op: eq, value: "Paris" }
+                          - { attribute: stars, op: gte, value: 4 }
+                          - { attribute: distanceToKm.trocadero, op: lte, value: 2 }
+                        counterparty: { reputationAtLeast: 7 }
+              give:
+                components:
+                  - kind: money
+                    currency: EUR
+                    basis: perUnit
+                    price: { kind: absolute, amount: "175.00" }
+              quantity: { value: "2" }
+              allOrNone: true
+              validity: { type: GTE }
+              exclusivityGroupKey: paris-oct-trip
+      responses:
+        '201': { description: Resting (or concluded immediately for IOC/FOK against auto-accept rules)., content: { application/json: { schema: { $ref: '#/components/schemas/Order' } } } }
+        '422': { $ref: '#/components/responses/Rejected' }
+    get:
+      tags: [orders]
+      operationId: listMyOrders
+      summary: List my orders
+      x-synallax-release: "0.1"
+      x-mcp-tool: list_my_orders
+      parameters:
+        - { $ref: '#/components/parameters/VenueId' }
+        - { $ref: '#/components/parameters/Cursor' }
+        - { $ref: '#/components/parameters/Limit' }
+        - { name: status, in: query, schema: { $ref: '#/components/schemas/OrderStatus' } }
+      responses:
+        '200': { description: My orders., content: { application/json: { schema: { $ref: '#/components/schemas/OrderPage' } } } }
+
+  /orders/{orderId}:
+    get:
+      tags: [orders]
+      operationId: getOrder
+      summary: Get an order
+      x-synallax-release: "0.1"
+      parameters: [ { $ref: '#/components/parameters/OrderId' } ]
+      responses:
+        '200': { description: The order., content: { application/json: { schema: { $ref: '#/components/schemas/Order' } } } }
+        '404': { $ref: '#/components/responses/NotFound' }
+    patch:
+      tags: [orders]
+      operationId: amendOrder
+      summary: Amend (cancel/replace)
+      description: Price, quantity and validity amendments; an amendment loses time priority per venue policy.
+      x-synallax-release: "0.1"
+      parameters:
+        - { $ref: '#/components/parameters/OrderId' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/OrderAmendment' } } }
+      responses:
+        '200': { description: Amended., content: { application/json: { schema: { $ref: '#/components/schemas/Order' } } } }
+        '409': { description: Lost a race with a concurrent acceptance (`RaceLost`)., content: { application/json: { schema: { $ref: '#/components/schemas/Rejection' } } } }
+        '422': { $ref: '#/components/responses/Rejected' }
+    delete:
+      tags: [orders]
+      operationId: cancelOrder
+      summary: Cancel an order
+      x-synallax-release: "0.1"
+      x-mcp-tool: cancel_order
+      parameters: [ { $ref: '#/components/parameters/OrderId' } ]
+      responses:
+        '204': { description: Cancelled. }
+        '409': { description: Already concluded (`RaceLost`)., content: { application/json: { schema: { $ref: '#/components/schemas/Rejection' } } } }
+
+  /orders/{orderId}/reaffirm:
+    post:
+      tags: [orders]
+      operationId: reaffirmOrder
+      summary: Reaffirm a long-resting order (the patience clock's pulse)
+      description: |
+        Long-lived orders are pinged (`OrderReaffirmationRequested`); unanswered within the
+        grace window, they expire. A rotting six-month car bid poisons book credibility and
+        unfairly dents an honest buyer's Payer reputation — this is the antidote.
+      x-synallax-release: "0.1"
+      parameters:
+        - { $ref: '#/components/parameters/OrderId' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      responses:
+        '200': { description: Reaffirmed., content: { application/json: { schema: { $ref: '#/components/schemas/Order' } } } }
+        '422': { $ref: '#/components/responses/Rejected' }
+
+  /venues/{venueId}/book:
+    get:
+      tags: [book]
+      operationId: getBook
+      summary: Depth snapshot (per-entitlement, anonymized)
+      description: What you see depends on who you are — `data.book` policy decides aggregate vs full depth. The tape shows prints, never names.
+      x-synallax-release: "0.1"
+      x-mcp-tool: get_book
+      parameters:
+        - { $ref: '#/components/parameters/VenueId' }
+        - { name: instrumentId, in: query, schema: { type: string } }
+        - { name: templateId, in: query, schema: { type: string } }
+      responses:
+        '200': { description: The book., content: { application/json: { schema: { $ref: '#/components/schemas/BookSnapshot' } } } }
+
+  /venues/{venueId}/matches:
+    get:
+      tags: [book]
+      operationId: getMatches
+      summary: Resting bids my inventory satisfies (the seller's screen)
+      description: Matching SUGGESTS — it never concludes (invariant 8). This feeds the acceptance queue and the rules engine, nothing more.
+      x-synallax-release: "0.1"
+      parameters:
+        - { $ref: '#/components/parameters/VenueId' }
+        - { name: instrumentId, in: query, schema: { type: string } }
+        - { $ref: '#/components/parameters/Cursor' }
+        - { $ref: '#/components/parameters/Limit' }
+      responses:
+        '200': { description: Matches, best first., content: { application/json: { schema: { $ref: '#/components/schemas/MatchPage' } } } }
+
+  /venues/{venueId}/demand:
+    get:
+      tags: [book]
+      operationId: getDemandCurve
+      summary: The demand curve (seller entitlement)
+      description: |
+        "Your RMS guesses; the book knows" — honestly. Shows **raw** and **expected** demand
+        side by side: expected weights each bid by `1/(live exclusivity siblings)` and
+        allocates it across the instruments its predicate matches, so one bid matching 40
+        hotels is one unit of demand, not 40; bids below the venue trust floor are excluded
+        (probe resistance). See EVENT-MODEL §5.
+      x-synallax-release: "0.2"
+      parameters:
+        - { $ref: '#/components/parameters/VenueId' }
+        - { name: instrumentId, in: query, schema: { type: string } }
+        - { name: templateId, in: query, schema: { type: string } }
+      responses:
+        '200': { description: The curve., content: { application/json: { schema: { $ref: '#/components/schemas/DemandCurve' } } } }
+
+  /venues/{venueId}/acceptances:
+    post:
+      tags: [acceptance]
+      operationId: requestAcceptance
+      summary: Conclude — operator-controlled, always
+      description: |
+        The only way a deal happens. The actor (a human on the queue, the venue's rules
+        engine, or an RFQ answer) proposes a strategy and a candidate set; the engine
+        evaluates atomically — exclusivity siblings cancel in the same batch, baskets and
+        thresholds conclude all-or-nothing (invariant 3). Concurrency is honest: losing a
+        race is a `RaceLost` rejection, not a silent double-sell.
+      x-synallax-release: "0.1"
+      parameters:
+        - { $ref: '#/components/parameters/VenueId' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/AcceptanceRequest' } } }
+      responses:
+        '201': { description: Concluded., content: { application/json: { schema: { $ref: '#/components/schemas/AcceptanceResult' } } } }
+        '409': { description: '`RaceLost` — a concurrent acceptance won.', content: { application/json: { schema: { $ref: '#/components/schemas/Rejection' } } } }
+        '422': { $ref: '#/components/responses/Rejected' }
+
+  /venues/{venueId}/rfqs:
+    post:
+      tags: [rfq]
+      operationId: createRfq
+      summary: Open an RFQ
+      x-synallax-release: "0.2"
+      x-mcp-tool: create_rfq
+      parameters:
+        - { $ref: '#/components/parameters/VenueId' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/RfqRequest' } } }
+      responses:
+        '201': { description: Open., content: { application/json: { schema: { $ref: '#/components/schemas/Rfq' } } } }
+        '422': { $ref: '#/components/responses/Rejected' }
+
+  /rfqs/{rfqId}:
+    get:
+      tags: [rfq]
+      operationId: getRfq
+      summary: Get an RFQ (quotes visible to the requester only, per venue policy)
+      x-synallax-release: "0.2"
+      parameters: [ { name: rfqId, in: path, required: true, schema: { type: string } } ]
+      responses:
+        '200': { description: The RFQ., content: { application/json: { schema: { $ref: '#/components/schemas/Rfq' } } } }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /rfqs/{rfqId}/quotes:
+    post:
+      tags: [rfq]
+      operationId: submitQuote
+      summary: Answer an RFQ with a private, firm, expiring quote
+      x-synallax-release: "0.2"
+      parameters:
+        - { name: rfqId, in: path, required: true, schema: { type: string } }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/QuoteRequest' } } }
+      responses:
+        '201': { description: Quoted., content: { application/json: { schema: { $ref: '#/components/schemas/Quote' } } } }
+        '422': { $ref: '#/components/responses/Rejected' }
+
+  /orders/{orderId}/counters:
+    post:
+      tags: [rfq]
+      operationId: counterOffer
+      summary: Counter an order — price AND term deltas
+      description: '"Your 450 → 520 *with breakfast*" — counters carry attribute deltas, not just price (P3).'
+      x-synallax-release: "0.2"
+      parameters:
+        - { $ref: '#/components/parameters/OrderId' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/CounterRequest' } } }
+      responses:
+        '201': { description: Countered., content: { application/json: { schema: { $ref: '#/components/schemas/Counter' } } } }
+        '422': { $ref: '#/components/responses/Rejected' }
+
+  /venues/{venueId}/trades:
+    get:
+      tags: [trades]
+      operationId: listTrades
+      summary: Prints (anonymized tape) or my fills
+      x-synallax-release: "0.1"
+      x-mcp-tool: get_fills
+      parameters:
+        - { $ref: '#/components/parameters/VenueId' }
+        - { name: mine, in: query, schema: { type: boolean, default: false }, description: My fills (full detail) vs the venue tape (per entitlement). }
+        - { name: since, in: query, schema: { type: string, format: date-time } }
+        - { $ref: '#/components/parameters/Cursor' }
+        - { $ref: '#/components/parameters/Limit' }
+      responses:
+        '200': { description: Trades., content: { application/json: { schema: { $ref: '#/components/schemas/TradePage' } } } }
+
+  /trades/{tradeId}:
+    get:
+      tags: [trades]
+      operationId: getTrade
+      summary: Get a trade
+      description: A trade embeds its full consideration snapshot (EVENT-MODEL Q1 — readable in 10 years without reconstructing the book).
+      x-synallax-release: "0.1"
+      parameters: [ { $ref: '#/components/parameters/TradeId' } ]
+      responses:
+        '200': { description: The trade., content: { application/json: { schema: { $ref: '#/components/schemas/Trade' } } } }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /trades/{tradeId}/settlement:
+    get:
+      tags: [trades]
+      operationId: getSettlement
+      summary: Settlement state machine for a trade
+      description: The provider was bound per trade at conclusion (G4). Steps, documents and deadlines mirror the SettlementStepCompleted events.
+      x-synallax-release: "0.4"
+      parameters: [ { $ref: '#/components/parameters/TradeId' } ]
+      responses:
+        '200': { description: Settlement status., content: { application/json: { schema: { $ref: '#/components/schemas/SettlementStatus' } } } }
+        '404': { $ref: '#/components/responses/NotFound' }
+
+  /trades/{tradeId}/ratings:
+    post:
+      tags: [trust]
+      operationId: rateCounterparty
+      summary: Rate the counterparty (trade-anchored)
+      description: |
+        Invariant 10 with its guards — only a concluded trade grants the right to rate;
+        ratings freeze after the revision window; repeated trades between one pair carry
+        diminishing weight; and non-volitional events (issuer declines, abandoned SCA,
+        statutory withdrawal) are never rateable — rail noise is not character.
+      x-synallax-release: "0.2"
+      parameters:
+        - { $ref: '#/components/parameters/TradeId' }
+        - { $ref: '#/components/parameters/IdempotencyKey' }
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: '#/components/schemas/RatingRequest' } } }
+      responses:
+        '201': { description: Rated (revisable within the venue's revision window)., content: { application/json: { schema: { $ref: '#/components/schemas/Rating' } } } }
+        '422': { $ref: '#/components/responses/Rejected' }
+
+  /venues/{venueId}/feed:
+    get:
+      tags: [book]
+      operationId: subscribeFeed
+      summary: Live feed (WebSocket upgrade)
+      description: |
+        Upgrades to WebSocket. Frames carry the same `Event` envelope as webhooks — book
+        deltas, prints, and my-order lifecycle, filtered per entitlement. Standing agents
+        react to fills here; polling agents can ignore it.
+      x-synallax-release: "0.2"
+      x-synallax-transport: websocket
+      parameters: [ { $ref: '#/components/parameters/VenueId' } ]
+      responses:
+        '101': { description: Switching protocols. }
+
+webhooks:
+  order.filled:
+    post:
+      summary: An order concluded (fully or partially).
+      requestBody: { content: { application/json: { schema: { $ref: '#/components/schemas/Event' } } } }
+      responses: { '200': { description: Acknowledged. } }
+  order.expired:
+    post:
+      summary: An order expired (GTE instrument consumed, GTD/GTT reached, reaffirmation lapsed).
+      requestBody: { content: { application/json: { schema: { $ref: '#/components/schemas/Event' } } } }
+      responses: { '200': { description: Acknowledged. } }
+  order.reaffirmationRequested:
+    post:
+      summary: The patience clock's pulse — reaffirm or the order lapses.
+      requestBody: { content: { application/json: { schema: { $ref: '#/components/schemas/Event' } } } }
+      responses: { '200': { description: Acknowledged. } }
+  counter.offered:
+    post:
+      summary: A counter (price and/or attribute deltas) was made on your order.
+      requestBody: { content: { application/json: { schema: { $ref: '#/components/schemas/Event' } } } }
+      responses: { '200': { description: Acknowledged. } }
+  rfq.quoted:
+    post:
+      summary: A quote arrived on your RFQ.
+      requestBody: { content: { application/json: { schema: { $ref: '#/components/schemas/Event' } } } }
+      responses: { '200': { description: Acknowledged. } }
+  threshold.reached:
+    post:
+      summary: A quorum/campaign threshold was reached.
+      requestBody: { content: { application/json: { schema: { $ref: '#/components/schemas/Event' } } } }
+      responses: { '200': { description: Acknowledged. } }
+  trade.concluded:
+    post:
+      summary: A trade concluded (the fact — consideration snapshot embedded).
+      requestBody: { content: { application/json: { schema: { $ref: '#/components/schemas/Event' } } } }
+      responses: { '200': { description: Acknowledged. } }
+  trade.settled:
+    post:
+      summary: Settlement completed for a trade.
+      requestBody: { content: { application/json: { schema: { $ref: '#/components/schemas/Event' } } } }
+      responses: { '200': { description: Acknowledged. } }
+  payment.failed:
+    post:
+      summary: A payment failed — payload carries the DeclineClass (the reputation firewall).
+      requestBody: { content: { application/json: { schema: { $ref: '#/components/schemas/Event' } } } }
+      responses: { '200': { description: Acknowledged. } }
+  capture.shortfall:
+    post:
+      summary: Post-threshold captures fell short; venue policy (proceed/reopen/cancel) applied.
+      requestBody: { content: { application/json: { schema: { $ref: '#/components/schemas/Event' } } } }
+      responses: { '200': { description: Acknowledged. } }
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: |
+        API keys (`sk_…`), minted at signup and via `/keys`; stored hashed, shown once.
+        **Party identity (owner / submitter / actor) is DERIVED from the presented
+        credential — request bodies never carry who-you-are**, which is what makes the
+        engine's owner-only and submitter-only checks authorization rather than convention.
+        Agent credentials will carry a **mandate** (spend cap per period, principal) —
+        exceeding it is a `MandateExceeded` rejection, which is what makes "let my agent bid"
+        safe to say. Webhook deliveries are signed (HMAC, `Synallax-Signature` header).
+
+  parameters:
+    VenueId:      { name: venueId,      in: path, required: true, schema: { type: string } }
+    OrderId:      { name: orderId,      in: path, required: true, schema: { type: string } }
+    TradeId:      { name: tradeId,      in: path, required: true, schema: { type: string } }
+    InstrumentId: { name: instrumentId, in: path, required: true, schema: { type: string } }
+    Cursor:       { name: cursor, in: query, schema: { type: string }, description: Opaque pagination cursor. }
+    Limit:        { name: limit,  in: query, schema: { type: integer, minimum: 1, maximum: 200, default: 50 } }
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      schema: { type: string, maxLength: 128 }
+      description: |
+        Client-chosen key (EVENT-MODEL determinism rule 5). A duplicate returns the ORIGINAL
+        outcome and appends nothing — agents retry; the book must not double-count.
+
+  responses:
+    Rejected:
+      description: The engine refused — a decision, not an error. Rejections are journaled; "why was my bid refused?" is answerable months later.
+      content: { application/json: { schema: { $ref: '#/components/schemas/Rejection' } } }
+    NotFound:
+      description: Unknown resource (or not visible to this credential's entitlement).
+      content: { application/json: { schema: { $ref: '#/components/schemas/Rejection' } } }
+
+  schemas:
+
+    VenueConfig:
+      $ref: './venue-config.schema.json'
+
+    Account:
+      type: object
+      required: [accountId, name, email, plan]
+      properties:
+        accountId: { type: string, description: Also the party identity (PartyId == accountId). }
+        name: { type: string }
+        email: { type: string }
+        plan: { type: string, description: sandbox | growth | enterprise; billing flips it (ROADMAP E11). }
+        entitlements:
+          type: object
+          description: Resolved SERVER-SIDE from the plan - the UI (and any agent) renders capabilities from this object, never from its own assumptions. Enforcement lives at the API regardless.
+          properties:
+            plan: { type: string }
+            maxVenues: { type: integer }
+            poweredByRemovable: { type: boolean }
+            customFonts: { type: boolean }
+            customCss: { type: boolean }
+        createdUtc: { type: string }
+
+    ApiKeyInfo:
+      type: object
+      required: [keyId, prefix]
+      properties:
+        keyId: { type: string }
+        prefix: { type: string, description: First characters only - the secret is never listed. }
+        label: { type: string }
+        createdUtc: { type: string }
+        revokedUtc: { type: string }
+
+    Venue:
+      type: object
+      required: [venueId, operatorAccountId, status, config, createdAt]
+      properties:
+        venueId: { type: string }
+        operatorAccountId: { type: string, description: The Account that OWNS the venue and holds the plan (CORE-MODEL §2.1). }
+        status: { enum: [active, suspended, closed] }
+        config: { $ref: '#/components/schemas/VenueConfig' }
+        createdAt: { type: string, format: date-time }
+
+    DecimalString:
+      type: string
+      pattern: '^-?\d+(\.\d+)?$'
+      description: Exact decimal as a string — never floats on the wire.
+
+    Duration:
+      type: string
+      pattern: '^P(?!$)(\d+Y)?(\d+M)?(\d+W)?(\d+D)?(T(?=\d)(\d+H)?(\d+M)?(\d+S)?)?$'
+
+    PriceExpression:
+      description: G2 — price is an expression, not a scalar. `value = reference × factor + delta`; "FIPE −8%" is `{kind:reference, feedId:fipe, factor:0.92}`. Snapshotted at conclusion for audit.
+      oneOf:
+        - type: object
+          title: Absolute
+          required: [kind, amount]
+          properties:
+            kind: { const: absolute }
+            amount: { $ref: '#/components/schemas/DecimalString' }
+        - type: object
+          title: Reference
+          required: [kind, feedId]
+          properties:
+            kind: { const: reference }
+            feedId: { type: string }
+            factor: { type: number, default: 1 }
+            delta: { $ref: '#/components/schemas/DecimalString' }
+            evaluation: { enum: [live, pinned], description: Ratified CORE-MODEL Q2 — venue default live; pin-at-placement per order. }
+
+    ConsiderationComponent:
+      description: G1 — an order is {what I give} ⇄ {what I want}. The instrument leg IS a component (review F15).
+      oneOf:
+        - type: object
+          title: Money
+          required: [kind, currency, price]
+          properties:
+            kind: { const: money }
+            currency: { type: string, description: ISO 4217. }
+            basis: { enum: [perUnit, total], default: perUnit, description: Review F16 — total = evaluated price × quantity when perUnit. }
+            price: { $ref: '#/components/schemas/PriceExpression' }
+        - type: object
+          title: Credits
+          required: [kind, ledger, price]
+          properties:
+            kind: { const: credits }
+            ledger: { type: string }
+            basis: { enum: [perUnit, total], default: perUnit }
+            price: { $ref: '#/components/schemas/PriceExpression' }
+        - type: object
+          title: Asset
+          required: [kind, instrumentId]
+          description: A concrete owned asset — the trade-in.
+          properties:
+            kind: { const: asset }
+            instrumentId: { type: string }
+            declaredValue: { $ref: '#/components/schemas/PriceExpression' }
+        - type: object
+          title: Service
+          required: [kind, templateId]
+          properties:
+            kind: { const: service }
+            templateId: { type: string }
+            hours: { $ref: '#/components/schemas/DecimalString' }
+        - type: object
+          title: Instrument
+          required: [kind, target]
+          properties:
+            kind: { const: instrument }
+            target: { $ref: '#/components/schemas/InstrumentTarget' }
+
+    InstrumentTarget:
+      oneOf:
+        - type: object
+          title: Specific
+          required: [instrumentId]
+          properties: { instrumentId: { type: string } }
+        - type: object
+          title: Predicate
+          required: [predicate]
+          properties: { predicate: { $ref: '#/components/schemas/Predicate' } }
+
+    Predicate:
+      type: object
+      description: P1 — a bid targets a criteria-class; a specific-instrument bid is a predicate of one. Subject to the venue's specificity floor. Relational SET constraints ("two seats together") are a declared v2 extension.
+      required: [templateId, criteria]
+      properties:
+        templateId: { type: string }
+        criteria:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            required: [attribute, op, value]
+            properties:
+              attribute: { type: string }
+              op: { enum: [eq, ne, gt, gte, lt, lte, in, between, contains, near] }
+              value: { description: Scalar, array (in/between), or geo object for `near`. }
+        counterparty:
+          type: object
+          properties:
+            reputationAtLeast: { type: number }
+            verificationTierAtLeast: { enum: [email, document, business] }
+
+    Consideration:
+      type: object
+      required: [components]
+      properties:
+        components:
+          type: array
+          minItems: 1
+          items: { $ref: '#/components/schemas/ConsiderationComponent' }
+        parties:
+          type: array
+          description: P15 — multiple contributing parties (four players split the court).
+          items:
+            type: object
+            required: [partyId, sharePct]
+            properties:
+              partyId: { type: string }
+              sharePct: { type: number }
+
+    Validity:
+      type: object
+      required: [type]
+      properties:
+        type: { enum: [GTE, GTD, GTC, DAY, GTT, IOC, FOK], description: GTE dies with its instrument — the Synallax-native default for perishables. }
+        until: { type: string, format: date-time, description: Required for GTD/GTT (venue timezone rules applied). }
+
+    OrderRequest:
+      type: object
+      required: [side, give, want, quantity, validity]
+      properties:
+        side: { enum: [bid, ask] }
+        give: { $ref: '#/components/schemas/Consideration' }
+        want: { $ref: '#/components/schemas/Consideration' }
+        quantity:
+          type: object
+          required: [value]
+          properties:
+            value: { $ref: '#/components/schemas/DecimalString' }
+            unit: { type: string, description: For continuous quantities (tonne, hour). }
+        minFill: { $ref: '#/components/schemas/DecimalString' }
+        allOrNone: { type: boolean, default: false }
+        validity: { $ref: '#/components/schemas/Validity' }
+        visibility: { enum: [anonymous, named], description: Within venue policy. }
+        exclusivityGroupKey: { type: string, description: P2 — at-most-one; first acceptance atomically cancels siblings. }
+        principalId: { type: string, description: P19 — who this is FOR when acting on behalf (the agent-for-human primitive). }
+
+    OrderAmendment:
+      type: object
+      minProperties: 1
+      properties:
+        give: { $ref: '#/components/schemas/Consideration' }
+        quantity:
+          type: object
+          properties:
+            value: { $ref: '#/components/schemas/DecimalString' }
+        validity: { $ref: '#/components/schemas/Validity' }
+
+    OrderStatus:
+      enum: [resting, pendingReaffirmation, suspended, concluded, cancelled, expired]
+
+    Order:
+      allOf:
+        - $ref: '#/components/schemas/OrderRequest'
+        - type: object
+          required: [orderId, venueId, status, createdAt]
+          properties:
+            orderId: { type: string }
+            venueId: { type: string }
+            status: { $ref: '#/components/schemas/OrderStatus' }
+            submitterRef: { type: string, description: Pseudonymous. }
+            createdAt: { type: string, format: date-time }
+            expiresAt: { type: string, format: date-time, description: Materialized expiry (GTE resolves to the instrument's lifecycle). }
+            reaffirmBy: { type: string, format: date-time }
+            basketRef: { type: [string, 'null'], description: 'RESERVED (PLAN §7): stored, unused — cross-venue baskets need the deferred coordinator.' }
+
+    InstrumentRequest:
+      type: object
+      required: [templateId, attributes, capacity]
+      properties:
+        templateId: { type: string, description: '`id@version` into the registry.' }
+        attributes: { type: object, description: Values against the template's attribute schema. }
+        capacity: { type: number }
+        instanceIdentity: { enum: [anyOfClass, specific] }
+        consumesAt: { type: string, format: date-time, description: 'The GTE anchor: when the instrument is consumed (the night, the departure). The rollover sweep consumes due instruments; orders targeting them expire in the same atomic batch. Listing an already-past consumesAt is rejected.' }
+
+    Instrument:
+      allOf:
+        - $ref: '#/components/schemas/InstrumentRequest'
+        - type: object
+          required: [instrumentId, venueId, ownerRef]
+          properties:
+            instrumentId: { type: string }
+            venueId: { type: string }
+            ownerRef: { type: string, description: Pseudonymous owner (instruments have an owner; orders have a side). }
+            available: { type: number, description: absolute − activeHolds − concludedSinceBasis. }
+            basisSeq: { type: integer, description: The journal seq the capacity level was observed at. }
+
+    InstrumentTemplate:
+      type: object
+      required: [templateId, version, name, attributeSchema]
+      properties:
+        templateId: { type: string }
+        version: { type: integer }
+        name: { type: string }
+        attributeSchema: { type: object, description: JSON Schema for instrument attributes — the facets become the bid form and the predicate vocabulary. }
+        facets: { type: array, items: { type: string }, description: Predicate-relevant attributes (these are the ones journaled on drift — EVENT-MODEL §1b). }
+        lensHint: { enum: [ladder, calendarGrid, priceCurve, progressMeter, map] }
+
+    CapacityUpdate:
+      type: object
+      required: [absolute, basisSeq]
+      properties:
+        absolute: { type: number, description: The connector's/operator's absolute level. }
+        basisSeq: { type: integer, description: Compare-and-set basis — stale basis is a 409. }
+        reason: { enum: [allotment, manual, connectorSync] }
+
+    BookLevel:
+      type: object
+      required: [price, quantity]
+      properties:
+        price: { $ref: '#/components/schemas/DecimalString' }
+        quantity: { $ref: '#/components/schemas/DecimalString' }
+        orders: { type: integer }
+
+    BookSnapshot:
+      type: object
+      required: [venueId, asOfSeq, bids, asks]
+      properties:
+        venueId: { type: string }
+        instrumentId: { type: string }
+        asOfSeq: { type: integer, description: Journal position this snapshot folds to — the replay anchor. }
+        bids: { type: array, items: { $ref: '#/components/schemas/BookLevel' } }
+        asks: { type: array, items: { $ref: '#/components/schemas/BookLevel' } }
+
+    DemandCurve:
+      type: object
+      required: [asOfSeq, points]
+      properties:
+        instrumentId: { type: string }
+        templateId: { type: string }
+        asOfSeq: { type: integer }
+        points:
+          type: array
+          items:
+            type: object
+            required: [price, rawQuantity, expectedQuantity]
+            properties:
+              price: { $ref: '#/components/schemas/DecimalString' }
+              rawQuantity: { $ref: '#/components/schemas/DecimalString' }
+              expectedQuantity: { $ref: '#/components/schemas/DecimalString', description: Exclusivity-deflated, fan-out-allocated (F42). }
+
+    Match:
+      type: object
+      required: [orderId, instrumentId, score]
+      properties:
+        orderId: { type: string }
+        instrumentId: { type: string }
+        score: { type: number }
+        bid: { $ref: '#/components/schemas/Order' }
+
+    AcceptanceRequest:
+      type: object
+      required: [strategy, orderIds]
+      properties:
+        strategy: { enum: [continuousSingle, threshold, basketConstraint, uniformClearing], description: One strategy per conclusion (ratified — strategies do not compose in v1). }
+        orderIds: { type: array, minItems: 1, items: { type: string } }
+        allocations:
+          type: array
+          description: Which instrument (and how much) each order concludes against.
+          items:
+            type: object
+            required: [orderId, instrumentId]
+            properties:
+              orderId: { type: string }
+              instrumentId: { type: string }
+              quantity: { $ref: '#/components/schemas/DecimalString' }
+        expectedBookSeq: { type: integer, description: Optimistic concurrency — a stale book is a RaceLost, not a surprise. }
+
+    AcceptanceResult:
+      type: object
+      required: [trades]
+      properties:
+        trades: { type: array, items: { $ref: '#/components/schemas/Trade' } }
+        cancelledSiblings: { type: array, items: { type: string }, description: Exclusivity-group siblings cancelled in the same atomic batch. }
+
+    PartyView:
+      type: object
+      description: Anonymity's shape on the wire — pseudonymous by default; the venue's reveal policy may add a name at acceptance.
+      required: [partyRef]
+      properties:
+        partyRef: { type: string }
+        name: { type: string }
+        reputation:
+          type: object
+          properties:
+            payer: { type: number }
+            quality: { type: number }
+            trades: { type: integer }
+
+    Trade:
+      type: object
+      required: [tradeId, venueId, status, concludedAt, buyer, seller, given, received]
+      properties:
+        tradeId: { type: string }
+        venueId: { type: string }
+        status: { enum: [concluded, conditional, settled, unwound, busted] }
+        concludedAt: { type: string, format: date-time }
+        allocations:
+          type: array
+          items:
+            type: object
+            properties:
+              instrumentId: { type: string }
+              quantity: { $ref: '#/components/schemas/DecimalString' }
+        buyer: { $ref: '#/components/schemas/PartyView' }
+        seller: { $ref: '#/components/schemas/PartyView' }
+        given: { $ref: '#/components/schemas/Consideration', description: Embedded snapshot — readable in 10 years without the book. }
+        received: { $ref: '#/components/schemas/Consideration' }
+        clearingPrice: { $ref: '#/components/schemas/DecimalString' }
+        conditions:
+          type: array
+          description: P10 — "subject to inspection within 5 days"; failure unwinds per policy.
+          items:
+            type: object
+            properties:
+              kind: { enum: [inspection, financing, quorum, custom] }
+              status: { enum: [pending, satisfied, failed] }
+              verifyBy: { type: string, format: date-time }
+        referenceSnapshot: { type: object, description: Reference values pinned at conclusion (G2 audit). }
+        settlementProvider: { enum: [psp, ledger, deferredInvoice, milestones, externalHandoff], description: Bound per trade at conclusion. }
+
+    SettlementStatus:
+      type: object
+      required: [tradeId, provider, state, steps]
+      properties:
+        tradeId: { type: string }
+        provider: { enum: [psp, ledger, deferredInvoice, milestones, externalHandoff] }
+        state: { enum: [initiated, inProgress, completed, failed] }
+        terms: { type: object, description: net-N, credit limits, milestone schedule — provider-shaped. }
+        steps:
+          type: array
+          items:
+            type: object
+            required: [id, status]
+            properties:
+              id: { type: string, description: lienCheck, transferFiled, plateIssued, podReceived, milestone ids… }
+              status: { enum: [pending, completed, failed] }
+              completedAt: { type: string, format: date-time }
+              documentRef: { type: string }
+
+    RfqRequest:
+      type: object
+      required: [target, quantity, deadline]
+      properties:
+        target: { $ref: '#/components/schemas/InstrumentTarget' }
+        quantity:
+          type: object
+          required: [value]
+          properties:
+            value: { $ref: '#/components/schemas/DecimalString' }
+            unit: { type: string }
+        deadline: { type: string, format: date-time }
+        scope: { type: object, description: Predicate-filtered broadcast (all / filtered / single seller). }
+
+    Rfq:
+      allOf:
+        - $ref: '#/components/schemas/RfqRequest'
+        - type: object
+          required: [rfqId, venueId, status]
+          properties:
+            rfqId: { type: string }
+            venueId: { type: string }
+            status: { enum: [open, closed, expired] }
+            quotes: { type: array, items: { $ref: '#/components/schemas/Quote' } }
+
+    QuoteRequest:
+      type: object
+      required: [price, validity]
+      properties:
+        price: { $ref: '#/components/schemas/PriceExpression' }
+        quantity: { $ref: '#/components/schemas/DecimalString' }
+        validity: { $ref: '#/components/schemas/Validity', description: Typically GTT/IOC — a quote is firm and short-lived. }
+
+    Quote:
+      allOf:
+        - $ref: '#/components/schemas/QuoteRequest'
+        - type: object
+          required: [quoteId, rfqId]
+          properties:
+            quoteId: { type: string }
+            rfqId: { type: string }
+            sellerRef: { type: string }
+
+    CounterRequest:
+      type: object
+      minProperties: 1
+      properties:
+        price: { $ref: '#/components/schemas/PriceExpression' }
+        attributeDeltas: { type: object, description: '"with breakfast" — term changes, not just price (P3).' }
+        expiresAt: { type: string, format: date-time }
+
+    Counter:
+      allOf:
+        - $ref: '#/components/schemas/CounterRequest'
+        - type: object
+          required: [counterId, orderId]
+          properties:
+            counterId: { type: string }
+            orderId: { type: string }
+
+    RatingRequest:
+      type: object
+      required: [direction, score]
+      properties:
+        direction: { enum: [payer, quality] }
+        score: { type: integer, minimum: 0, maximum: 10 }
+        comment: { type: string, maxLength: 2000 }
+
+    Rating:
+      allOf:
+        - $ref: '#/components/schemas/RatingRequest'
+        - type: object
+          required: [ratingId, tradeId, revisableUntil]
+          properties:
+            ratingId: { type: string }
+            tradeId: { type: string }
+            revisableUntil: { type: string, format: date-time }
+
+    Event:
+      type: object
+      description: The webhook/feed envelope — mirrors the journal envelope (EVENT-MODEL §3).
+      required: [eventId, type, occurredAt, venueId, seq, payload]
+      properties:
+        eventId: { type: string }
+        type: { type: string }
+        occurredAt: { type: string, format: date-time }
+        venueId: { type: string }
+        seq: { type: integer }
+        payload: { type: object }
+
+    RejectionCode:
+      enum:
+        - PolicyViolation
+        - OutsideCollar
+        - BelowSpecificityFloor
+        - TtlOutOfBounds
+        - InsufficientCapacity
+        - InsufficientBalance
+        - MandateExceeded
+        - NotEntitled
+        - ReputationBelowThreshold
+        - TransferabilityUnverified
+        - InfeasibleBasket
+        - ConditionUnsatisfied
+        - RaceLost
+        - Duplicate
+        - VenueSuspended
+        - UnknownInstrument
+      description: The engine's refusal vocabulary (ENGINE-INTERFACES §0) — identical in the API, the journal and the MCP tools.
+
+    Rejection:
+      type: object
+      required: [code, detail]
+      properties:
+        code: { $ref: '#/components/schemas/RejectionCode' }
+        detail: { type: string }
+
+    OrderPage:
+      type: object
+      required: [items]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/Order' } }
+        nextCursor: { type: string }
+    TradePage:
+      type: object
+      required: [items]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/Trade' } }
+        nextCursor: { type: string }
+    InstrumentPage:
+      type: object
+      required: [items]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/Instrument' } }
+        nextCursor: { type: string }
+    TemplatePage:
+      type: object
+      required: [items]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/InstrumentTemplate' } }
+        nextCursor: { type: string }
+    MatchPage:
+      type: object
+      required: [items]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/Match' } }
+        nextCursor: { type: string }
