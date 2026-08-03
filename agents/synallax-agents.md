@@ -41,10 +41,12 @@ principal sells - the structure is identical for any goods or services.
 POST https://api.synallax.com/v1/accounts
 Content-Type: application/json
 
-{ "name": "Hotel Miramar Group", "email": "owner@example.com" }
+{ "name": "John Doe", "email": "owner@example.com" }
 ```
 
 `201` returns `{ "accountId": "...", "apiKey": "sk_...", "plan": "free" }`.
+
+- `name` is the account holder - your principal (a person or their company name).
 
 - **Save the `apiKey` immediately - it is shown exactly once.** Everything else uses it.
 - Use your PRINCIPAL's real e-mail: it is how they will sign into the console later.
@@ -92,8 +94,9 @@ Field notes:
 - Parameter `type` is one of: `number` `text` `time` `date` `price` `rating` `place`
   `image` `images` `category`. `min`/`max` bound the VALUE for numeric kinds, the LENGTH
   for text, and the COUNT for `images`. `date` values are `yyyy-MM-dd`; `time` is `HH:mm`.
-- `filterable: true` puts the parameter in the storefront's buyer filter bar AND in the
-  "post what you're looking for" form (buyers can post offers for things not yet listed).
+- The storefront's "post what you're looking for" form offers EVERY public parameter,
+  so buyers can describe exactly what they want; `filterable: true` additionally puts the
+  parameter in the filter bar, with a dropdown of the values currently listed.
 - `private: true` records a parameter but hides it from buyers entirely (operator-only).
 - `tick` is the price grid (1 = whole units; 0.01 = cents). `validity` bounds offer
   lifetimes (`gtd` = good till date, `gtc` = good till cancelled), ISO-8601 durations.
