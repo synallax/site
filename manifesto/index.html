@@ -171,7 +171,7 @@
 <div class="close">
   <blockquote data-i18n-html="m_quote">A price should be a <span class="hl">conversation</span>.<br>Let's have it.</blockquote>
   <div class="ctas">
-    <a class="btn btn-primary" href="/#waitlist" data-i18n="m_cta1">Join the waitlist</a>
+    <a class="btn btn-primary" href="https://app.synallax.com/Signin?utm_source=synallax.com&amp;utm_medium=cta&amp;utm_campaign=manifesto" data-i18n="m_cta1">Create your marketplace</a>
     <a class="btn btn-ghost" href="mailto:contact@synallax.com" data-i18n="m_cta2">Become a design partner</a>
   </div>
 </div>
@@ -204,10 +204,10 @@
 const LOCKUP=`<svg viewBox="0 0 182 52" role="img" aria-label="synallax"><text x="0" y="41" font-family="'Segoe UI',system-ui,sans-serif" font-size="40" font-weight="650" textLength="142" lengthAdjust="spacingAndGlyphs" fill="currentColor">synalla</text><polyline points="150,22 158.5,30.5 150,39" fill="none" stroke="#27B36B" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="171,22 162.5,30.5 171,39" fill="none" stroke="#DB5A47" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 document.querySelectorAll('.lockup').forEach(e=>e.innerHTML=LOCKUP);
 const CHROME={
-en:{n_mission:"Mission",n_builders:"For builders",n_sellers:"For sellers",n_who:"Who it's for",n_platform:"Platform",n_manifesto:"Manifesto",n_faq:"FAQ", n_pricing:"Pricing",n_cta:"Join the waitlist",f_tagline:"The order book for the real economy.",f_ety:"From the Greek <em>synállagma</em> — a contract that binds both sides. Exchange, together.",f_rights:"© 2026 Synallax. Building in the open.",f_terms:"Terms",f_privacy:"Privacy"},
-pt:{n_mission:"Missão",n_builders:"Para quem constrói",n_sellers:"Para vendedores",n_who:"Para quem",n_platform:"Plataforma",n_manifesto:"Manifesto",n_faq:"Dúvidas", n_pricing:"Preços",n_cta:"Entrar na lista",f_tagline:"O livro de ofertas da economia real.",f_ety:"Do grego <em>synállagma</em> — um contrato que obriga os dois lados. Trocar, juntos.",f_rights:"© 2026 Synallax. Construindo abertamente.",f_terms:"Termos",f_privacy:"Privacidade"},
-es:{n_mission:"Misión",n_builders:"Para quien construye",n_sellers:"Para vendedores",n_who:"Para quién",n_platform:"Plataforma",n_manifesto:"Manifiesto",n_faq:"Preguntas", n_pricing:"Precios",n_cta:"Unirme a la lista",f_tagline:"El libro de órdenes de la economía real.",f_ety:"Del griego <em>synállagma</em> — un contrato que obliga a ambas partes. Intercambio, juntos.",f_rights:"© 2026 Synallax. Construyendo en abierto.",f_terms:"Términos",f_privacy:"Privacidad"},
-fr:{n_mission:"Mission",n_builders:"Pour les développeurs",n_sellers:"Pour les vendeurs",n_who:"Pour qui",n_platform:"Plateforme",n_manifesto:"Manifeste",n_faq:"FAQ", n_pricing:"Tarifs",n_cta:"Rejoindre la liste",f_tagline:"Le carnet d'ordres de l'économie réelle.",f_ety:"Du grec <em>synállagma</em> — un contrat qui lie les deux parties. Échanger, ensemble.",f_rights:"© 2026 Synallax. Construit à ciel ouvert.",f_terms:"Conditions",f_privacy:"Confidentialité"}
+en:{n_mission:"Mission",n_builders:"For builders",n_sellers:"For sellers",n_who:"Who it's for",n_platform:"Platform",n_manifesto:"Manifesto",n_faq:"FAQ", n_pricing:"Pricing",f_tagline:"The order book for the real economy.",f_ety:"From the Greek <em>synállagma</em> — a contract that binds both sides. Exchange, together.",f_rights:"© 2026 Synallax. Building in the open.",f_terms:"Terms",f_privacy:"Privacy"},
+pt:{n_mission:"Missão",n_builders:"Para quem constrói",n_sellers:"Para vendedores",n_who:"Para quem",n_platform:"Plataforma",n_manifesto:"Manifesto",n_faq:"Dúvidas", n_pricing:"Preços",f_tagline:"O livro de ofertas da economia real.",f_ety:"Do grego <em>synállagma</em> — um contrato que obriga os dois lados. Trocar, juntos.",f_rights:"© 2026 Synallax. Construindo abertamente.",f_terms:"Termos",f_privacy:"Privacidade"},
+es:{n_mission:"Misión",n_builders:"Para quien construye",n_sellers:"Para vendedores",n_who:"Para quién",n_platform:"Plataforma",n_manifesto:"Manifiesto",n_faq:"Preguntas", n_pricing:"Precios",f_tagline:"El libro de órdenes de la economía real.",f_ety:"Del griego <em>synállagma</em> — un contrato que obliga a ambas partes. Intercambio, juntos.",f_rights:"© 2026 Synallax. Construyendo en abierto.",f_terms:"Términos",f_privacy:"Privacidad"},
+fr:{n_mission:"Mission",n_builders:"Pour les développeurs",n_sellers:"Pour les vendeurs",n_who:"Pour qui",n_platform:"Plateforme",n_manifesto:"Manifeste",n_faq:"FAQ", n_pricing:"Tarifs",f_tagline:"Le carnet d'ordres de l'économie réelle.",f_ety:"Du grec <em>synállagma</em> — un contrat qui lie les deux parties. Échanger, ensemble.",f_rights:"© 2026 Synallax. Construit à ciel ouvert.",f_terms:"Conditions",f_privacy:"Confidentialité"}
 };
 const I18N={
 en:{m_eyebrow:"Synallax · Manifesto",m_title:"The Silent Half of the Market",m_deck:"How the buyer lost their voice — and how they get it back.",m_meta:"July 2026 · 5 min read",
@@ -230,10 +230,10 @@ m6b:"A bid on Synallax is firm — a commitment, not a wish. Sellers see, for th
 m6c:"And we do not run these markets. Synallax builds the engine and licenses it — your venue, your brand, your rules; hosted by us, or installed inside your walls. The conversation belongs to whoever owns the market. We make it possible.",
 m6d:"The theater fills. The buyer gets in at what the evening was honestly worth to them. Nothing expires worthless.",
 m6e:"This is not an attack on sellers, and it is not a discount machine. It is the completion of the market — the second curve, finally drawn. If you believe in markets at all, you believe the best price is <b>discovered, not declared</b>.",
-m7a:"We are building it now, in the open — agent-first, with an open API and an MCP server, so the machines that will do most of tomorrow's buying can rest their bids on the book.",
+m7a:"We are building it in the open — agent-first, with an open API today and an MCP server next, so the machines that will do most of tomorrow's buying can rest their bids on the book.",
 m7b:"If you build with agents: come make your agent one of the first voices in the room. If you sell what expires — rooms, seats, capacity, time: come see the demand you've been turning away.",
 m_quote:"A price should be a <span class=\"hl\">conversation</span>.<br>Let's have it.",
-m_cta1:"Join the waitlist",m_cta2:"Become a design partner",
+m_cta1:"Create your marketplace",m_cta2:"Become a design partner",
 m_ety:"From the Greek <em>synállagma</em> — a contract that binds both sides. Exchange, together."},
 
 pt:{m_eyebrow:"Synallax · Manifesto",m_title:"A Metade Silenciosa do Mercado",m_deck:"Como o comprador perdeu a voz — e como vai recuperá-la.",m_meta:"Julho de 2026 · leitura de 5 min",
@@ -256,10 +256,10 @@ m6b:"Uma oferta na Synallax é firme — um compromisso, não um desejo. Vendedo
 m6c:"E nós não operamos esses mercados. A Synallax constrói o motor e o licencia — o seu mercado, a sua marca, as suas regras; hospedado por nós, ou instalado dentro das suas paredes. A conversa pertence a quem é dono do mercado. Nós a tornamos possível.",
 m6d:"O cinema enche. O comprador entra pelo que a noite honestamente valia para ele. Nada expira sem valor.",
 m6e:"Isso não é um ataque aos vendedores, e não é uma máquina de descontos. É a conclusão do mercado — a segunda curva, enfim desenhada. Se você acredita em mercados, acredita que o melhor preço é <b>descoberto, não decretado</b>.",
-m7a:"Estamos construindo agora, às claras — agent-first, com API aberta e um servidor MCP, para que as máquinas que farão a maior parte das compras de amanhã possam descansar as suas ofertas no livro.",
+m7a:"Estamos construindo às claras — agent-first, com API aberta desde já e um servidor MCP a seguir, para que as máquinas que farão a maior parte das compras de amanhã possam descansar as suas ofertas no livro.",
 m7b:"Se você constrói com agentes: venha fazer do seu agente uma das primeiras vozes na sala. Se você vende o que expira — quartos, assentos, capacidade, tempo: venha ver a demanda que você vem recusando.",
 m_quote:"Um preço deveria ser uma <span class=\"hl\">conversa</span>.<br>Vamos conversar.",
-m_cta1:"Entrar na lista de espera",m_cta2:"Tornar-se parceiro piloto",
+m_cta1:"Criar o meu marketplace",m_cta2:"Tornar-se parceiro piloto",
 m_ety:"Do grego <em>synállagma</em> — um contrato que obriga os dois lados. Trocar, juntos."},
 
 es:{m_eyebrow:"Synallax · Manifiesto",m_title:"La Mitad Silenciosa del Mercado",m_deck:"Cómo el comprador perdió la voz — y cómo la recupera.",m_meta:"Julio de 2026 · lectura de 5 min",
@@ -282,10 +282,10 @@ m6b:"Una oferta en Synallax es firme — un compromiso, no un deseo. Los vendedo
 m6c:"Y nosotros no operamos esos mercados. Synallax construye el motor y lo licencia — tu mercado, tu marca, tus reglas; alojado por nosotros o instalado dentro de tus muros. La conversación pertenece al dueño del mercado. Nosotros la hacemos posible.",
 m6d:"El cine se llena. El comprador entra por lo que la noche honestamente valía para él. Nada caduca sin valor.",
 m6e:"Esto no es un ataque a los vendedores, y no es una máquina de descuentos. Es la culminación del mercado — la segunda curva, por fin dibujada. Si crees en los mercados, crees que el mejor precio se <b>descubre, no se decreta</b>.",
-m7a:"Lo estamos construyendo ahora, a la vista — agent-first, con API abierta y un servidor MCP, para que las máquinas que harán la mayor parte de las compras de mañana puedan descansar sus ofertas en el libro.",
+m7a:"Lo estamos construyendo a la vista — agent-first, con API abierta desde ya y un servidor MCP después, para que las máquinas que harán la mayor parte de las compras de mañana puedan descansar sus ofertas en el libro.",
 m7b:"Si construyes con agentes: ven a hacer de tu agente una de las primeras voces en la sala. Si vendes lo que caduca — habitaciones, asientos, capacidad, tiempo: ven a ver la demanda que has estado rechazando.",
 m_quote:"Un precio debería ser una <span class=\"hl\">conversación</span>.<br>Tengámosla.",
-m_cta1:"Unirme a la lista de espera",m_cta2:"Ser socio piloto",
+m_cta1:"Crear mi marketplace",m_cta2:"Ser socio piloto",
 m_ety:"Del griego <em>synállagma</em> — un contrato que obliga a ambas partes. Intercambio, juntos."},
 
 fr:{m_eyebrow:"Synallax · Manifeste",m_title:"La Moitié Silencieuse du Marché",m_deck:"Comment l'acheteur a perdu sa voix — et comment il la retrouve.",m_meta:"Juillet 2026 · 5 min de lecture",
@@ -308,10 +308,10 @@ m6b:"Une offre sur Synallax est ferme — un engagement, pas un souhait. Les ven
 m6c:"Et nous n'opérons pas ces marchés. Synallax construit le moteur et le licencie — votre place, votre marque, vos règles ; hébergé par nous, ou installé entre vos murs. La conversation appartient au propriétaire du marché. Nous la rendons possible.",
 m6d:"Le cinéma se remplit. L'acheteur entre pour ce que la soirée valait honnêtement à ses yeux. Rien n'expire sans valeur.",
 m6e:"Ce n'est pas une attaque contre les vendeurs, et ce n'est pas une machine à rabais. C'est l'achèvement du marché — la seconde courbe, enfin tracée. Si vous croyez aux marchés, vous croyez que le meilleur prix se <b>découvre, et ne se décrète pas</b>.",
-m7a:"Nous le construisons maintenant, à ciel ouvert — agent-first, avec une API ouverte et un serveur MCP, pour que les machines qui feront l'essentiel des achats de demain puissent déposer leurs offres au carnet.",
+m7a:"Nous le construisons à ciel ouvert — agent-first, avec une API ouverte dès aujourd'hui et un serveur MCP ensuite, pour que les machines qui feront l'essentiel des achats de demain puissent déposer leurs offres au carnet.",
 m7b:"Si vous construisez avec des agents : venez faire de votre agent l'une des premières voix de la salle. Si vous vendez ce qui expire — chambres, sièges, capacité, temps : venez voir la demande que vous refusez.",
 m_quote:"Un prix devrait être une <span class=\"hl\">conversation</span>.<br>Ayons-la.",
-m_cta1:"Rejoindre la liste d'attente",m_cta2:"Devenir partenaire pilote",
+m_cta1:"Créer ma place de marché",m_cta2:"Devenir partenaire pilote",
 m_ety:"Du grec <em>synállagma</em> — un contrat qui lie les deux parties. Échanger, ensemble."}
 };
 function applyLang(l){
