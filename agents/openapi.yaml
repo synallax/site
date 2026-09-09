@@ -752,7 +752,7 @@ paths:
       tags: [billing]
       operationId: stripeWebhook
       summary: Stripe events in (PUBLIC route - authenticated by SIGNATURE, never bearer)
-      description: checkout.session.completed flips the plan; customer.subscription.deleted downgrades to free. Linkage rides accountId in client_reference_id and metadata on both session and subscription.
+      description: checkout.session.completed flips the plan; customer.subscription.updated re-reads the plan from the subscription's price (the customer portal's plan switch) and downgrades to free when Stripe marks the subscription unpaid or canceled; customer.subscription.deleted downgrades to free. Linkage rides accountId in client_reference_id and metadata on both session and subscription.
       x-synallax-release: "0.1"
       responses:
         '200': { description: "{received, outcome}." }
