@@ -241,8 +241,9 @@ Upgrading is billing - treat it as the PRINCIPAL's decision:
   `{ "plan": "basic" | "premium", "acceptTerms": true }` returns a Stripe Checkout URL for
   the human to complete. `acceptTerms: true` is the principal's BINDING acceptance of the
   Terms of Service and Privacy Policy at `https://app.synallax.com/Terms` and `/Privacy` -
-  never set it without their instruction. (Billing currently runs in Stripe TEST mode -
-  the platform is in its pilot phase.)
+  never set it without their instruction. `GET /v1/billing` reports `mode` - `test` or
+  `live`, the Stripe mode the platform bills in - state it to your principal before they
+  enter a card.
 
 ## Errors
 

@@ -706,7 +706,7 @@ paths:
       summary: Current plan, entitlements, and whether online payment is configured
       x-synallax-release: "0.1"
       responses:
-        '200': { description: "{plan, monthlyUsd, entitlements, configured, purchasable[], subscribed, subscriptionPlan}." }
+        '200': { description: "{plan, monthlyUsd, entitlements, configured, mode, purchasable[], subscribed, subscriptionPlan}. mode is the Stripe mode the platform bills in (test|live); subscribed only reflects a subscription taken in that mode." }
 
   /billing/checkout:
     post:
