@@ -1,39 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://synallax.com/</loc>
-    <lastmod>2026-07-23</lastmod>
+    <lastmod>2026-09-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://synallax.com/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://synallax.com/pt/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://synallax.com/es/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://synallax.com/fr/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://synallax.com/" />
   </url>
   <url>
-    <loc>https://synallax.com/manifesto/</loc>
-    <lastmod>2026-07-24</lastmod>
+    <loc>https://synallax.com/pt/</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://synallax.com/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://synallax.com/pt/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://synallax.com/es/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://synallax.com/fr/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://synallax.com/" />
+  </url>
+  <url>
+    <loc>https://synallax.com/es/</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://synallax.com/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://synallax.com/pt/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://synallax.com/es/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://synallax.com/fr/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://synallax.com/" />
+  </url>
+  <url>
+    <loc>https://synallax.com/fr/</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://synallax.com/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://synallax.com/pt/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://synallax.com/es/" />
+    <xhtml:link rel="alternate" hreflang="fr" href="https://synallax.com/fr/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://synallax.com/" />
+  </url>
+  <url>
+    <loc>https://synallax.com/pricing/</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://synallax.com/platform/</loc>
+    <lastmod>2026-09-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://synallax.com/platform/</loc>
-    <lastmod>2026-07-24</lastmod>
+    <loc>https://synallax.com/agents/</loc>
+    <lastmod>2026-09-10</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://synallax.com/pt/</loc>
-    <lastmod>2026-07-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://synallax.com/agents/synallax-agents.md</loc>
+    <lastmod>2026-09-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://synallax.com/es/</loc>
-    <lastmod>2026-07-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://synallax.com/fr/</loc>
-    <lastmod>2026-07-24</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://synallax.com/manifesto/</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
   </url>
 </urlset>
