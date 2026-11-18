@@ -157,7 +157,7 @@ paths:
       tags: [accounts]
       operationId: platformAuthStart
       summary: Platform sign-in, step 1 - the console's human door (no auth)
-      description: Same codes and sessions as the venue-scoped flow, no venue and no membership - operators are humans too; nobody pastes sk_ keys into a browser.
+      description: Same codes, sessions and limits as the venue-scoped flow, no venue and no membership - operators are humans too; nobody pastes sk_ keys into a browser.
       x-synallax-release: "0.2"
       security: []
       requestBody:
@@ -201,8 +201,10 @@ paths:
       summary: Buyer sign-in, step 1 - send a magic-link code (no auth)
       description: |
         The buyer's front door, venue-branded UX over the PLATFORM identity spine ("one
-        identity, per-venue membership"). Finds-or-creates the party by email and mails a
-        6-digit code. The answer never reveals whether the email was already known.
+        identity, per-venue membership"). Mails a 6-digit code; nothing is created until the
+        code is confirmed. An address receives at most one code a minute and five a day,
+        console and venues together. The answer is always the same: it never reveals whether
+        the email was known or whether a code went out.
       x-synallax-release: "0.2"
       security: []
       parameters: [ { $ref: '#/components/parameters/VenueId' } ]
@@ -215,7 +217,7 @@ paths:
               required: [email]
               properties:
                 email: { type: string, format: email }
-                name: { type: string, description: Used only if the party is new. }
+                name: { type: string, description: Kept with the code; used when the confirmed address has no account yet. }
       responses:
         '200': { description: Code sent (always the same answer). }
         '404': { $ref: '#/components/responses/NotFound' }
@@ -226,8 +228,9 @@ paths:
       operationId: buyerAuthVerify
       summary: Buyer sign-in, step 2 - trade the code for a session
       description: |
-        A correct, unexpired code (five wrong guesses burn it) creates the venue MEMBERSHIP -
-        proven email = joined - and returns an `st_` session token (shown once, stored
+        A correct, unexpired code (five wrong guesses burn it) creates the account when the
+        address has none yet, then the venue MEMBERSHIP - proven email = joined - and returns
+        an `st_` session token (shown once, stored
         hashed). Sessions and `sk_` keys are two credential kinds over ONE identity: every
         route accepts either.
       x-synallax-release: "0.2"
